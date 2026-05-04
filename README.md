@@ -6,14 +6,14 @@ Wiki interativo de Introdução à Economia, desenvolvido para a unidade curricu
 
 O site é composto por dois ficheiros HTML standalone, ligados entre si:
 
-- **`index.html`** — Introdução ao Pensamento Económico. Capítulo introdutório com seis lições, exemplos guiados, gráficos interactivos e *quizzes*. Pensado como porta de entrada para quem nunca estudou Economia.
-- **`EconWiki.html`** — Wiki principal de referência. Dezanove páginas organizadas em cinco grupos (Fundamentos, Estruturas de Mercado, Mercados: Informação, Trabalho e Digital, Falhas de Mercado, Macroeconomia). Cobre a generalidade dos conteúdos da disciplina, com gráficos SVG, tabelas comparativas e remissões cruzadas.
+- **`index.html`** — Wiki principal de referência. Dezanove páginas organizadas em cinco grupos (Fundamentos, Estruturas de Mercado, Mercados: Informação, Trabalho e Digital, Falhas de Mercado, Macroeconomia). Cobre a generalidade dos conteúdos da disciplina, com gráficos SVG, tabelas comparativas e remissões cruzadas. É a porta de entrada do site.
+- **`intro.html`** — Introdução ao Pensamento Económico. Capítulo introdutório com seis lições, exemplos guiados, gráficos interactivos e *quizzes*. Complementa o wiki com uma abordagem mais narrativa, pensada para quem nunca estudou Economia.
 
 Os dois ficheiros são interligados por botões de navegação na barra superior e na *sidebar*. Partilham o mesmo sistema de cores, tipografia e modo claro/escuro (sincronizado via `localStorage`).
 
 ## Assistente de dúvidas (chat)
 
-O ficheiro `EconWiki.html` inclui um chat ligado à API Claude da Anthropic. Para usar:
+O ficheiro `index.html` (wiki) inclui um chat ligado à API Claude da Anthropic. Para usar:
 
 1. Obter uma chave de API em [console.anthropic.com](https://console.anthropic.com/) (a Anthropic oferece créditos iniciais gratuitos para experimentar)
 2. Clicar no ícone de engrenagem no canto inferior esquerdo do site
