@@ -679,15 +679,7 @@ body.dark .cl-tx { color: #C9A95A; }
 /* ═══════════════════════════════════════════
    RESPONSIVIDADE
 ═══════════════════════════════════════════ */
-@media (max-width: 600px) {
-  .page-wrap { padding: 0 16px 60px; }
-  .topbar { padding: 0 16px; }
-  .progress-bar-wrap { padding: 0 16px; }
-  .s-title { font-size: 24px; }
-  .choice-row { grid-template-columns: 1fr; gap: 8px; }
-  .choice-vs { display: none; }
-  .cgrid { grid-template-columns: 1fr 1fr; }
-}
+
 
 /* ═══════════════════════════════════════════
    FPP GRÁFICO INTERATIVO
@@ -794,11 +786,7 @@ input[type="range"] {
   transition: background .25s;
   min-height: 42px;
 }
-@media (max-width: 600px) {
-  .fpp-metrics { flex-direction: column; }
-  .fpp-metric-divider { width: 100%; height: 1px; }
-  .fpp-slider-edge { min-width: 48px; font-size: 10px; }
-}
+
 
 
 /* ═══════════════════════════════════════════
@@ -1005,11 +993,7 @@ body.dark .quiz-feedback.wrong-fb {
 .quiz-retry-btn svg { stroke: currentColor; }
 .quiz-retry-btn:hover { background: var(--bg2); border-color: var(--bors); color: var(--tx); }
 
-@media (max-width: 600px) {
-  .quiz-card { padding: 16px 14px; }
-  .quiz-opt { font-size: 13px; padding: 10px 12px; }
-  .quiz-score { font-size: 36px; }
-}
+
 
 
 /* ═══════════════════════════════════════════
@@ -1040,6 +1024,141 @@ body.dark .quiz-feedback.wrong-fb {
 .eq-scenario-btn:hover { background: var(--bg2); color: var(--tx); }
 .eq-scenario-btn.active { background: var(--acl); color: var(--act); border-color: var(--ac); font-weight: 600; }
 
+
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE — breakpoint ≤ 768px
+   (substitui e expande os blocos @media 600px existentes)
+═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* ── Page wrapper ── */
+  .page-wrap {
+    padding: 0 16px 60px;
+  }
+
+  /* ── Topbar ── */
+  .topbar {
+    padding: 0 16px;
+    gap: 8px;
+  }
+  .tb-num { display: none; }
+  .tb-tag {
+    display: none;
+  }
+  .tb-title {
+    font-size: 14px;
+  }
+  .tb-wiki-btn {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+  .tb-dark-btn {
+    padding: 5px 6px;
+  }
+
+  /* ── Progress bar ── */
+  .progress-bar-wrap {
+    padding: 0 16px;
+  }
+  .progress-steps {
+    gap: 0;
+  }
+  .progress-step {
+    font-size: 11px;
+    padding: 8px 10px 8px 0;
+    white-space: nowrap;
+  }
+
+  /* ── Main content ── */
+  .content {
+    padding: 28px 0 48px;
+  }
+  .s-title {
+    font-size: 24px;
+  }
+  .s-intro {
+    font-size: 15px;
+  }
+  .bt {
+    font-size: 14.5px;
+  }
+
+  /* ── Lesson steps ── */
+  .step-heading {
+    font-size: 19px;
+  }
+
+  /* ── Interactive choice component ── */
+  .choice-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .choice-vs { display: none; }
+
+  /* ── Concept cards ── */
+  .cgrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* ── Tables: horizontal scroll ── */
+  .ctbl {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Callout and definition blocks ── */
+  .callout { padding: 14px 14px; }
+  .definition-block { padding: 12px 14px; }
+
+  /* ── TOC ── */
+  .toc { padding: 16px 16px; }
+
+  /* ── FPP interactive ── */
+  .fpp-metrics { flex-direction: column; }
+  .fpp-metric-divider { width: 100%; height: 1px; }
+  .fpp-slider-edge { min-width: 48px; font-size: 10px; }
+  .fpp-chart-wrap canvas {
+    max-width: 100% !important;
+  }
+  .fpp-interactive { padding: 14px; }
+
+  /* ── Chart.js canvases — prevent iOS Safari overflow ── */
+  .chart-js-wrap,
+  [id$="Chart"],
+  canvas {
+    max-width: 100% !important;
+    touch-action: pan-y;
+  }
+
+  /* ── Quiz ── */
+  .quiz-card { padding: 16px 14px; }
+  .quiz-opt { font-size: 13px; padding: 10px 12px; }
+  .quiz-score { font-size: 36px; }
+
+  /* ── Lesson nav (prev/next buttons) ── */
+  .lesson-nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .nav-btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  /* ── Section divider ── */
+  .section-divider { margin: 20px 0; }
+}
+
+@media (max-width: 400px) {
+  .cgrid { grid-template-columns: 1fr; }
+  .s-title { font-size: 21px; }
+  .progress-step { font-size: 10.5px; padding: 8px 8px 8px 0; }
+  .page-wrap { padding: 0 12px 48px; }
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>

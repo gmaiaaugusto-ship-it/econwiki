@@ -654,9 +654,197 @@ body.dark .cl-tx{color:#C9A95A;}
 .tw-font-btn:hover,.tw-font-btn.active{background:var(--acl);color:var(--act);border-color:var(--ac);}
 
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE — breakpoint ≤ 768px
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Hamburger button (hidden on desktop) ── */
+.mob-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  background: none;
+  border: 1px solid var(--bor);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--tx2);
+  flex-shrink: 0;
+  transition: background .12s, color .12s;
+}
+.mob-menu-btn:hover { background: var(--bg2); color: var(--tx); }
+.mob-menu-btn svg { width: 18px; height: 18px; stroke: currentColor; display: block; }
+
+/* ── Sidebar backdrop ── */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  z-index: 290;
+  opacity: 0;
+  transition: opacity .2s;
+}
+.sidebar-backdrop.visible { opacity: 1; }
+
+@media (max-width: 768px) {
+
+  /* ── Global layout reset ── */
+  html, body {
+    overflow: auto;
+    height: auto;
+  }
+  body {
+    display: block;
+  }
+
+  /* ── Sidebar becomes a fixed drawer ── */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 100dvh;
+    height: 100vh; /* fallback */
+    width: 85vw;
+    max-width: 320px;
+    transform: translateX(-100%);
+    transition: transform .22s cubic-bezier(.4,0,.2,1);
+    z-index: 300;
+    box-shadow: 4px 0 24px rgba(0,0,0,.18);
+  }
+  #sidebar.drawer-open {
+    transform: translateX(0);
+  }
+  .sidebar-backdrop { display: block; }
+
+  /* ── Main takes full width ── */
+  main {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Topbar mobile ── */
+  .topbar {
+    padding: 0 12px;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .mob-menu-btn { display: flex; }
+  .tb-num { display: none; }
+  .tb-tag { display: none; }
+  .tb-title {
+    font-size: 14px;
+  }
+  .tb-intro-btn span { display: none; }
+  .tb-intro-btn {
+    padding: 5px 8px;
+    gap: 0;
+  }
+
+  /* ── Content area ── */
+  #content {
+    padding: 24px 16px 48px;
+    overflow-y: auto;
+    max-width: 100%;
+  }
+  .s-title { font-size: 24px; }
+  .s-intro { font-size: 15px; }
+  .bt { font-size: 14.5px; }
+
+  /* ── Concept cards: 1 column on very small, 2 on wider mobile ── */
+  .cgrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* ── Tables: scroll horizontally ── */
+  .ctbl {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Charts ── */
+  .chart-wrap {
+    padding: 12px 10px 8px;
+    overflow-x: auto;
+  }
+  .chart-wrap svg {
+    min-width: 420px;
+  }
+
+  /* ── Callout ── */
+  .callout { padding: 14px 14px; }
+
+  /* ── Topbar: floating action button relocation ── */
+  #chat-fab {
+    bottom: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+  }
+
+  /* ── Chat modal: compact floating panel ── */
+  #chat-modal {
+    padding: 0 12px 80px;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .chat-panel {
+    width: 100%;
+    max-width: 480px;
+    height: 70dvh;
+    height: 70vh;
+    border-radius: 16px;
+  }
+
+  /* ── Settings modal ── */
+  .settings-panel {
+    width: calc(100vw - 32px);
+    max-width: 380px;
+    max-height: 90dvh;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  /* ── Tweaks panel: detach from sidebar ── */
+  #tweaks-panel {
+    left: 16px !important;
+    right: 16px;
+    width: auto !important;
+    bottom: 76px;
+  }
+
+  /* ── Nav items: larger touch targets ── */
+  .nav-item {
+    padding: 11px 20px 11px 16px;
+    min-height: 44px;
+  }
+  .sf-btn {
+    min-height: 44px;
+  }
+
+  /* ── Sidebar footer ── */
+  .sidebar-footer {
+    padding-bottom: env(safe-area-inset-bottom, 12px);
+  }
+}
+
+@media (max-width: 400px) {
+  .cgrid { grid-template-columns: 1fr; }
+  .s-title { font-size: 21px; }
+  #content { padding: 20px 14px 40px; }
+}
 </style>
 </head>
 <body>
+<div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
 
 <!-- ═══ SIDEBAR ═══════════════════════════════════════════════ -->
 <aside id="sidebar">
@@ -701,6 +889,9 @@ body.dark .cl-tx{color:#C9A95A;}
 <!-- ═══ MAIN ═══════════════════════════════════════════════════ -->
 <main id="main">
   <div class="topbar">
+    <button class="mob-menu-btn" aria-label="Abrir menu de navegação">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
     <a class="tb-intro-btn" href="intro.html" title="Ir para Introdução ao Pensamento Económico" aria-label="Ir para Introdução ao Pensamento Económico">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       Introdução
@@ -1632,6 +1823,53 @@ render(0);
 buildTweaks();
 // Apply saved dark mode
 if(tweakState.darkMode) document.body.classList.add('dark');
+</script>
+
+<script>
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE DRAWER — sidebar toggle
+═══════════════════════════════════════════════════════════════ */
+(function() {
+  const sidebar  = document.getElementById('sidebar');
+  const backdrop = document.querySelector('.sidebar-backdrop');
+  const menuBtn  = document.querySelector('.mob-menu-btn');
+
+  function openDrawer() {
+    sidebar.classList.add('drawer-open');
+    backdrop.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    sidebar.classList.remove('drawer-open');
+    backdrop.classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+
+  if (menuBtn)  menuBtn.addEventListener('click', openDrawer);
+  if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+  // Close drawer on nav-item click (mobile navigation)
+  document.querySelectorAll('.nav-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      if (window.innerWidth <= 768) closeDrawer();
+    });
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeDrawer();
+  });
+
+  // Reset drawer state on resize to desktop
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      sidebar.classList.remove('drawer-open');
+      backdrop.classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+  });
+})();
 </script>
 </body>
 </html>
