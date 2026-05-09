@@ -20,7 +20,13 @@
   // ── Theme ──────────────────────────────────────────────────
   const THEME_KEY = 'ew_theme_v1';
   function getTheme(){ try{ return localStorage.getItem(THEME_KEY)||'light'; }catch(e){ return 'light'; } }
-  function setTheme(v){ try{ localStorage.setItem(THEME_KEY,v); }catch(e){} document.documentElement.dataset.theme = v; updateThemeBtn(); }
+  function setTheme(v){ try{ localStorage.setItem(THEME_KEY,v); }catch(e){} document.documentElement.dataset.theme = v; updateThemeBtn(); syncIntroTheme(v); }
+  function syncIntroTheme(v){
+    try{
+      const f = root.querySelector('#b-intro iframe');
+      if(f && f.contentWindow) f.contentWindow.postMessage({type:'ew_theme', theme:v}, '*');
+    }catch(e){}
+  }
   function updateThemeBtn(){
     const btns = root.querySelectorAll('[data-theme-btn] svg');
     btns.forEach(svg=>{
@@ -32,13 +38,21 @@
   }
   document.documentElement.dataset.theme = getTheme();
 
+  // Listen for theme toggles inside the Introdução iframe
+  window.addEventListener('message', (ev)=>{
+    if(ev && ev.data && ev.data.type==='ew_theme_request'){
+      const v = ev.data.theme==='dark' ? 'dark' : 'light';
+      if(getTheme()!==v){ setTheme(v); try{ const s=root.querySelector('[data-theme-btn] span'); if(s) s.textContent = v==='dark'?'Modo claro':'Modo escuro'; }catch(e){} }
+    }
+  });
+
   const css = document.createElement('style');
   css.textContent = `
   :root[data-theme="light"] #app{
     --bg:#FAF7F0; --surf:#FFFFFF; --surf2:#F5F0E3;
     --side:#1F1B16; --side-tx:#E5DECF; --side-tx2:#9C907B; --side-bor:#2C261F; --side-active:#2C261F;
     --bor:#E6DECC; --bor2:#EFE9DA; --rule:#D9CFB7;
-    --tx:#1C1814; --tx2:#5A5147; --tx3:#8E8576;
+    --tx:#1C1814; --tx2:#5A5147; --tx3:#7A7064;
     --ac:#1C5240; --acl:#E2EDE6; --act:#0D3324;
   }
   :root[data-theme="dark"] #app{
@@ -338,8 +352,22 @@
   }
   .b-read-meta .dot{ width:3px;height:3px;border-radius:50%; background:var(--bor);}
   .b-read-actions{ display:flex; gap:8px; margin-top:24px; flex-wrap:wrap;}
+  /* A11y — foco visível consistente em toda a UI */
+  .b-shell :focus{ outline:none;}
+  .b-shell :focus-visible,
+  .b-burger:focus-visible{
+    outline:2px solid var(--c-ac);
+    outline-offset:2px;
+    border-radius:8px;
+  }
+  :root[data-theme="dark"] .b-shell :focus-visible,
+  :root[data-theme="dark"] .b-burger:focus-visible{
+    outline-color:var(--c-act);
+  }
+
   .b-iconbtn{
     display:inline-flex; align-items:center; gap:7px;
+    min-height:44px;
     background:var(--surf); border:1px solid var(--bor);
     border-radius:9px; padding:9px 14px;
     font:inherit; font-size:13px; color:var(--tx2);
@@ -548,9 +576,36 @@
   .b-fc-stats b{ color:var(--tx); font-weight:600;}
 
   /* Mobile */
+  /* Hambúrguer mobile + drawer */
+  .b-burger{
+    display:none; position:fixed; top:14px; left:14px; z-index:80;
+    width:44px; height:44px; border-radius:11px;
+    background:var(--surf); color:var(--tx); border:1px solid var(--bor);
+    box-shadow:0 6px 18px -8px rgba(0,0,0,.18);
+    align-items:center; justify-content:center; cursor:pointer;
+  }
+  .b-burger svg{ width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2;}
+  .b-scrim{
+    display:none; position:fixed; inset:0; z-index:65;
+    background:rgba(15,12,8,.45); backdrop-filter:blur(2px);
+    animation:bScrim .18s ease-out;
+  }
+  @keyframes bScrim{ from{ opacity:0;} }
+  body.b-side-open{ overflow:hidden;}
+
   @media (max-width: 980px){
     .b-shell{ grid-template-columns:1fr;}
-    .b-side{ height:auto; position:relative; padding-bottom:16px;}
+    .b-burger{ display:flex;}
+    .b-side{
+      position:fixed; left:0; top:0; bottom:0; width:min(86vw,320px);
+      z-index:70; padding:64px 0 16px;
+      transform:translateX(-100%); transition:transform .25s cubic-bezier(.2,.8,.3,1);
+      box-shadow:0 0 40px -10px rgba(0,0,0,.4);
+      overflow-y:auto;
+    }
+    body.b-side-open .b-side{ transform:translateX(0);}
+    body.b-side-open .b-scrim{ display:block;}
+    .b-main{ width:100%;}
     .b-dash{ padding:32px 24px 64px;}
     .b-dash-hero{ grid-template-columns:1fr; padding:32px 28px;}
     .b-grid{ grid-template-columns:1fr 1fr;}
@@ -568,8 +623,12 @@
   root.appendChild(css);
 
   root.innerHTML += `
+    <button class="b-burger" id="b-burger" aria-label="Abrir menu" aria-controls="b-side" aria-expanded="false">
+      <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <div class="b-scrim" id="b-scrim" aria-hidden="true"></div>
     <div class="b-shell">
-      <aside class="b-side" id="b-side"></aside>
+      <aside class="b-side" id="b-side" role="navigation" aria-label="Navegação principal"></aside>
       <main class="b-main">
         <div id="b-dash" class="b-page active"></div>
         <div id="b-read" class="b-page"></div>
@@ -902,15 +961,15 @@
             <span>${(t.cc||[]).length} conceitos · ${(t.charts||[]).length} gráficos</span>
           </div>
           <div class="b-read-actions">
-            <button class="b-iconbtn ${EW.isRead(i)?'on':''}" id="b-mr">
+            <button class="b-iconbtn ${EW.isRead(i)?'on':''}" id="b-mr" aria-pressed="${EW.isRead(i)?'true':'false'}" aria-label="${EW.isRead(i)?'Tópico marcado como lido':'Marcar tópico como lido'}">
               <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               <span>${EW.isRead(i)?'Lido':'Marcar lido'}</span>
             </button>
-            <button class="b-iconbtn fav ${EW.isFav(i)?'on':''}" id="b-mf">
+            <button class="b-iconbtn fav ${EW.isFav(i)?'on':''}" id="b-mf" aria-pressed="${EW.isFav(i)?'true':'false'}" aria-label="${EW.isFav(i)?'Remover dos favoritos':'Adicionar aos favoritos'}">
               <svg viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9"/></svg>
               <span>Favorito</span>
             </button>
-            <button class="b-iconbtn" id="b-ask">
+            <button class="b-iconbtn" id="b-ask" aria-label="Abrir assistente para fazer uma pergunta sobre este tópico">
               <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
               <span>Pergunta ao Assistente</span>
             </button>
@@ -1109,6 +1168,55 @@
   });
 
   // ── Routing ─────────────────────────────────────────────
+  // Mobile drawer
+  (function(){
+    const burger = root.querySelector('#b-burger');
+    const scrim  = root.querySelector('#b-scrim');
+    function close(){ document.body.classList.remove('b-side-open'); burger.setAttribute('aria-expanded','false'); }
+    function toggle(){
+      const open = !document.body.classList.contains('b-side-open');
+      document.body.classList.toggle('b-side-open', open);
+      burger.setAttribute('aria-expanded', open?'true':'false');
+    }
+    burger.addEventListener('click', toggle);
+    scrim.addEventListener('click', close);
+    // close drawer when navigating
+    root.querySelector('#b-side').addEventListener('click', e=>{
+      if(e.target.closest('[data-view],[data-topic]')) close();
+    });
+
+    // Focus trap dentro do drawer mobile (apenas quando aberto)
+    const side = root.querySelector('#b-side');
+    let lastFocus = null;
+    function focusables(){
+      return Array.from(side.querySelectorAll(
+        'a[href],button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])'
+      )).filter(el=> el.offsetParent !== null);
+    }
+    document.addEventListener('keydown', e=>{
+      if(e.key==='Escape'){ close(); if(lastFocus) lastFocus.focus(); return; }
+      if(!document.body.classList.contains('b-side-open')) return;
+      if(e.key!=='Tab') return;
+      const items = focusables();
+      if(!items.length) return;
+      const first = items[0], last = items[items.length-1];
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+    });
+    // Memorizar foco anterior e mover para dentro do drawer ao abrir
+    const _toggle = toggle;
+    burger.removeEventListener('click', toggle);
+    burger.addEventListener('click', ()=>{
+      const wasOpen = document.body.classList.contains('b-side-open');
+      if(!wasOpen) lastFocus = document.activeElement;
+      _toggle();
+      if(!wasOpen){
+        const items = focusables();
+        if(items.length) setTimeout(()=> items[0].focus(), 80);
+      } else if(lastFocus){ lastFocus.focus(); }
+    });
+  })();
+
   function showPage(id){
     ['b-dash','b-read','b-fc','b-intro'].forEach(p=> root.querySelector('#'+p).classList.toggle('active', p===id));
   }
@@ -1137,8 +1245,10 @@
     window.scrollTo({top:0, behavior:'instant'});
     const host = root.querySelector('#b-intro');
     if(!host.dataset.loaded){
-      host.innerHTML = `<iframe src="introducao.html" title="Introdução ao Pensamento Económico" loading="lazy"></iframe>`;
+      host.innerHTML = `<iframe src="Introdução ao Pensamento Económico.html?theme=${getTheme()}" title="Introdução ao Pensamento Económico" loading="lazy"></iframe>`;
       host.dataset.loaded = '1';
+      const f = host.querySelector('iframe');
+      f.addEventListener('load', ()=> syncIntroTheme(getTheme()));
     }
     renderSide();
   }
