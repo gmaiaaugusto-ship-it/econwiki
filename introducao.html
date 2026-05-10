@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Introdução ao Pensamento Económico — EconWiki</title>
 
-<!-- Fonts: mesmas do EconWiki (Playfair Display + Source Sans 3) -->
+<!-- Fonts: alinhadas com o EconWiki (Source Serif 4 + Inter) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- Lucide Icons -->
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -20,18 +20,18 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:   #F7F4EF;
-  --bg2:  #EFE9DF;
+  --bg:   #FAF7F0;
+  --bg2:  #F5F0E3;
   --sur:  #FFFFFF;
-  --sur2: #F2EEE8;
-  --bor:  #DDD6CC;
-  --bors: #B8AFA0;
-  --tx:   #1C1A17;
-  --tx2:  #4A4540;
-  --tx3:  #8A8078;
-  --ac:   #2D6A4F;
-  --acl:  #EBF4EE;
-  --act:  #1B4332;
+  --sur2: #F5F0E3;
+  --bor:  #E6DECC;
+  --bors: #D9CFB7;
+  --tx:   #1C1814;
+  --tx2:  #5A5147;
+  --tx3:  #6A6256;
+  --ac:   #1C5240;
+  --acl:  #E2EDE6;
+  --act:  #0D3324;
   --ach:  #245740;
   --go:   #A67520;
   --gol:  #FDF3DC;
@@ -40,22 +40,23 @@
   --r:    12px;
   --shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.05);
   --shadow-lg: 0 4px 24px rgba(0,0,0,.12);
-  --ff-serif: 'Playfair Display', Georgia, serif;
-  --ff-sans:  'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ff-serif: 'Source Serif 4', Georgia, serif;
+  --ff-sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body.dark {
-  --bg:   #151310;
-  --bg2:  #1D1B18;
-  --sur:  #1F1D1A;
-  --sur2: #272421;
-  --bor:  #302C28;
-  --bors: #4A4540;
-  --tx:   #EDE9E3;
-  --tx2:  #B0A89E;
-  --tx3:  #6A6258;
-  --acl:  #1A2F24;
-  --act:  #86C99E;
+  --bg:   #13110E;
+  --bg2:  #1B1813;
+  --sur:  #1B1813;
+  --sur2: #221E18;
+  --bor:  #2A251D;
+  --bors: #3A3127;
+  --tx:   #EFE8D8;
+  --tx2:  #B8AC95;
+  --tx3:  #9C907B;
+  --ac:   #52B788;
+  --acl:  #1B2E25;
+  --act:  #A4D7B6;
   --gol:  #2A2210;
 }
 
@@ -1032,7 +1033,7 @@ body.dark .quiz-feedback.wrong-fb {
    (substitui e expande os blocos @media 600px existentes)
 ═══════════════════════════════════════════════════════════════ */
 
-@media (max-width: 768px) {
+@media (max-width: 980px) {
 
   /* ── Page wrapper ── */
   .page-wrap {
@@ -1053,11 +1054,16 @@ body.dark .quiz-feedback.wrong-fb {
   }
   .tb-wiki-btn {
     font-size: 12px;
-    padding: 5px 10px;
+    padding: 11px 14px;
+    min-height: 44px;
   }
   .tb-dark-btn {
-    padding: 5px 6px;
+    padding: 11px;
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
   }
+  .tb-dark-btn svg { width: 17px; height: 17px; }
 
   /* ── Progress bar ── */
   .progress-bar-wrap {
@@ -1172,7 +1178,7 @@ body.dark .quiz-feedback.wrong-fb {
   <div class="tb-title">Introdução ao Pensamento Económico</div>
   <div class="tb-tag">Novo</div>
   <button class="tb-dark-btn" id="dark-toggle" title="Modo claro/escuro" aria-label="Alternar modo escuro">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
     </svg>
   </button>
@@ -1185,32 +1191,32 @@ body.dark .quiz-feedback.wrong-fb {
   <div class="progress-steps">
     <button class="progress-step active" data-lesson="0">
       <span class="step-num">1.</span>
-      <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" class="step-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       Pensar Economicamente
     </button>
     <button class="progress-step" data-lesson="1">
       <span class="step-num">2.</span>
-      <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" class="step-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       Lei da Procura
     </button>
     <button class="progress-step" data-lesson="2">
       <span class="step-num">3.</span>
-      <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" class="step-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       Lei da Oferta
     </button>
     <button class="progress-step" data-lesson="3">
       <span class="step-num">4.</span>
-      <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" class="step-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       Equilíbrio de Mercado
     </button>
     <button class="progress-step" data-lesson="4">
       <span class="step-num">5.</span>
-      <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" class="step-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       Teoria do Consumidor
     </button>
     <button class="progress-step" data-lesson="5">
       <span class="step-num">6.</span>
-      <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" class="step-check" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       Teoria do Produtor
     </button>
   </div>
@@ -1225,12 +1231,12 @@ body.dark .quiz-feedback.wrong-fb {
 
   <!-- EYEBROW + TÍTULO -->
   <div class="s-eyebrow">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
     Bloco 1 de 6
   </div>
   <h1 class="s-title">O que é Pensar Economicamente?</h1>
   <p class="s-intro">
-    Antes de curvas e fórmulas, a Economia é uma forma de pensar. É aprender a enxergar
+    Antes de curvas e fórmulas, a Economia é uma forma de pensar. É aprender a ver
     o mundo através da lente das escolhas — e das consequências inevitáveis de cada
     decisão que tomamos.
   </p>
@@ -1238,7 +1244,7 @@ body.dark .quiz-feedback.wrong-fb {
   <!-- ÍNDICE CLICÁVEL -->
   <div class="toc">
     <div class="toc-title">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
       Nesta lição
     </div>
     <ul class="toc-list">
@@ -1256,7 +1262,7 @@ body.dark .quiz-feedback.wrong-fb {
   <div class="lesson-step" id="passo1">
 
     <div class="step-label">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 3.5-2.5 6-4 7.5H9C7.5 15 5 12.5 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 3.5-2.5 6-4 7.5H9C7.5 15 5 12.5 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/></svg>
       Passo 1 — Intuição
     </div>
 
@@ -1278,7 +1284,7 @@ body.dark .quiz-feedback.wrong-fb {
 
     <div class="callout">
       <div class="cl-lb">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
         Exemplo do quotidiano
       </div>
       <p class="cl-tx">
@@ -1375,7 +1381,7 @@ body.dark .quiz-feedback.wrong-fb {
   <div class="lesson-step" id="passo2">
 
     <div class="step-label">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
       Passo 2 — Conceito
     </div>
 
@@ -1390,7 +1396,7 @@ body.dark .quiz-feedback.wrong-fb {
 
     <div class="definition-block">
       <div class="def-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         Definição — Custo de Oportunidade
       </div>
       <p class="def-text">
@@ -1475,7 +1481,7 @@ body.dark .quiz-feedback.wrong-fb {
 
     <div class="definition-block" style="margin-top:24px;">
       <div class="def-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         Para recordar
       </div>
       <p class="def-text">
@@ -1501,7 +1507,7 @@ body.dark .quiz-feedback.wrong-fb {
   <div class="lesson-step" id="passo3">
 
     <div class="step-label">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
       Passo 3 — Formalização
     </div>
 
@@ -1515,7 +1521,7 @@ body.dark .quiz-feedback.wrong-fb {
 
     <div class="definition-block">
       <div class="def-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         Definição — Fronteira de Possibilidades de Produção (FPP)
       </div>
       <p class="def-text">
@@ -1598,7 +1604,7 @@ body.dark .quiz-feedback.wrong-fb {
 
     <div class="callout">
       <div class="cl-lb">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
         A forma côncava tem significado económico
       </div>
       <p class="cl-tx">
@@ -1622,7 +1628,7 @@ body.dark .quiz-feedback.wrong-fb {
   <div class="lesson-step" id="passo4">
 
     <div class="step-label">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
       Passo 4 — Interação
     </div>
 
@@ -1640,7 +1646,7 @@ body.dark .quiz-feedback.wrong-fb {
       <div class="fpp-controls">
         <div class="fpp-ctrl-group">
           <label class="fpp-label" for="slider-mix">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
             Combinação de produção
           </label>
           <div class="fpp-slider-row">
@@ -1651,7 +1657,7 @@ body.dark .quiz-feedback.wrong-fb {
         </div>
         <div class="fpp-ctrl-group">
           <label class="fpp-label" for="slider-tech">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
             Nível tecnológico / recursos
           </label>
           <div class="fpp-slider-row">
@@ -1705,7 +1711,7 @@ body.dark .quiz-feedback.wrong-fb {
 
     <div class="definition-block">
       <div class="def-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         Três leituras da FPP
       </div>
       <p class="def-text">
@@ -1726,7 +1732,7 @@ body.dark .quiz-feedback.wrong-fb {
   <div class="lesson-step" id="passo5">
 
     <div class="step-label">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
       Passo 5 — Consolidação
     </div>
 
@@ -1765,7 +1771,7 @@ body.dark .quiz-feedback.wrong-fb {
             Zero — estudar não tem custo monetário.
           </button>
         </div>
-        <div class="quiz-feedback" id="qfb-1"></div>
+        <div class="quiz-feedback" id="qfb-1" role="status" aria-live="polite"></div>
       </div>
 
       <!-- ── PERGUNTA 2 ── -->
@@ -1794,7 +1800,7 @@ body.dark .quiz-feedback.wrong-fb {
             Portugal precisa de importar recursos do exterior para sobreviver.
           </button>
         </div>
-        <div class="quiz-feedback" id="qfb-2"></div>
+        <div class="quiz-feedback" id="qfb-2" role="status" aria-live="polite"></div>
       </div>
 
       <!-- ── PERGUNTA 3 ── -->
@@ -1822,7 +1828,7 @@ body.dark .quiz-feedback.wrong-fb {
             A FPP desloca-se para fora — é possível produzir mais de ambos os bens.
           </button>
         </div>
-        <div class="quiz-feedback" id="qfb-3"></div>
+        <div class="quiz-feedback" id="qfb-3" role="status" aria-live="polite"></div>
       </div>
 
       <!-- ── RESULTADO FINAL ── -->
@@ -1833,7 +1839,7 @@ body.dark .quiz-feedback.wrong-fb {
         </div>
         <div class="quiz-result-detail" id="quiz-result-detail"></div>
         <button class="quiz-retry-btn" onclick="resetQuiz()">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="14" height="14"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.1"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" width="14" height="14"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.1"/></svg>
           Tentar novamente
         </button>
       </div>
@@ -1856,7 +1862,7 @@ body.dark .quiz-feedback.wrong-fb {
   <div class="lesson-step bloco-section" id="bloco2" style="display:none;">
 
     <div class="s-eyebrow" style="margin-top:8px;">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
       Bloco 2 de 6
     </div>
     <h1 class="s-title">A Lei da Procura</h1>
@@ -1867,7 +1873,7 @@ body.dark .quiz-feedback.wrong-fb {
 
     <div class="toc">
       <div class="toc-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
         Nesta lição
       </div>
       <ul class="toc-list">
@@ -1884,7 +1890,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b2-p1">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 3.5-2.5 6-4 7.5H9C7.5 15 5 12.5 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 3.5-2.5 6-4 7.5H9C7.5 15 5 12.5 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/></svg>
         Passo 1 — Intuição
       </div>
       <h2 class="step-heading">O pastel de nata que ficou caro de mais</h2>
@@ -1926,7 +1932,7 @@ body.dark .quiz-feedback.wrong-fb {
 
       <div class="definition-block">
         <div class="def-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           Lei da Procura — primeira formulação
         </div>
         <p class="def-text">
@@ -1952,7 +1958,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b2-p2">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
         Passo 2 — Conceito
       </div>
       <h2 class="step-heading">Mas o preço não é a única coisa que importa</h2>
@@ -2041,7 +2047,7 @@ body.dark .quiz-feedback.wrong-fb {
 
       <div class="definition-block">
         <div class="def-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           Definição — Procura
         </div>
         <p class="def-text">
@@ -2061,7 +2067,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b2-p3">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
         Passo 3 — Formalização
       </div>
       <h2 class="step-heading">Da pastelaria ao gráfico — construir a curva passo a passo</h2>
@@ -2121,7 +2127,7 @@ body.dark .quiz-feedback.wrong-fb {
 
       <div class="definition-block" style="margin-top:24px;">
         <div class="def-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           Lei da Procura — formulação formal
         </div>
         <p class="def-text">
@@ -2172,7 +2178,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b2-p4">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         Passo 4 — Interação
       </div>
       <h2 class="step-heading">Mexe na curva — vê o que muda</h2>
@@ -2187,7 +2193,7 @@ body.dark .quiz-feedback.wrong-fb {
 
           <div class="fpp-ctrl-group">
             <label class="fpp-label" for="d-price-slider">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
               Slider 1 — <strong>Preço do pastel de nata (€)</strong> — move o ponto ao longo da curva
             </label>
             <div class="fpp-slider-row">
@@ -2202,7 +2208,7 @@ body.dark .quiz-feedback.wrong-fb {
 
           <div class="fpp-ctrl-group">
             <label class="fpp-label" for="d-shift-slider">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
               Slider 2 — <strong>Determinantes da procura</strong> — desloca a curva inteira
             </label>
             <div class="fpp-slider-row">
@@ -2272,7 +2278,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b2-p5">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Passo 5 — Consolidação
       </div>
       <h2 class="step-heading">Põe à prova o que percebeste</h2>
@@ -2297,7 +2303,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz2('b2-1','c')"><span class="quiz-opt-letter">C</span>Uma deslocação da curva para a esquerda — o preço desceu e isso desloca a curva.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz2('b2-1','d')"><span class="quiz-opt-letter">D</span>Um aumento da oferta — a Rosinha está a produzir mais pastéis.</button>
           </div>
-          <div class="quiz-feedback" id="b2qfb-1"></div>
+          <div class="quiz-feedback" id="b2qfb-1" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Q2 -->
@@ -2315,7 +2321,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz2('b2-2','c')"><span class="quiz-opt-letter">C</span>A curva da procura da Rosinha desloca-se para a direita — sem substituto disponível, mais clientes procuram a Rosinha a cada nível de preço.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz2('b2-2','d')"><span class="quiz-opt-letter">D</span>Não acontece nada — o preço da Rosinha não mudou, por isso a procura fica igual.</button>
           </div>
-          <div class="quiz-feedback" id="b2qfb-2"></div>
+          <div class="quiz-feedback" id="b2qfb-2" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Q3 -->
@@ -2332,7 +2338,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz2('b2-3','c')"><span class="quiz-opt-letter">C</span>Nada muda hoje — só o preço futuro é que vai subir, por isso a procura de hoje não é afetada.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz2('b2-3','d')"><span class="quiz-opt-letter">D</span>O preço sobe automaticamente hoje — o mercado reage de imediato.</button>
           </div>
-          <div class="quiz-feedback" id="b2qfb-3"></div>
+          <div class="quiz-feedback" id="b2qfb-3" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Resultado -->
@@ -2343,7 +2349,7 @@ body.dark .quiz-feedback.wrong-fb {
           </div>
           <div class="quiz-result-detail" id="quiz2-result-detail"></div>
           <button class="quiz-retry-btn" onclick="resetQuiz2()">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="14" height="14"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.1"/></svg>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" width="14" height="14"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.1"/></svg>
             Tentar novamente
           </button>
         </div>
@@ -2359,7 +2365,7 @@ body.dark .quiz-feedback.wrong-fb {
   <div class="lesson-step bloco-section" id="bloco3" style="display:none;">
 
     <div class="s-eyebrow" style="margin-top:8px;">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
       Bloco 3 de 6
     </div>
     <h1 class="s-title">A Lei da Oferta</h1>
@@ -2372,7 +2378,7 @@ body.dark .quiz-feedback.wrong-fb {
 
     <div class="toc">
       <div class="toc-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
           <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
           <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
@@ -2393,7 +2399,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b3-p1">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M12 2a7 7 0 0 1 7 7c0 3.5-2.5 6-4 7.5H9C7.5 15 5 12.5 5 9a7 7 0 0 1 7-7z"/>
           <path d="M9 21h6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/>
         </svg>
@@ -2438,7 +2444,7 @@ body.dark .quiz-feedback.wrong-fb {
         Nota a simetria elegante: do lado dos consumidores, preço mais alto significa
         <em>menos</em> vontade de comprar. Do lado dos produtores, preço mais alto significa
         <em>mais</em> vontade de vender. São duas forças que puxam em sentidos opostos —
-        e é exactamente esse conflito que cria o preço de equilíbrio. (Isso é o Bloco 4.)
+        e é exatamente esse conflito que cria o preço de equilíbrio. (Isso é o Bloco 4.)
       </p>
     </div>
 
@@ -2449,7 +2455,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b3-p2">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
           <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/>
         </svg>
@@ -2500,7 +2506,7 @@ body.dark .quiz-feedback.wrong-fb {
       <div class="callout">
         <div class="cl-lb">💡 A lógica que tens de guardar</div>
         <p class="cl-tx">
-          A oferta não depende apenas do preço de venda. Depende de tudo o que afecta
+          A oferta não depende apenas do preço de venda. Depende de tudo o que afeta
           a <strong>decisão do produtor de entrar na cozinha de manhã</strong>.
           Se produzir ficou mais caro, a Rosinha oferece menos — mesmo com o preço de venda igual.
           Se produzir ficou mais barato (nova tecnologia, subsídio do Estado, ingredientes
@@ -2519,7 +2525,7 @@ body.dark .quiz-feedback.wrong-fb {
           <div class="cc-ti">🌾 Custo dos fatores de produção</div>
           <div class="cc-de">
             A farinha ficou 30% mais cara — a Rosinha oferece menos a cada preço de venda.
-            Afecta todos os custos: ingredientes, mão-de-obra, energia, arrendamento.
+            Afeta todos os custos: ingredientes, mão-de-obra, energia, arrendamento.
             <em>Custos sobem → oferta desce (curva para a esquerda).</em>
           </div>
         </div>
@@ -2569,7 +2575,7 @@ body.dark .quiz-feedback.wrong-fb {
         Mais uma vez — e isto é importante — <strong>o preço do próprio pastel não está nesta lista.</strong>
         Quando o preço de venda muda, o ponto desloca-se ao longo da curva existente.
         Quando um destes determinantes muda, a curva inteira move-se.
-        A lógica é exactamente simétrica à da procura — mas agora vista de dentro da cozinha.
+        A lógica é exatamente simétrica à da procura — mas agora vista de dentro da cozinha.
       </p>
     </div>
 
@@ -2580,7 +2586,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b3-p3">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <rect x="3" y="3" width="18" height="18" rx="2"/>
           <path d="M3 9h18M9 21V9"/>
         </svg>
@@ -2619,7 +2625,7 @@ body.dark .quiz-feedback.wrong-fb {
       <p class="bt">
         Se desenhares estes pontos num gráfico, obténs uma linha com <strong>declive positivo</strong>:
         sobe da esquerda para a direita. Quanto maior o preço, maior a quantidade oferecida.
-        Isto é a curva da oferta — e o seu declive é o oposto exacto da curva da procura.
+        Isto é a curva da oferta — e o seu declive é o oposto exato da curva da procura.
       </p>
 
       <div class="callout">
@@ -2644,7 +2650,7 @@ body.dark .quiz-feedback.wrong-fb {
 
       <div class="definition-block" style="margin-top:24px;">
         <div class="def-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
           </svg>
           Lei da Oferta
@@ -2694,7 +2700,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b3-p4">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M12 20h9"/>
           <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
         </svg>
@@ -2714,7 +2720,7 @@ body.dark .quiz-feedback.wrong-fb {
 
           <div class="fpp-ctrl-group">
             <label class="fpp-label" for="s-price-slider">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="12" y1="1" x2="12" y2="23"/>
                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
               </svg>
@@ -2732,7 +2738,7 @@ body.dark .quiz-feedback.wrong-fb {
 
           <div class="fpp-ctrl-group">
             <label class="fpp-label" for="d-shift2-slider">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="17 1 21 5 17 9"/>
                 <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
               </svg>
@@ -2747,7 +2753,7 @@ body.dark .quiz-feedback.wrong-fb {
 
           <div class="fpp-ctrl-group">
             <label class="fpp-label" for="s-shift-slider">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="7 23 3 19 7 15"/>
                 <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
               </svg>
@@ -2806,7 +2812,7 @@ body.dark .quiz-feedback.wrong-fb {
             <br><br>
             <strong>Experiência 3:</strong> Agora move o Slider 3 para a esquerda — a farinha ficou mais cara. A curva verde recua. Mais uma vez, o equilíbrio desloca-se. Em que direção?
             <br><br>
-            <strong>Experiência 4 (desafio):</strong> Consegues encontrar a combinação em que a quantidade procurada é exactamente igual à quantidade oferecida? Esse ponto chama-se <strong>equilíbrio de mercado</strong> — e é o tema central do Bloco 4.
+            <strong>Experiência 4 (desafio):</strong> Consegues encontrar a combinação em que a quantidade procurada é exatamente igual à quantidade oferecida? Esse ponto chama-se <strong>equilíbrio de mercado</strong> — e é o tema central do Bloco 4.
           </p>
         </div>
       </div>
@@ -2819,7 +2825,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b3-p5">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M9 11l3 3L22 4"/>
           <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
         </svg>
@@ -2848,7 +2854,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz3('b3-1','c')"><span class="quiz-opt-letter">C</span>Uma deslocação da curva para a esquerda — a Rosinha está a esgotar os seus recursos.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz3('b3-1','d')"><span class="quiz-opt-letter">D</span>Um aumento da procura — mais clientes querem pastéis.</button>
           </div>
-          <div class="quiz-feedback" id="b3qfb-1"></div>
+          <div class="quiz-feedback" id="b3qfb-1" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Q2 -->
@@ -2865,7 +2871,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz3('b3-2','c')"><span class="quiz-opt-letter">C</span>A curva desloca-se para a direita — a cada preço de venda, a Rosinha consegue oferecer mais pastéis do que antes.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz3('b3-2','d')"><span class="quiz-opt-letter">D</span>Nada muda — o preço de venda é o mesmo, portanto a oferta é igual.</button>
           </div>
-          <div class="quiz-feedback" id="b3qfb-2"></div>
+          <div class="quiz-feedback" id="b3qfb-2" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Q3 -->
@@ -2883,7 +2889,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz3('b3-3','c')"><span class="quiz-opt-letter">C</span>A curva da oferta desloca-se para a esquerda — o subsídio distorce o mercado e reduz a eficiência.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz3('b3-3','d')"><span class="quiz-opt-letter">D</span>A procura aumenta — os clientes percebem que o Estado está a subsidiar e querem mais pastéis.</button>
           </div>
-          <div class="quiz-feedback" id="b3qfb-3"></div>
+          <div class="quiz-feedback" id="b3qfb-3" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Resultado -->
@@ -2894,7 +2900,7 @@ body.dark .quiz-feedback.wrong-fb {
           </div>
           <div class="quiz-result-detail" id="quiz3-result-detail"></div>
           <button class="quiz-retry-btn" onclick="resetQuiz3()">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="14" height="14">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" width="14" height="14">
               <polyline points="1 4 1 10 7 10"/>
               <path d="M3.51 15a9 9 0 1 0 .49-4.1"/>
             </svg>
@@ -2913,7 +2919,7 @@ body.dark .quiz-feedback.wrong-fb {
   <div class="lesson-step bloco-section" id="bloco4" style="display:none;">
 
     <div class="s-eyebrow" style="margin-top:8px;">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
       Bloco 4 de 6
     </div>
     <h1 class="s-title">Equilíbrio de Mercado</h1>
@@ -2927,7 +2933,7 @@ body.dark .quiz-feedback.wrong-fb {
 
     <div class="toc">
       <div class="toc-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
           <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
           <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
@@ -2948,7 +2954,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b4-p1">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M12 2a7 7 0 0 1 7 7c0 3.5-2.5 6-4 7.5H9C7.5 15 5 12.5 5 9a7 7 0 0 1 7-7z"/>
           <path d="M9 21h6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/>
         </svg>
@@ -3003,7 +3009,7 @@ body.dark .quiz-feedback.wrong-fb {
         Esta é a mecânica do mercado: dois tipos de pressão, em direções opostas,
         que convergem sempre para o mesmo ponto.
         Esse ponto — onde a quantidade que os produtores querem vender
-        é exactamente igual à que os consumidores querem comprar —
+        é exatamente igual à que os consumidores querem comprar —
         chama-se <strong>equilíbrio de mercado</strong>.
       </p>
     </div>
@@ -3015,7 +3021,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b4-p2">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
           <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/>
         </svg>
@@ -3075,7 +3081,7 @@ body.dark .quiz-feedback.wrong-fb {
           próprios interesses — a Rosinha quer maximizar o lucro, os clientes querem
           pagar o menos possível. Ninguém pensa no "bem do mercado".
           <br><br>
-          E no entanto, o resultado colectivo é a coordenação eficiente de milhares
+          E no entanto, o resultado coletivo é a coordenação eficiente de milhares
           de decisões independentes. O preço de equilíbrio é a informação que transmite
           a cada um o que fazer — sem nenhum coordenador central.
           Esta é uma das ideias mais poderosas e contraintuitivas de toda a Economia.
@@ -3097,7 +3103,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b4-p3">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <rect x="3" y="3" width="18" height="18" rx="2"/>
           <path d="M3 9h18M9 21V9"/>
         </svg>
@@ -3144,7 +3150,7 @@ body.dark .quiz-feedback.wrong-fb {
 
       <div class="definition-block">
         <div class="def-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
           </svg>
           Equilíbrio de Mercado
@@ -3218,7 +3224,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b4-p4">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M12 20h9"/>
           <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
         </svg>
@@ -3316,7 +3322,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b4-p5">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M9 11l3 3L22 4"/>
           <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
         </svg>
@@ -3345,7 +3351,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz4('b4-1','c')"><span class="quiz-opt-letter">C</span>P* sobe e Q* desce — mais procura significa escassez, o preço sobe e a quantidade disponível cai.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz4('b4-1','d')"><span class="quiz-opt-letter">D</span>Nada muda — o equilíbrio só muda quando a oferta muda.</button>
           </div>
-          <div class="quiz-feedback" id="b4qfb-1"></div>
+          <div class="quiz-feedback" id="b4qfb-1" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Q2 -->
@@ -3363,7 +3369,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz4('b4-2','c')"><span class="quiz-opt-letter">C</span>Q* desce com certeza — ambos os choques reduzem a quantidade de equilíbrio. O efeito em P* é ambíguo: depende de qual choque é maior.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz4('b4-2','d')"><span class="quiz-opt-letter">D</span>Nada se pode afirmar sem dados numéricos — dois choques simultâneos tornam a análise impossível sem um modelo matemático.</button>
           </div>
-          <div class="quiz-feedback" id="b4qfb-2"></div>
+          <div class="quiz-feedback" id="b4qfb-2" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Q3 -->
@@ -3381,7 +3387,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz4('b4-3','c')"><span class="quiz-opt-letter">C</span>O argumento é correto em mercados competitivos — a Rosinha tem poder total para fixar o preço que quiser.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz4('b4-3','d')"><span class="quiz-opt-letter">D</span>A questão da "ganância" é irrelevante — o que importa é o preço final, independentemente da motivação.</button>
           </div>
-          <div class="quiz-feedback" id="b4qfb-3"></div>
+          <div class="quiz-feedback" id="b4qfb-3" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Resultado -->
@@ -3392,7 +3398,7 @@ body.dark .quiz-feedback.wrong-fb {
           </div>
           <div class="quiz-result-detail" id="quiz4-result-detail"></div>
           <button class="quiz-retry-btn" onclick="resetQuiz4()">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="14" height="14">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" width="14" height="14">
               <polyline points="1 4 1 10 7 10"/>
               <path d="M3.51 15a9 9 0 1 0 .49-4.1"/>
             </svg>
@@ -3411,7 +3417,7 @@ body.dark .quiz-feedback.wrong-fb {
   <div class="lesson-step bloco-section" id="bloco5" style="display:none;">
 
     <div class="s-eyebrow" style="margin-top:8px;">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
       Bloco 5 de 6
     </div>
     <h1 class="s-title">Teoria do Consumidor</h1>
@@ -3424,7 +3430,7 @@ body.dark .quiz-feedback.wrong-fb {
 
     <div class="toc">
       <div class="toc-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
           <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
           <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
@@ -3445,7 +3451,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b5-p1">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M12 2a7 7 0 0 1 7 7c0 3.5-2.5 6-4 7.5H9C7.5 15 5 12.5 5 9a7 7 0 0 1 7-7z"/>
           <path d="M9 21h6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/>
         </svg>
@@ -3470,7 +3476,7 @@ body.dark .quiz-feedback.wrong-fb {
       <div class="callout">
         <div class="cl-lb">🤔 Pensa nisto antes de continuar</div>
         <p class="cl-tx">
-          O quinto pastel é exactamente igual ao primeiro — mesmos ingredientes, mesmo forno,
+          O quinto pastel é exatamente igual ao primeiro — mesmos ingredientes, mesmo forno,
           mesmo preço. <strong>Então porque é que o Tiago o valoriza muito menos?</strong>
           Não é o pastel que mudou. É o Tiago. O contexto mudou: ele já está saciado.
           A sua necessidade foi progressivamente satisfeita pelo consumo anterior.
@@ -3479,7 +3485,7 @@ body.dark .quiz-feedback.wrong-fb {
           <strong>quanto estaria disposto a pagar por ele?</strong>
           Provavelmente muito menos do que 1,20 €. Talvez 0,30 €.
           E se o preço fosse 1,20 €, compraria o quinto? Provavelmente não.
-          <em>É exactamente aqui que a Lei da Procura nasce.</em>
+          <em>É exatamente aqui que a Lei da Procura nasce.</em>
         </p>
       </div>
 
@@ -3490,7 +3496,7 @@ body.dark .quiz-feedback.wrong-fb {
         Quando o preço cai, unidades que antes não valiam o preço passam a valer.
         O consumidor compra mais. Quando o preço sobe, unidades com valor baixo
         deixam de compensar. O consumidor compra menos.
-        A Lei da Procura é a consequência directa de como o prazer humano funciona.
+        A Lei da Procura é a consequência direta de como o prazer humano funciona.
       </p>
     </div>
 
@@ -3501,7 +3507,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b5-p2">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
           <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/>
         </svg>
@@ -3528,7 +3534,7 @@ body.dark .quiz-feedback.wrong-fb {
 
       <div class="definition-block">
         <div class="def-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
           </svg>
           Lei da Utilidade Marginal Decrescente
@@ -3558,7 +3564,7 @@ body.dark .quiz-feedback.wrong-fb {
 
       <div class="definition-block" style="background: var(--acl); border-color: var(--ac);">
         <div class="def-label" style="color: var(--act);">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
           </svg>
           Condição de Otimização do Consumidor
@@ -3611,7 +3617,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b5-p3">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <rect x="3" y="3" width="18" height="18" rx="2"/>
           <path d="M3 9h18M9 21V9"/>
         </svg>
@@ -3713,7 +3719,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b5-p4">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M12 20h9"/>
           <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
         </svg>
@@ -3733,7 +3739,7 @@ body.dark .quiz-feedback.wrong-fb {
         <div class="fpp-controls">
           <div class="fpp-ctrl-group">
             <label class="fpp-label" for="mu-price-slider">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="12" y1="1" x2="12" y2="23"/>
                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
               </svg>
@@ -3797,7 +3803,7 @@ body.dark .quiz-feedback.wrong-fb {
             <br><br>
             <strong>Experiência 3:</strong> Baixa o preço para 0,60 €. O Tiago fica muito
             melhor — mas a Rosinha recebe muito menos por unidade. Quem ganha mais
-            com preços baixos? Isto leva-nos directamente ao conceito de eficiência
+            com preços baixos? Isto leva-nos diretamente ao conceito de eficiência
             de mercado e distribuição de excedentes — temas centrais do Bloco 6.
           </p>
         </div>
@@ -3811,7 +3817,7 @@ body.dark .quiz-feedback.wrong-fb {
     ══════════════════════════════════════════ -->
     <div class="lesson-step" id="b5-p5">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M9 11l3 3L22 4"/>
           <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
         </svg>
@@ -3840,7 +3846,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz5('b5-1','c')"><span class="quiz-opt-letter">C</span>3,20 € — a diferença entre a sua disponibilidade total a pagar (6,80 €) e o que efectivamente pagou (3,60 €).</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz5('b5-1','d')"><span class="quiz-opt-letter">D</span>1,80 € — apenas o excedente do primeiro pastel, que é o mais valioso para ele.</button>
           </div>
-          <div class="quiz-feedback" id="b5qfb-1"></div>
+          <div class="quiz-feedback" id="b5qfb-1" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Q2 -->
@@ -3857,7 +3863,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz5('b5-2','c')"><span class="quiz-opt-letter">C</span>Dividir o gasto em partes iguais — 3 € em cada — para não favorecer nenhum bem.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz5('b5-2','d')"><span class="quiz-opt-letter">D</span>Comprar apenas pastéis até esgotar o orçamento — se tem UMg maior, deve consumir só esse bem.</button>
           </div>
-          <div class="quiz-feedback" id="b5qfb-2"></div>
+          <div class="quiz-feedback" id="b5qfb-2" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Q3 -->
@@ -3874,7 +3880,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz5('b5-3','c')"><span class="quiz-opt-letter">C</span>A Lei da Procura diz que quando o preço desce a quantidade sobe — é um facto observado que não precisa de explicação mais profunda.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz5('b5-3','d')"><span class="quiz-opt-letter">D</span>O rendimento real do Tiago aumentou, por isso compra mais de tudo — incluindo mais pastéis.</button>
           </div>
-          <div class="quiz-feedback" id="b5qfb-3"></div>
+          <div class="quiz-feedback" id="b5qfb-3" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Resultado -->
@@ -3885,7 +3891,7 @@ body.dark .quiz-feedback.wrong-fb {
           </div>
           <div class="quiz-result-detail" id="quiz5-result-detail"></div>
           <button class="quiz-retry-btn" onclick="resetQuiz5()">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="14" height="14">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" width="14" height="14">
               <polyline points="1 4 1 10 7 10"/>
               <path d="M3.51 15a9 9 0 1 0 .49-4.1"/>
             </svg>
@@ -3904,7 +3910,7 @@ body.dark .quiz-feedback.wrong-fb {
   <div class="lesson-step bloco-section" id="bloco6" style="display:none;">
 
     <div class="s-eyebrow" style="margin-top:8px;">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
       Bloco 6 de 6
     </div>
     <h1 class="s-title">Teoria do Produtor</h1>
@@ -3917,7 +3923,7 @@ body.dark .quiz-feedback.wrong-fb {
 
     <div class="toc">
       <div class="toc-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
           <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
           <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
@@ -3936,7 +3942,7 @@ body.dark .quiz-feedback.wrong-fb {
     <!-- PASSO 1 — INTUIÇÃO -->
     <div class="lesson-step" id="b6-p1">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M12 2a7 7 0 0 1 7 7c0 3.5-2.5 6-4 7.5H9C7.5 15 5 12.5 5 9a7 7 0 0 1 7-7z"/>
           <path d="M9 21h6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/>
         </svg>
@@ -3993,7 +3999,7 @@ body.dark .quiz-feedback.wrong-fb {
     <!-- PASSO 2 — CONCEITO -->
     <div class="lesson-step" id="b6-p2">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
           <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/>
         </svg>
@@ -4073,7 +4079,7 @@ body.dark .quiz-feedback.wrong-fb {
     <!-- PASSO 3 — FORMALIZAÇÃO -->
     <div class="lesson-step" id="b6-p3">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <rect x="3" y="3" width="18" height="18" rx="2"/>
           <path d="M3 9h18M9 21V9"/>
         </svg>
@@ -4095,7 +4101,7 @@ body.dark .quiz-feedback.wrong-fb {
 
       <div class="definition-block">
         <div class="def-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
           </svg>
           A Regra de Ouro da Produção
@@ -4170,7 +4176,7 @@ body.dark .quiz-feedback.wrong-fb {
     <!-- PASSO 4 — INTERAÇÃO -->
     <div class="lesson-step" id="b6-p4">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M12 20h9"/>
           <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
         </svg>
@@ -4181,7 +4187,7 @@ body.dark .quiz-feedback.wrong-fb {
       <p class="bt">
         O gráfico mostra a curva do custo marginal da Rosinha (verde, crescente)
         e a linha do preço de mercado / RMg (vermelho, horizontal).
-        O ponto de cruzamento é Q* — a quantidade óptima.
+        O ponto de cruzamento é Q* — a quantidade ótima.
         A área verde entre as duas linhas é o excedente do produtor.
         Usa os dois sliders para explorar.
       </p>
@@ -4190,7 +4196,7 @@ body.dark .quiz-feedback.wrong-fb {
         <div class="fpp-controls">
           <div class="fpp-ctrl-group">
             <label class="fpp-label" for="prod-price-slider">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="12" y1="1" x2="12" y2="23"/>
                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
               </svg>
@@ -4204,7 +4210,7 @@ body.dark .quiz-feedback.wrong-fb {
           </div>
           <div class="fpp-ctrl-group">
             <label class="fpp-label" for="prod-cf-slider">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="3" width="18" height="18" rx="2"/>
               </svg>
               Custo Fixo (€/dia)
@@ -4232,7 +4238,7 @@ body.dark .quiz-feedback.wrong-fb {
           </div>
           <div class="fpp-metric-divider"></div>
           <div class="fpp-metric">
-            <div class="fpp-metric-label">Q* óptimo</div>
+            <div class="fpp-metric-label">Q* ótimo</div>
             <div class="fpp-metric-val" id="prod-met-q" style="color:var(--ac);">—</div>
           </div>
           <div class="fpp-metric-divider"></div>
@@ -4258,8 +4264,8 @@ body.dark .quiz-feedback.wrong-fb {
             <br><br>
             <strong>Experiência 2 — Custos fixos altos:</strong> Mantém o preço a 1,20 €
             e sobe os custos fixos para 250 €. Q* muda? Nota que <strong>não</strong> —
-            os custos fixos não afectam a regra CMg = RMg nem a quantidade óptima.
-            Só o lucro (e a decisão de abrir/fechar) é afectado.
+            os custos fixos não afetam a regra CMg = RMg nem a quantidade ótima.
+            Só o lucro (e a decisão de abrir/fechar) é afetado.
             <br><br>
             <strong>Experiência 3 — Preço alto:</strong> Sobe para 2,50 €. Q* aumenta
             muito — confirma a Lei da Oferta. Nota como o excedente do produtor
@@ -4275,7 +4281,7 @@ body.dark .quiz-feedback.wrong-fb {
     <!-- PASSO 5 — QUIZ FINAL -->
     <div class="lesson-step" id="b6-p5">
       <div class="step-label">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2">
           <path d="M9 11l3 3L22 4"/>
           <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
         </svg>
@@ -4295,15 +4301,15 @@ body.dark .quiz-feedback.wrong-fb {
           <div class="quiz-q-text">
             A Rosinha produz 380 pastéis por dia. O preço de mercado é 1,20 €.
             O custo marginal do 379.º pastel é 1,18 €; o do 381.º é 1,22 €.
-            <strong>Qual é a quantidade óptima de produção?</strong>
+            <strong>Qual é a quantidade ótima de produção?</strong>
           </div>
           <div class="quiz-options" data-correct="b">
             <button class="quiz-opt" data-val="a" onclick="answerQuiz6('b6-1','a')"><span class="quiz-opt-letter">A</span>379 pastéis — o 379.º tem CMg abaixo do preço, por isso há margem e devia parar antes de a perder.</button>
             <button class="quiz-opt" data-val="b" onclick="answerQuiz6('b6-1','b')"><span class="quiz-opt-letter">B</span>380 pastéis — é o ponto onde CMg ≈ RMg: o 379.º (CMg 1,18 € &lt; 1,20 €) compensa; o 381.º (CMg 1,22 € &gt; 1,20 €) já não compensa.</button>
             <button class="quiz-opt" data-val="c" onclick="answerQuiz6('b6-1','c')"><span class="quiz-opt-letter">C</span>381 pastéis — a diferença de 0,02 € é negligenciável e vale a pena arredondar para cima.</button>
-            <button class="quiz-opt" data-val="d" onclick="answerQuiz6('b6-1','d')"><span class="quiz-opt-letter">D</span>A quantidade óptima minimiza o custo médio total, não iguala CMg e RMg.</button>
+            <button class="quiz-opt" data-val="d" onclick="answerQuiz6('b6-1','d')"><span class="quiz-opt-letter">D</span>A quantidade ótima minimiza o custo médio total, não iguala CMg e RMg.</button>
           </div>
-          <div class="quiz-feedback" id="b6qfb-1"></div>
+          <div class="quiz-feedback" id="b6qfb-1" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Q2 -->
@@ -4317,10 +4323,10 @@ body.dark .quiz-feedback.wrong-fb {
           <div class="quiz-options" data-correct="c">
             <button class="quiz-opt" data-val="a" onclick="answerQuiz6('b6-2','a')"><span class="quiz-opt-letter">A</span>Deve produzir mais para diluir o custo fixo mais alto por mais unidades.</button>
             <button class="quiz-opt" data-val="b" onclick="answerQuiz6('b6-2','b')"><span class="quiz-opt-letter">B</span>Deve reduzir a produção para minimizar os custos totais face ao aumento de custos.</button>
-            <button class="quiz-opt" data-val="c" onclick="answerQuiz6('b6-2','c')"><span class="quiz-opt-letter">C</span>Q* não muda — custos fixos não afectam CMg nem a regra CMg = RMg. Só o lucro (e talvez a decisão de fechar) é afectado.</button>
+            <button class="quiz-opt" data-val="c" onclick="answerQuiz6('b6-2','c')"><span class="quiz-opt-letter">C</span>Q* não muda — custos fixos não afetam CMg nem a regra CMg = RMg. Só o lucro (e talvez a decisão de fechar) é afetado.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz6('b6-2','d')"><span class="quiz-opt-letter">D</span>Deve subir o preço dos pastéis para compensar o aumento da renda.</button>
           </div>
-          <div class="quiz-feedback" id="b6qfb-2"></div>
+          <div class="quiz-feedback" id="b6qfb-2" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Q3 -->
@@ -4337,7 +4343,7 @@ body.dark .quiz-feedback.wrong-fb {
             <button class="quiz-opt" data-val="c" onclick="answerQuiz6('b6-3','c')"><span class="quiz-opt-letter">C</span>Reduzir a produção a metade — os custos variáveis ficam mais baixos e o prejuízo é menor.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz6('b6-3','d')"><span class="quiz-opt-letter">D</span>Fechar definitivamente — se não cobre os custos totais, deve sempre encerrar o negócio.</button>
           </div>
-          <div class="quiz-feedback" id="b6qfb-3"></div>
+          <div class="quiz-feedback" id="b6qfb-3" role="status" aria-live="polite"></div>
         </div>
 
         <!-- Resultado final -->
@@ -4356,7 +4362,7 @@ body.dark .quiz-feedback.wrong-fb {
             falhas de mercado, macroeconomia.
           </div>
           <button class="quiz-retry-btn" onclick="resetQuiz6()" style="margin-top:14px;">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="14" height="14">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" width="14" height="14">
               <polyline points="1 4 1 10 7 10"/>
               <path d="M3.51 15a9 9 0 1 0 .49-4.1"/>
             </svg>
@@ -4377,7 +4383,7 @@ body.dark .quiz-feedback.wrong-fb {
 
   <nav class="lesson-nav" aria-label="Navegação entre lições">
     <button class="nav-btn nav-btn-prev" id="nav-btn-prev-global" disabled aria-label="Lição anterior">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
       Anterior
     </button>
     <span style="font-size:12px; color:var(--tx3); font-family:var(--ff-serif); font-style:italic;">
@@ -4385,7 +4391,7 @@ body.dark .quiz-feedback.wrong-fb {
     </span>
     <button class="nav-btn nav-btn-next" id="nav-btn-next-global" aria-label="Próxima lição">
       Próximo
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </button>
   </nav>
 
@@ -4404,15 +4410,15 @@ try {
 } catch(e) { /* localStorage indisponível */ }
 if (isDark) {
   document.body.classList.add('dark');
-  darkBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+  darkBtn.innerHTML = `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
 }
 
 function applyDarkMode(v){
   isDark = !!v;
   document.body.classList.toggle('dark', isDark);
   darkBtn.innerHTML = isDark
-    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
-    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+    ? `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+    : `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
 }
 // Sync com EconWiki shell via postMessage + querystring
 try{
@@ -4433,8 +4439,8 @@ darkBtn.addEventListener('click', () => {
   // notifica o shell (caso esteja embebido)
   try { window.parent && window.parent.postMessage({type:'ew_theme_request', theme: isDark?'dark':'light'}, '*'); } catch(e){}
   darkBtn.innerHTML = isDark
-    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
-    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+    ? `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+    : `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
 });
 
 // ── Exemplo interativo: escolha estuda vs. trabalha ─
@@ -4685,8 +4691,30 @@ if (window.lucide) lucide.createIcons();
 })();
 
 
+// ── Helper global: botão 'Tentar novamente' nos quizzes ──
+// Limpa o registo, reactiva os botões e deixa o utilizador responder outra vez.
+window.__addRetryButton = function(card, fb, ansObj, qKey){
+  const retry = document.createElement('button');
+  retry.className = 'quiz-next-btn';
+  retry.style.background = 'transparent';
+  retry.style.color = 'inherit';
+  retry.style.border = '1px solid currentColor';
+  retry.style.marginRight = '8px';
+  retry.innerHTML = '↺ Tentar novamente';
+  retry.onclick = ()=>{
+    delete ansObj[qKey];
+    const opts = card.querySelectorAll('.quiz-opt');
+    opts.forEach(o=>{ o.disabled=false; o.classList.remove('correct','wrong'); });
+    fb.innerHTML = '';
+    fb.className = 'quiz-feedback';
+  };
+  fb.appendChild(retry);
+};
+
+
 // ── Quiz Bloco 1 ──────────────────────────────────────
 (function () {
+
   const FEEDBACKS = {
     1: {
       b: { type: 'correct', msg: '<strong>Correto! ✓</strong> O custo de oportunidade é sempre a <em>melhor alternativa sacrificada</em> — não a soma de todas as alternativas, nem o esforço em si. Se o cinema era o que a Marta mais queria fazer, esse é o custo real da sua escolha de estudar.' },
@@ -4735,9 +4763,10 @@ if (window.lucide) lucide.createIcons();
     const btn = document.createElement('button');
     btn.className = 'quiz-next-btn';
     btn.innerHTML = isLast
-      ? `Ver resultado <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`
-      : `Próxima pergunta <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`;
+      ? `Ver resultado <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`
+      : `Próxima pergunta <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`;
     btn.onclick = isLast ? showResult : () => showQuestion(q + 1);
+    if(info.type === 'wrong') window.__addRetryButton(card, fb, answers, q);
     fb.appendChild(btn);
   };
 
@@ -4830,8 +4859,8 @@ if (window.lucide) lucide.createIcons();
     steps.forEach((s, i) => s.classList.toggle('active', i === n));
     if (navPrev) navPrev.disabled = (n === 0);
     if (navNext) navNext.innerHTML = n >= MAX
-      ? 'Próximo <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>'
-      : 'Próximo <svg viewBox="0 0 24 24" fill="none" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>';
+      ? 'Próximo <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>'
+      : 'Próximo <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>';
     if (navNext) navNext.style.opacity = n >= MAX ? '.4' : '1';
     if (navNext) navNext.style.cursor  = n >= MAX ? 'not-allowed' : 'pointer';
     cur = n;
@@ -5024,15 +5053,15 @@ if (window.lucide) lucide.createIcons();
       d: { type: 'wrong',   msg: '<strong>Não.</strong> A oferta é o lado dos produtores. Aqui estamos a analisar o comportamento dos consumidores — estamos no lado da procura. A Rosinha pode ou não estar a produzir mais, mas isso não é o que a pergunta analisa.' }
     },
     'b2-2': {
-      a: { type: 'wrong',   msg: '<strong>Não exactamente.</strong> O movimento ao longo da curva acontece quando o preço do próprio bem muda. Aqui o preço da Rosinha não mudou — o que mudou foi a disponibilidade de um substituto. Isso é um determinante da procura, e provoca uma deslocação da curva.' },
+      a: { type: 'wrong',   msg: '<strong>Não exatamente.</strong> O movimento ao longo da curva acontece quando o preço do próprio bem muda. Aqui o preço da Rosinha não mudou — o que mudou foi a disponibilidade de um substituto. Isso é um determinante da procura, e provoca uma deslocação da curva.' },
       b: { type: 'wrong',   msg: '<strong>Não.</strong> Sem concorrência, a Rosinha pode ter menos pressão para inovar — mas isso é uma questão de oferta/qualidade, não de procura. Do lado dos consumidores, sem substituto disponível, a procura da Rosinha <em>aumenta</em>, não diminui.' },
       c: { type: 'correct', msg: '<strong>Correto! ✓</strong> Quando um substituto desaparece, os consumidores que iam a essa pastelaria passam a procurar a Rosinha. A cada nível de preço, mais gente quer o pastel da Rosinha — a curva da procura desloca-se para a direita. Este é um efeito de determinante: preço do bem substituto.' },
-      d: { type: 'wrong',   msg: '<strong>Errado.</strong> Esta é uma confusão clássica: pensar que só o preço do próprio bem afecta a procura. Os determinantes (rendimento, gostos, preços de outros bens, expectativas) mudam a procura sem que o preço do bem em questão mude. Aqui, o desaparecimento do substituto faz subir a procura da Rosinha.' }
+      d: { type: 'wrong',   msg: '<strong>Errado.</strong> Esta é uma confusão clássica: pensar que só o preço do próprio bem afeta a procura. Os determinantes (rendimento, gostos, preços de outros bens, expectativas) mudam a procura sem que o preço do bem em questão mude. Aqui, o desaparecimento do substituto faz subir a procura da Rosinha.' }
     },
     'b2-3': {
       a: { type: 'wrong',   msg: '<strong>Não.</strong> O medo poderia fazer isso — mas em Economia o comportamento racional é diferente: se sei que amanhã vai ficar mais caro, o incentivo racional é comprar <em>mais hoje</em>, enquanto ainda está mais barato. As expectativas mudam decisões presentes.' },
-      b: { type: 'correct', msg: '<strong>Correto! ✓</strong> As expectativas são um dos determinantes da procura. Se os consumidores esperam uma subida de preço futura, o incentivo racional é antecipar a compra enquanto o preço ainda está mais baixo. Isso desloca a curva da procura <em>hoje</em> para a direita — sem qualquer mudança no preço actual.' },
-      c: { type: 'wrong',   msg: '<strong>Errado.</strong> As expectativas sobre preços futuros afectam a procura <em>presente</em>. Se sabes que o bilhete de avião para o Porto vai subir de preço amanhã, compras hoje. A lógica é a mesma: antecipar o futuro muda as decisões de hoje.' },
+      b: { type: 'correct', msg: '<strong>Correto! ✓</strong> As expectativas são um dos determinantes da procura. Se os consumidores esperam uma subida de preço futura, o incentivo racional é antecipar a compra enquanto o preço ainda está mais baixo. Isso desloca a curva da procura <em>hoje</em> para a direita — sem qualquer mudança no preço atual.' },
+      c: { type: 'wrong',   msg: '<strong>Errado.</strong> As expectativas sobre preços futuros afetam a procura <em>presente</em>. Se sabes que o bilhete de avião para o Porto vai subir de preço amanhã, compras hoje. A lógica é a mesma: antecipar o futuro muda as decisões de hoje.' },
       d: { type: 'wrong',   msg: '<strong>Não necessariamente de imediato.</strong> O preço de hoje pode eventualmente subir se a Rosinha repercutir o custo do açúcar — mas isso é um efeito do lado da oferta, não da procura. A pergunta é sobre a procura de hoje, antes de qualquer mudança de preço.' }
     }
   };
@@ -5062,14 +5091,15 @@ if (window.lucide) lucide.createIcons();
     const btn    = document.createElement('button');
     btn.className = 'quiz-next-btn';
     btn.innerHTML = isLast
-      ? `Ver resultado <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`
-      : `Próxima pergunta <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`;
+      ? `Ver resultado <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`
+      : `Próxima pergunta <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`;
     btn.onclick = isLast ? showResult2 : () => {
       card.style.display = 'none';
       const next = document.getElementById('b2qcard-' + (parseInt(qNum) + 1));
       next.style.display = 'block';
       next.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
+    if(info.type === 'wrong') window.__addRetryButton(card, fb, ans2, q);
     fb.appendChild(btn);
   };
 
@@ -5388,7 +5418,7 @@ if (window.lucide) lucide.createIcons();
       a: { type: 'wrong',   msg: '<strong>Não.</strong> Um movimento ao longo da curva acontece quando o <em>preço de venda</em> muda. Aqui o preço não mudou — o que mudou foi a tecnologia (forno novo). A tecnologia é um determinante da oferta, não o preço. Portanto, o que acontece é uma deslocação da curva, não um movimento nela.' },
       b: { type: 'wrong',   msg: '<strong>Errado.</strong> Um forno mais eficiente reduz o custo por unidade e aumenta a capacidade produtiva — isso faz a Rosinha querer oferecer <em>mais</em>, não menos. A curva desloca-se para a direita.' },
       c: { type: 'correct', msg: '<strong>Correto! ✓</strong> A tecnologia é um determinante da oferta. Um forno melhor reduz o custo de produção por pastel — a cada preço de venda, a Rosinha pode agora oferecer mais pastéis do que antes. A curva inteira desloca-se para a direita. Nota: não é um movimento ao longo da curva porque o preço não mudou.' },
-      d: { type: 'wrong',   msg: '<strong>Errado.</strong> Esta é a mesma confusão que surge na procura: pensar que só o preço afecta a quantidade. Os determinantes (tecnologia, custos, número de produtores, regulação, expectativas) alteram a oferta sem que o preço mude. O forno novo muda a curva inteira.' }
+      d: { type: 'wrong',   msg: '<strong>Errado.</strong> Esta é a mesma confusão que surge na procura: pensar que só o preço afeta a quantidade. Os determinantes (tecnologia, custos, número de produtores, regulação, expectativas) alteram a oferta sem que o preço mude. O forno novo muda a curva inteira.' }
     },
     'b3-3': {
       a: { type: 'wrong',   msg: '<strong>Quase, mas a classificação está errada.</strong> O subsídio efectivamente aumenta a receita por pastel — mas não é uma mudança no preço de <em>mercado</em>. É uma mudança nos custos líquidos de produção (um determinante). Portanto, o que acontece é uma deslocação da curva da oferta para a direita, não um movimento ao longo dela.' },
@@ -5423,14 +5453,15 @@ if (window.lucide) lucide.createIcons();
     const btn    = document.createElement('button');
     btn.className = 'quiz-next-btn';
     btn.innerHTML = isLast
-      ? `Ver resultado <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`
-      : `Próxima pergunta <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`;
+      ? `Ver resultado <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`
+      : `Próxima pergunta <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`;
     btn.onclick = isLast ? showResult3 : () => {
       card.style.display = 'none';
       const next = document.getElementById('b3qcard-' + (parseInt(qNum) + 1));
       next.style.display = 'block';
       next.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
+    if(info.type === 'wrong') window.__addRetryButton(card, fb, ans3, q);
     fb.appendChild(btn);
   };
 
@@ -5618,7 +5649,7 @@ if (window.lucide) lucide.createIcons();
 (function () {
   const FB4 = {
     'b4-1': {
-      a: { type: 'wrong',   msg: '<strong>Não.</strong> Mais turistas aumentam a procura — não a oferta. Mais concorrência entre pastelarias afectaria a oferta (mais produtores), mas a pergunta diz que a oferta "não muda de imediato". Com a procura a subir e a oferta constante, o preço sobe, não desce.' },
+      a: { type: 'wrong',   msg: '<strong>Não.</strong> Mais turistas aumentam a procura — não a oferta. Mais concorrência entre pastelarias afetaria a oferta (mais produtores), mas a pergunta diz que a oferta "não muda de imediato". Com a procura a subir e a oferta constante, o preço sobe, não desce.' },
       b: { type: 'correct', msg: '<strong>Correto! ✓</strong> Um aumento de turistas desloca a curva da procura para a direita. Com a curva da oferta inalterada, o novo cruzamento ocorre a um preço e quantidade mais altos. P* sobe e Q* sobe — o padrão clássico de um choque de procura positivo. A Rosinha vende mais e a preço mais alto.' },
       c: { type: 'wrong',   msg: '<strong>Quase, mas Q* está errado.</strong> É verdade que a escassez inicial empurra o preço para cima. Mas à medida que o preço sobe, a Rosinha produz mais (movimento ao longo da curva da oferta) e parte dos clientes desiste (movimento ao longo da curva da procura). O novo equilíbrio tem mais quantidade trocada, não menos. Q* sobe.' },
       d: { type: 'wrong',   msg: '<strong>Errado.</strong> O equilíbrio muda sempre que qualquer das duas curvas se desloca — procura ou oferta. O aumento de turistas desloca a curva da procura para a direita, o que move o ponto de equilíbrio para P* mais alto e Q* mais alto.' }
@@ -5631,7 +5662,7 @@ if (window.lucide) lucide.createIcons();
     },
     'b4-3': {
       a: { type: 'correct', msg: '<strong>Correto! ✓</strong> Em mercados competitivos, o preço não é "fixado" pela Rosinha à vontade — é determinado pelo equilíbrio entre oferta e procura. Se ela tentar cobrar acima do equilíbrio, os pastéis sobram e ela é forçada a baixar. Se cobrar abaixo, vendem-se todos de imediato e ela teria incentivo para subir. O mecanismo de mercado disciplina o preço — não é a "ganância" isolada que o determina.' },
-      b: { type: 'wrong',   msg: '<strong>Errado — em mercados competitivos.</strong> Esta lógica seria válida num monopólio, onde o produtor tem poder de fixar preços. Mas numa rua de Alfama com várias pastelarias, a Rosinha não pode cobrar muito acima das concorrentes sem perder clientes. A concorrência é exactamente o mecanismo que limita o "poder de fixação de preços".' },
+      b: { type: 'wrong',   msg: '<strong>Errado — em mercados competitivos.</strong> Esta lógica seria válida num monopólio, onde o produtor tem poder de fixar preços. Mas numa rua de Alfama com várias pastelarias, a Rosinha não pode cobrar muito acima das concorrentes sem perder clientes. A concorrência é exatamente o mecanismo que limita o "poder de fixação de preços".' },
       c: { type: 'wrong',   msg: '<strong>Errado.</strong> Em mercados competitivos, o produtor individual é um "price-taker" — aceita o preço de mercado, não o determina. Se a Rosinha cobrar 5 € e as concorrentes cobrarem 1,50 €, os clientes vão todos às concorrentes. A Rosinha não tem "poder total" sobre o preço.' },
       d: { type: 'wrong',   msg: '<strong>A motivação não é irrelevante — mas o argumento do jornalista está errado pela razão errada.</strong> A questão não é se a motivação importa ou não: é que, em mercados competitivos, mesmo que a Rosinha seja "gananciosa", o mecanismo de mercado impede-a de cobrar acima do equilíbrio de forma sustentada. A "ganância" é disciplinada pela concorrência e pelo mecanismo de preços.' }
     }
@@ -5662,14 +5693,15 @@ if (window.lucide) lucide.createIcons();
     const btn    = document.createElement('button');
     btn.className = 'quiz-next-btn';
     btn.innerHTML = isLast
-      ? `Ver resultado <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`
-      : `Próxima pergunta <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`;
+      ? `Ver resultado <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`
+      : `Próxima pergunta <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`;
     btn.onclick = isLast ? showResult4 : () => {
       card.style.display = 'none';
       const next = document.getElementById('b4qcard-' + (parseInt(qNum) + 1));
       next.style.display = 'block';
       next.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
+    if(info.type === 'wrong') window.__addRetryButton(card, fb, ans4, q);
     fb.appendChild(btn);
   };
 
@@ -5860,13 +5892,13 @@ if (window.lucide) lucide.createIcons();
     'b5-2': {
       a: { type: 'wrong',   msg: '<strong>Não — preço baixo não é o único critério.</strong> O que importa não é o preço absoluto, mas a satisfação obtida por cada euro gasto — a UMg/P. O galão é mais barato (1,00 €), mas a sua UMg/P = 6,0/1,00 = 6,0. O pastel custa mais (1,20 €), mas a sua UMg/P = 10/1,20 ≈ 8,3. Cada euro gasto em pastéis rende mais satisfação.' },
       b: { type: 'correct', msg: '<strong>Correto! ✓</strong> A regra de otimização é comparar UMg/P em todos os bens. Pastel: 10/1,20 ≈ 8,3. Galão: 6/1,00 = 6,0. Como 8,3 > 6,0, cada euro gasto em pastéis gera mais satisfação do que em galões. A Mariana deve comprar mais pastéis até que, pela utilidade marginal decrescente, as duas razões se igualem.' },
-      c: { type: 'wrong',   msg: '<strong>Não — dividir o orçamento igualmente não tem fundamento económico.</strong> A divisão óptima não é aritmética — é baseada na UMg/P. Se gastar mais num bem gera mais satisfação por euro, deve gastá-lo lá. Dividir igualmente ignora a diferença de eficiência entre os dois bens.' },
-      d: { type: 'wrong',   msg: '<strong>Quase — mas vai longe de mais.</strong> Deve comprar mais pastéis, sim. Mas não necessariamente só pastéis. À medida que come mais pastéis, a UMg do pastel desce (utilidade marginal decrescente). Chegará a um ponto em que UMg pastel/1,20 = UMg galão/1,00. Esse é o ponto óptimo — provavelmente com um mix dos dois bens.' }
+      c: { type: 'wrong',   msg: '<strong>Não — dividir o orçamento igualmente não tem fundamento económico.</strong> A divisão ótima não é aritmética — é baseada na UMg/P. Se gastar mais num bem gera mais satisfação por euro, deve gastá-lo lá. Dividir igualmente ignora a diferença de eficiência entre os dois bens.' },
+      d: { type: 'wrong',   msg: '<strong>Quase — mas vai longe de mais.</strong> Deve comprar mais pastéis, sim. Mas não necessariamente só pastéis. À medida que come mais pastéis, a UMg do pastel desce (utilidade marginal decrescente). Chegará a um ponto em que UMg pastel/1,20 = UMg galão/1,00. Esse é o ponto ótimo — provavelmente com um mix dos dois bens.' }
     },
     'b5-3': {
-      a: { type: 'correct', msg: '<strong>Correto! ✓</strong> Quando o preço desce de 2,00 € para 1,20 €, as unidades cujo UMg estava entre 1,20 € e 2,00 € — que antes não compensavam comprar — passam agora a compensar. O Tiago expande o consumo até à unidade em que UMg ≈ 1,20 €. É exactamente isto que gera a curva da procura com declive negativo: a cada preço mais baixo, mais unidades passam o "teste" UMg ≥ P.' },
-      b: { type: 'wrong',   msg: '<strong>Não — o preço não afecta a UMg.</strong> A utilidade marginal depende das preferências do consumidor e da quantidade consumida, não do preço. O que mudou não foi a UMg do pastel — foi o preço com que a compara. Com preço mais baixo, mais unidades passam o teste UMg ≥ preço.' },
-      c: { type: 'wrong',   msg: '<strong>Esta resposta aceita a Lei da Procura sem a explicar.</strong> A pergunta pede precisamente a explicação mais profunda. A Teoria do Consumidor fornece esse fundamento: a Lei da Procura emerge directamente da utilidade marginal decrescente e do comportamento racional (comprar se e só se UMg ≥ preço).' },
+      a: { type: 'correct', msg: '<strong>Correto! ✓</strong> Quando o preço desce de 2,00 € para 1,20 €, as unidades cujo UMg estava entre 1,20 € e 2,00 € — que antes não compensavam comprar — passam agora a compensar. O Tiago expande o consumo até à unidade em que UMg ≈ 1,20 €. É exatamente isto que gera a curva da procura com declive negativo: a cada preço mais baixo, mais unidades passam o "teste" UMg ≥ P.' },
+      b: { type: 'wrong',   msg: '<strong>Não — o preço não afeta a UMg.</strong> A utilidade marginal depende das preferências do consumidor e da quantidade consumida, não do preço. O que mudou não foi a UMg do pastel — foi o preço com que a compara. Com preço mais baixo, mais unidades passam o teste UMg ≥ preço.' },
+      c: { type: 'wrong',   msg: '<strong>Esta resposta aceita a Lei da Procura sem a explicar.</strong> A pergunta pede precisamente a explicação mais profunda. A Teoria do Consumidor fornece esse fundamento: a Lei da Procura emerge diretamente da utilidade marginal decrescente e do comportamento racional (comprar se e só se UMg ≥ preço).' },
       d: { type: 'wrong',   msg: '<strong>Isso é o efeito rendimento — verdadeiro mas incompleto aqui.</strong> O preço mais baixo aumenta o poder de compra real do Tiago (efeito rendimento), e isso pode contribuir para comprar mais. Mas a explicação principal é o efeito substituição/UMg: as unidades com UMg entre 1,20 € e 2,00 € passam agora a ser acessíveis. O efeito rendimento seria relevante se ele gastasse o "poupado" noutros bens.' }
     }
   };
@@ -5896,13 +5928,14 @@ if (window.lucide) lucide.createIcons();
     const btn    = document.createElement('button');
     btn.className = 'quiz-next-btn';
     btn.innerHTML = isLast
-      ? `Ver resultado <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`
-      : `Próxima pergunta <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`;
+      ? `Ver resultado <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`
+      : `Próxima pergunta <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`;
     btn.onclick = isLast ? showResult5 : () => {
       card.style.display = 'none';
       document.getElementById('b5qcard-' + (parseInt(qNum) + 1)).style.display = 'block';
       document.getElementById('b5qcard-' + (parseInt(qNum) + 1)).scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
+    if(info.type === 'wrong') window.__addRetryButton(card, fb, ans5, q);
     fb.appendChild(btn);
   };
 
@@ -5928,7 +5961,7 @@ if (window.lucide) lucide.createIcons();
     const details = [
       `<strong>Pergunta 1</strong> — Excedente do consumidor: ${ans5['b5-1'] === 'c' ? '✓ Certa' : '✗ Errada'}. EC = disponibilidade total a pagar − gasto efectivo = 6,80 − 3,60 = 3,20 €.`,
       `<strong>Pergunta 2</strong> — Otimização com dois bens: ${ans5['b5-2'] === 'b' ? '✓ Certa' : '✗ Errada'}. Comprar mais pastéis pois UMg/P pastel (8,3) > UMg/P galão (6,0).`,
-      `<strong>Pergunta 3</strong> — Fundamento da Lei da Procura: ${ans5['b5-3'] === 'a' ? '✓ Certa' : '✗ Errada'}. Preço mais baixo activa unidades com UMg entre o preço novo e o antigo.`
+      `<strong>Pergunta 3</strong> — Fundamento da Lei da Procura: ${ans5['b5-3'] === 'a' ? '✓ Certa' : '✗ Errada'}. Preço mais baixo ativa unidades com UMg entre o preço novo e o antigo.`
     ];
     document.getElementById('quiz5-result-detail').innerHTML = details.join('<br><br>');
   };
@@ -6161,14 +6194,14 @@ if (window.lucide) lucide.createIcons();
   const FB6 = {
     'b6-1': {
       a: { type: 'wrong',   msg: '<strong>Não — a lógica está invertida.</strong> O facto de o 379.º pastel ter CMg 1,18 € &lt; 1,20 € (RMg) significa que <em>compensa produzir</em> essa unidade — ganha-se a diferença de 0,02 €. Parar no 378.º ou antes deixaria lucro marginal por aproveitar. A regra diz: produz enquanto CMg &lt; RMg.' },
-      b: { type: 'correct', msg: '<strong>Correto! ✓</strong> A regra de ouro (CMg = RMg) diz que Q* é o ponto onde o custo da última unidade iguala a receita que gera. O 379.º pastel tem CMg 1,18 € &lt; 1,20 € (produzir ganha 0,02 €). O 381.º tem CMg 1,22 € &gt; 1,20 € (produzir perde 0,02 €). O óptimo está entre eles — na prática, 380 pastéis.' },
-      c: { type: 'wrong',   msg: '<strong>Não — 0,02 € não é negligenciável quando se multiplica por milhares de unidades e dias.</strong> Mas mais importante: a lógica está errada. Se o 381.º pastel custa 1,22 € e rende 1,20 €, produzir essa unidade <em>reduz</em> o lucro em 0,02 €. A regra é exacta: não produzir se CMg &gt; RMg, mesmo que a diferença seja pequena.' },
-      d: { type: 'wrong',   msg: '<strong>Errado — minimizar o custo médio não é o objectivo do produtor.</strong> O objectivo é maximizar o lucro. A regra que o faz é CMg = RMg. O ponto de custo médio mínimo é relevante para outros fins (análise de longo prazo, entrada/saída), mas não determina a quantidade óptima de produção no curto prazo.' }
+      b: { type: 'correct', msg: '<strong>Correto! ✓</strong> A regra de ouro (CMg = RMg) diz que Q* é o ponto onde o custo da última unidade iguala a receita que gera. O 379.º pastel tem CMg 1,18 € &lt; 1,20 € (produzir ganha 0,02 €). O 381.º tem CMg 1,22 € &gt; 1,20 € (produzir perde 0,02 €). O ótimo está entre eles — na prática, 380 pastéis.' },
+      c: { type: 'wrong',   msg: '<strong>Não — 0,02 € não é negligenciável quando se multiplica por milhares de unidades e dias.</strong> Mas mais importante: a lógica está errada. Se o 381.º pastel custa 1,22 € e rende 1,20 €, produzir essa unidade <em>reduz</em> o lucro em 0,02 €. A regra é exata: não produzir se CMg &gt; RMg, mesmo que a diferença seja pequena.' },
+      d: { type: 'wrong',   msg: '<strong>Errado — minimizar o custo médio não é o objetivo do produtor.</strong> O objetivo é maximizar o lucro. A regra que o faz é CMg = RMg. O ponto de custo médio mínimo é relevante para outros fins (análise de longo prazo, entrada/saída), mas não determina a quantidade ótima de produção no curto prazo.' }
     },
     'b6-2': {
-      a: { type: 'wrong',   msg: '<strong>Não — produzir mais não reduz os custos fixos por unidade de forma que afecte a decisão óptima.</strong> O custo marginal — que é o único custo relevante para a regra CMg = RMg — não é afectado pelos custos fixos. Produzir mais para "diluir" os custos fixos é uma falácia comum, mas irrelevante para a decisão de quantidade.' },
+      a: { type: 'wrong',   msg: '<strong>Não — produzir mais não reduz os custos fixos por unidade de forma que afete a decisão ótima.</strong> O custo marginal — que é o único custo relevante para a regra CMg = RMg — não é afetado pelos custos fixos. Produzir mais para "diluir" os custos fixos é uma falácia comum, mas irrelevante para a decisão de quantidade.' },
       b: { type: 'wrong',   msg: '<strong>Não — reduzir a produção tampouco ajuda.</strong> Os custos variáveis reduzem-se, mas também a receita. O que maximiza o lucro é sempre produzir onde CMg = RMg — e essa condição não foi alterada pelo aumento dos custos fixos.' },
-      c: { type: 'correct', msg: '<strong>Correto! ✓</strong> Os custos fixos, por definição, não variam com a quantidade produzida — e portanto não entram no cálculo do CMg. Como a regra CMg = RMg não mudou (nem o CMg nem o RMg foram afectados), Q* mantém-se igual. O que muda é o lucro: fica 7 € mais baixo por dia. Se o lucro ficasse suficientemente negativo para a Rosinha preferir fechar (P &lt; CVM), aí sim haveria mudança — mas é uma decisão de encerramento, não de quantidade.' },
+      c: { type: 'correct', msg: '<strong>Correto! ✓</strong> Os custos fixos, por definição, não variam com a quantidade produzida — e portanto não entram no cálculo do CMg. Como a regra CMg = RMg não mudou (nem o CMg nem o RMg foram afetados), Q* mantém-se igual. O que muda é o lucro: fica 7 € mais baixo por dia. Se o lucro ficasse suficientemente negativo para a Rosinha preferir fechar (P &lt; CVM), aí sim haveria mudança — mas é uma decisão de encerramento, não de quantidade.' },
       d: { type: 'wrong',   msg: '<strong>Em concorrência perfeita, a Rosinha não pode subir o preço.</strong> Ela é price-taker — aceita o preço de mercado, não o fixa. Se subisse o preço acima do de mercado, os clientes iriam a outras pastelarias. A única forma de subir o preço seria se o mercado inteiro subisse — o que exigiria um choque de oferta ou procura, não uma decisão unilateral.' }
     },
     'b6-3': {
@@ -6204,14 +6237,15 @@ if (window.lucide) lucide.createIcons();
     const btn    = document.createElement('button');
     btn.className = 'quiz-next-btn';
     btn.innerHTML = isLast
-      ? `Ver resultado final <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`
-      : `Próxima pergunta <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`;
+      ? `Ver resultado final <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`
+      : `Próxima pergunta <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>`;
     btn.onclick = isLast ? showResult6 : () => {
       card.style.display = 'none';
       const next = document.getElementById('b6qcard-' + (parseInt(qNum) + 1));
       next.style.display = 'block';
       next.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
+    if(info.type === 'wrong') window.__addRetryButton(card, fb, ans6, q);
     fb.appendChild(btn);
   };
 
@@ -6235,9 +6269,9 @@ if (window.lucide) lucide.createIcons();
     document.getElementById('quiz6-score-msg').textContent     = msgs[score];
 
     const details = [
-      `<strong>P1</strong> — Quantidade óptima (CMg = RMg): ${ans6['b6-1'] === 'b' ? '✓ Certa' : '✗ Errada'}. Q* = 380 (379.º: CMg 1,18 &lt; 1,20 ✓; 381.º: CMg 1,22 &gt; 1,20 ✗).`,
-      `<strong>P2</strong> — Custos fixos e Q*: ${ans6['b6-2'] === 'c' ? '✓ Certa' : '✗ Errada'}. Custos fixos não afectam CMg nem Q*. Só o lucro muda.`,
-      `<strong>P3</strong> — Regra de encerramento: ${ans6['b6-3'] === 'a' ? '✓ Certa' : '✗ Errada'}. P (0,70€) &lt; CVM (0,85€) → fechar temporariamente minimiza a perda.`
+      `<strong>P1</strong> — Quantidade ótima (CMg = RMg): ${ans6['b6-1'] === 'b' ? '✓ Certa' : '✗ Errada'}. Q* = 380 (379.º: CMg 1,18 &lt; 1,20 ✓; 381.º: CMg 1,22 &gt; 1,20 ✗).`,
+      `<strong>P2</strong> — Custos fixos e Q*: ${ans6['b6-2'] === 'c' ? '✓ Certa' : '✗ Errada'}. Custos fixos não afetam CMg nem Q*. Só o lucro muda.`,
+      `<strong>P3</strong> — Regra de encerramento: ${ans6['b6-3'] === 'a' ? '✓ Certa' : '✗ Errada'}. P (0,70 €) &lt; CVM (0,85 €) → fechar temporariamente minimiza a perda.`
     ];
     document.getElementById('quiz6-result-detail').innerHTML = details.join('<br><br>');
   };

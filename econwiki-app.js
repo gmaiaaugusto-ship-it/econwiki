@@ -52,15 +52,22 @@
     --bg:#FAF7F0; --surf:#FFFFFF; --surf2:#F5F0E3;
     --side:#1F1B16; --side-tx:#E5DECF; --side-tx2:#9C907B; --side-bor:#2C261F; --side-active:#2C261F;
     --bor:#E6DECC; --bor2:#EFE9DA; --rule:#D9CFB7;
-    --tx:#1C1814; --tx2:#5A5147; --tx3:#7A7064;
+    --tx:#1C1814; --tx2:#5A5147; --tx3:#6A6256;
     --ac:#1C5240; --acl:#E2EDE6; --act:#0D3324;
+    /* Tokens semânticos: favoritos (âmbar), know (verde-claro), later (dourado) */
+    --fav:var(--fav); --fav-bg:var(--fav-bg); --fav-bg-alt:var(--fav-bg-alt); --fav-bor:var(--fav-bor); --fav-tx:var(--fav-tx); --fav-tx-strong:var(--fav-tx-strong);
+    --know:var(--know); --know-bg:#E2EDE6; --know-bor:var(--know-bor);
+    --later:var(--fav-tx); --later-bg:var(--fav-bg); --later-bor:var(--fav-bor);
   }
   :root[data-theme="dark"] #app{
     --bg:#13110E; --surf:#1B1813; --surf2:#221E18;
     --side:#0B0A08; --side-tx:#D8CEB9; --side-tx2:#7E7261; --side-bor:#1A1712; --side-active:#221E18;
-    --bor:#2A251D; --bor2:#221E18; --rule:#2A251D;
-    --tx:#EFE8D8; --tx2:#B8AC95; --tx3:#7E7261;
+    --bor:var(--side-bor); --bor2:#221E18; --rule:var(--side-bor);
+    --tx:#EFE8D8; --tx2:#B8AC95; --tx3:#9C907B;
     --ac:#52B788; --acl:#1B2E25; --act:#A4D7B6;
+    --fav:var(--fav); --fav-bg:var(--fav-bg); --fav-bg-alt:var(--fav-bg); --fav-bor:var(--later-bor); --fav-tx:var(--fav); --fav-tx-strong:var(--fav-tx-strong);
+    --know:#A4D7B6; --know-bg:#1B2E25; --know-bor:var(--know-bor);
+    --later:var(--fav); --later-bg:var(--later-bg); --later-bor:var(--later-bor);
   }
   #app{
     background:var(--bg); color:var(--tx);
@@ -70,6 +77,12 @@
     transition:background .3s, color .3s;
   }
   #app *{box-sizing:border-box;}
+
+  /* ── Acessibilidade: classe utilitária visualmente escondida mas legível por leitores de ecrã ── */
+  .b-sr-only{
+    position:absolute !important; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
 
   .b-shell{ display:grid; grid-template-columns:280px 1fr; min-height:100vh;}
 
@@ -83,7 +96,7 @@
     transition:background .3s;
   }
   .b-side::-webkit-scrollbar{ width:6px;}
-  .b-side::-webkit-scrollbar-thumb{ background:#3a3127; border-radius:3px;}
+  .b-side::-webkit-scrollbar-thumb{ background:var(--side-bor); border-radius:3px;}
 
   .b-side-brand{
     padding:0 22px 22px;
@@ -109,8 +122,8 @@
     cursor:pointer; display:flex; align-items:center; gap:9px;
     transition:background .15s, border-color .15s;
   }
-  .b-side-search:hover{ background:#3A3127; }
-  :root[data-theme="dark"] .b-side-search:hover{ background:#2A251D;}
+  .b-side-search:hover{ background:var(--side-bor); }
+  :root[data-theme="dark"] .b-side-search:hover{ background:var(--side-bor);}
   .b-side-search svg{ width:14px;height:14px; stroke:currentColor;}
   .b-side-search kbd{
     margin-left:auto; font:inherit; font-size:10.5px;
@@ -196,8 +209,8 @@
     cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:7px;
     transition:background .15s, color .15s;
   }
-  .b-side-toggle:hover{ background:#3A3127; color:var(--side-tx);}
-  :root[data-theme="dark"] .b-side-toggle:hover{ background:#2A251D;}
+  .b-side-toggle:hover{ background:var(--side-bor); color:var(--side-tx);}
+  :root[data-theme="dark"] .b-side-toggle:hover{ background:var(--side-bor);}
   .b-side-toggle svg{ width:13px;height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
 
   /* ── Main ──────────────────────────────────────────────── */
@@ -295,7 +308,7 @@
     font-weight:700; color:var(--c-act);
   }
   .b-card-tag .ic{ width:14px;height:14px; display:grid;place-items:center; color:var(--c-ac);}
-  .b-card-tag .ic svg{ width:14px;height:14px; stroke:currentColor; fill:none; stroke-width:2.2;}
+  .b-card-tag .ic svg{ width:14px;height:14px; stroke:currentColor; fill:none; stroke-width:2;}
   .b-card-actions{ display:flex; gap:2px; color:var(--tx3); margin-right:-6px;}
   .b-card-act{
     width:26px;height:26px; display:grid;place-items:center;
@@ -305,8 +318,8 @@
   .b-card-act:hover{ background:var(--bor2); color:var(--tx);}
   .b-card-act svg{ width:13px;height:13px; stroke-width:2;}
   .b-card-act.read.on{ color:var(--c-ac);}
-  .b-card-act.fav.on{ color:#C9962E;}
-  .b-card-act.fav.on svg{ fill:#C9962E;}
+  .b-card-act.fav.on{ color:var(--fav);}
+  .b-card-act.fav.on svg{ fill:var(--fav);}
   .b-card-num{ font-family:'Source Serif 4',serif; font-style:italic; font-size:12.5px; color:var(--tx3); margin-bottom:5px;}
   .b-card-name{ font-family:'Source Serif 4',serif; font-size:18.5px; font-weight:600; line-height:1.22; letter-spacing:-.005em; color:var(--tx); margin-bottom:8px; text-wrap:balance;}
   .b-card-blurb{ font-size:13px; color:var(--tx2); line-height:1.55; margin-bottom:14px; flex:1;
@@ -375,10 +388,10 @@
   }
   .b-iconbtn:hover{ background:var(--surf2); color:var(--tx);}
   .b-iconbtn.on{ background:var(--c-acl); color:var(--c-act); border-color:var(--c-ac);}
-  .b-iconbtn.fav.on{ background:#FBF1D6; color:#7A5300; border-color:#C9962E;}
-  :root[data-theme="dark"] .b-iconbtn.fav.on{ background:#3A2D08; color:#FFD37A;}
+  .b-iconbtn.fav.on{ background:var(--fav-bg); color:var(--fav-tx); border-color:var(--fav);}
+  :root[data-theme="dark"] .b-iconbtn.fav.on{ background:var(--fav-bg); color:var(--fav);}
   .b-iconbtn svg{ width:13px;height:13px; stroke:currentColor; fill:none; stroke-width:2;}
-  .b-iconbtn.fav.on svg{ fill:#C9962E; stroke:#C9962E;}
+  .b-iconbtn.fav.on svg{ fill:var(--fav); stroke:var(--fav);}
 
   .b-read-intro{
     font-family:'Source Serif 4',serif; font-size:22px; line-height:1.5; font-weight:400;
@@ -440,27 +453,27 @@
   .b-chart .ctbl td{ padding:10px 14px; border:1px solid var(--bor); color:var(--tx2); text-align:center; font-size:13.5px;}
   .b-chart .ctbl td.lh{ text-align:left; font-weight:600; background:var(--c-acl); color:var(--c-act);}
   .b-chart .ctbl tr:nth-child(even) td:not(.lh){ background:var(--surf);}
-  .b-chart .ctbl td.ne{ background:#FDF3DC; font-weight:700; border:2px solid #C9962E;}
-  :root[data-theme="dark"] .b-chart .ctbl td.ne{ background:#3A2D08; color:#FFD37A;}
+  .b-chart .ctbl td.ne{ background:var(--fav-bg-alt); font-weight:700; border:2px solid var(--fav);}
+  :root[data-theme="dark"] .b-chart .ctbl td.ne{ background:var(--fav-bg); color:var(--fav);}
   .b-chart-cap{ font-size:13px; color:var(--tx3); font-style:italic; margin-top:18px; padding-top:14px; border-top:1px dashed var(--bor); max-width:760px;}
 
   .b-callout{
-    background:#FBF1D6; border:1px solid #E5C77E;
+    background:var(--fav-bg); border:1px solid var(--fav-bor);
     border-radius:14px; padding:24px 26px;
     display:grid; grid-template-columns:36px 1fr; gap:16px;
     margin:14px 0;
   }
-  :root[data-theme="dark"] .b-callout{ background:#2A2008; border-color:#5A4314;}
+  :root[data-theme="dark"] .b-callout{ background:var(--later-bg); border-color:var(--later-bor);}
   .b-callout-icon{
     width:36px;height:36px; border-radius:10px;
-    background:#C9962E; color:#fff;
+    background:var(--fav); color:#fff;
     display:grid;place-items:center;
     font-family:'Source Serif 4',serif; font-style:italic; font-weight:700; font-size:18px;
   }
-  .b-callout .lb{ font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#7A5300; font-weight:700;}
-  :root[data-theme="dark"] .b-callout .lb{ color:#FFD37A;}
-  .b-callout .tx{ font-size:15.5px; line-height:1.65; color:#3F2D08; margin-top:6px; text-wrap:pretty;}
-  :root[data-theme="dark"] .b-callout .tx{ color:#F0DDA8;}
+  .b-callout .lb{ font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--fav-tx); font-weight:700;}
+  :root[data-theme="dark"] .b-callout .lb{ color:var(--fav);}
+  .b-callout .tx{ font-size:15.5px; line-height:1.65; color:var(--fav-tx-strong); margin-top:6px; text-wrap:pretty;}
+  :root[data-theme="dark"] .b-callout .tx{ color:var(--fav-tx-strong);}
 
   .b-related{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;}
   .b-rel-card{
@@ -560,12 +573,12 @@
     transition:background .15s, color .15s;
     background:var(--surf); color:var(--tx2);
   }
-  .b-fc-actions .know{ color:#1B4332; border-color:#9CCAA8;}
-  .b-fc-actions .know:hover{ background:#E2EDE6;}
-  :root[data-theme="dark"] .b-fc-actions .know{ background:#1B2E25; color:#A4D7B6; border-color:#3A5C45;}
-  .b-fc-actions .later{ color:#7A5300; border-color:#E5C77E;}
-  .b-fc-actions .later:hover{ background:#FBF1D6;}
-  :root[data-theme="dark"] .b-fc-actions .later{ background:#2A2008; color:#FFD37A; border-color:#5A4314;}
+  .b-fc-actions .know{ color:var(--know); border-color:var(--know-bor);}
+  .b-fc-actions .know:hover{ background:var(--know-bg);}
+  :root[data-theme="dark"] .b-fc-actions .know{ background:var(--know-bg); color:var(--know); border-color:var(--know-bor);}
+  .b-fc-actions .later{ color:var(--fav-tx); border-color:var(--fav-bor);}
+  .b-fc-actions .later:hover{ background:var(--fav-bg);}
+  :root[data-theme="dark"] .b-fc-actions .later{ background:var(--later-bg); color:var(--fav); border-color:var(--later-bor);}
 
   .b-fc-progress{
     margin-top:18px;
@@ -615,16 +628,28 @@
     .b-read-title{ font-size:38px;}
     .b-charts{ margin:0 -20px;}
     .b-chart{ padding:24px 20px;}
+    .b-chart .ctbl{ display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%;}
     .b-fc{ padding:24px 20px 64px;}
     .b-fc-stage{ padding:32px 24px; min-height:360px;}
     .b-fc-q{ font-size:26px;}
+    /* ── Acessibilidade: áreas de toque ≥ 44×44 px em mobile ── */
+    .b-card-act{ width:44px; height:44px;}
+    .b-card-act svg{ width:16px; height:16px;}
+    .b-iconbtn{ min-height:44px;}
+    .b-fc-nav button{ min-width:44px; min-height:44px;}
+    .b-side-toggle{ min-height:44px;}
+  }
+  /* Reduzir altura mínima do palco de flashcards em landscape pequeno (ex.: iPhone SE landscape) */
+  @media (max-width: 980px) and (orientation:landscape) and (max-height: 480px){
+    .b-fc-stage{ min-height:240px; padding:18px 22px;}
+    .b-fc-q{ font-size:22px;}
   }
   `;
   root.appendChild(css);
 
   root.innerHTML += `
     <button class="b-burger" id="b-burger" aria-label="Abrir menu" aria-controls="b-side" aria-expanded="false">
-      <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
     <div class="b-scrim" id="b-scrim" aria-hidden="true"></div>
     <div class="b-shell">
@@ -642,11 +667,11 @@
 
   function chapIcon(label){
     const map = {
-      'Fundamentos':            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
-      'Estruturas de Mercado':  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>',
-      'Mercados: Informação, Trabalho e Digital': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
-      'Falhas de Mercado':      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 16.6-9-15a1.5 1.5 0 0 0-2.6 0l-9 15A1.5 1.5 0 0 0 2.5 19h18a1.5 1.5 0 0 0 1.3-2.4z"/><path d="M12 9v4M12 17h.01"/></svg>',
-      'Macroeconomia':          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-5"/></svg>',
+      'Fundamentos':            '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+      'Estruturas de Mercado':  '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>',
+      'Mercados: Informação, Trabalho e Digital': '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+      'Falhas de Mercado':      '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 16.6-9-15a1.5 1.5 0 0 0-2.6 0l-9 15A1.5 1.5 0 0 0 2.5 19h18a1.5 1.5 0 0 0 1.3-2.4z"/><path d="M12 9v4M12 17h.01"/></svg>',
+      'Macroeconomia':          '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-5"/></svg>',
     };
     return map[label] || map['Fundamentos'];
   }
@@ -654,16 +679,16 @@
   // Concept icon based on label keywords
   function ccIcon(label){
     const l = (label||'').toLowerCase();
-    if(/defin|conceito|princ/.test(l))    return '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>';
-    if(/lei|regra|prop/.test(l))         return '<svg viewBox="0 0 24 24"><path d="M2 7h20l-2 12H4z"/><path d="M16 7V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v3"/></svg>';
-    if(/exemplo|aplica|caso/.test(l))    return '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
-    if(/relac|liga|conex|vs|versus/.test(l)) return '<svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>';
-    if(/cust|preç|valor|moeda|inflac|pib/.test(l)) return '<svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>';
-    if(/risco|aviso|atenç|incerteza/.test(l)) return '<svg viewBox="0 0 24 24"><path d="m21.7 16.6-9-15a1.5 1.5 0 0 0-2.6 0l-9 15A1.5 1.5 0 0 0 2.5 19h18a1.5 1.5 0 0 0 1.3-2.4z"/><path d="M12 9v4M12 17h.01"/></svg>';
-    if(/grafic|curva|funç|equa|model/.test(l)) return '<svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-5"/></svg>';
-    if(/quest|porq|como|onde|quando/.test(l)) return '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>';
-    if(/chave|key|essencial|fundament/.test(l)) return '<svg viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/></svg>';
-    return '<svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>';
+    if(/defin|conceito|princ/.test(l))    return '<svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>';
+    if(/lei|regra|prop/.test(l))         return '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M2 7h20l-2 12H4z"/><path d="M16 7V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v3"/></svg>';
+    if(/exemplo|aplica|caso/.test(l))    return '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
+    if(/relac|liga|conex|vs|versus/.test(l)) return '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>';
+    if(/cust|preç|valor|moeda|inflac|pib/.test(l)) return '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>';
+    if(/risco|aviso|atenç|incerteza/.test(l)) return '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21.7 16.6-9-15a1.5 1.5 0 0 0-2.6 0l-9 15A1.5 1.5 0 0 0 2.5 19h18a1.5 1.5 0 0 0 1.3-2.4z"/><path d="M12 9v4M12 17h.01"/></svg>';
+    if(/grafic|curva|funç|equa|model/.test(l)) return '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-5"/></svg>';
+    if(/quest|porq|como|onde|quando/.test(l)) return '<svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>';
+    if(/chave|key|essencial|fundament/.test(l)) return '<svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/></svg>';
+    return '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>';
   }
 
   function totalRead(){ let c=0;for(let i=0;i<T.length;i++) if(EW.isRead(i)) c++; return c; }
@@ -683,7 +708,7 @@
       </div>
 
       <button class="b-side-search" id="b-search">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         <span>Pesquisar tópicos…</span>
         <kbd>⌘K</kbd>
       </button>
@@ -691,31 +716,31 @@
       <div class="b-side-section">
         <div class="b-side-eyebrow">Visão</div>
         <div class="b-side-link ${view==='intro'?'active':''}" data-view="intro" style="--ch-color:#B8763F">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
           <span>Introdução</span>
         </div>
         <div class="b-side-link ${view==='dash' && dashFilter==='all'?'active':''}" data-view="dash" data-filter="all" style="--ch-color:#E5DECF">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
           <span>Todos os tópicos</span>
           <span class="count">${tot}</span>
         </div>
         ${last>=0 ? `
         <div class="b-side-link" data-go="${last}" style="--ch-color:#52B788">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18l7-5 7 5V3z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18l7-5 7 5V3z"/></svg>
           <span>Continuar a ler</span>
         </div>` : ''}
-        <div class="b-side-link ${view==='dash' && dashFilter==='fav'?'active':''}" data-view="dash" data-filter="fav" style="--ch-color:#C9962E">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9"/></svg>
+        <div class="b-side-link ${view==='dash' && dashFilter==='fav'?'active':''}" data-view="dash" data-filter="fav" style="--ch-color:var(--fav)">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9"/></svg>
           <span>Favoritos</span>
           <span class="count">${T.filter((_,i)=>EW.isFav(i)).length}</span>
         </div>
         <div class="b-side-link ${view==='dash' && dashFilter==='read'?'active':''}" data-view="dash" data-filter="read" style="--ch-color:#52B788">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           <span>Lidos</span>
           <span class="count">${rd}</span>
         </div>
         <div class="b-side-link ${isFc?'active':''}" data-view="fc" style="--ch-color:#7B3FA0">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
           <span>Flashcards</span>
         </div>
       </div>
@@ -755,7 +780,7 @@
         </div>
         <div class="b-side-foot-row">
           <button class="b-side-toggle" data-theme-btn aria-label="Alternar tema">
-            <svg viewBox="0 0 24 24"></svg>
+            <svg aria-hidden="true" viewBox="0 0 24 24"></svg>
             <span>${getTheme()==='dark'?'Modo claro':'Modo escuro'}</span>
           </button>
         </div>
@@ -868,13 +893,21 @@
       dash.querySelectorAll('.b-card').forEach(el=>{
         const i = parseInt(el.dataset.i);
         el.addEventListener('click', ()=> openTopic(i));
-        el.querySelector('.b-card-act.read')?.addEventListener('click', e=>{
+        const readBtn = el.querySelector('.b-card-act.read');
+        const favBtn  = el.querySelector('.b-card-act.fav');
+        readBtn?.addEventListener('click', e=>{
           e.stopPropagation();
           EW.toggleRead(i);
         });
-        el.querySelector('.b-card-act.fav')?.addEventListener('click', e=>{
+        readBtn?.addEventListener('keydown', e=>{
+          if(e.key==='Enter' || e.key===' '){ e.preventDefault(); e.stopPropagation(); EW.toggleRead(i); }
+        });
+        favBtn?.addEventListener('click', e=>{
           e.stopPropagation();
           EW.toggleFav(i);
+        });
+        favBtn?.addEventListener('keydown', e=>{
+          if(e.key==='Enter' || e.key===' '){ e.preventDefault(); e.stopPropagation(); EW.toggleFav(i); }
         });
       });
     }
@@ -893,11 +926,11 @@
             <div class="b-card-top">
               <span class="b-card-tag"><span class="ic">${chapIcon(g?.label)}</span>${EW.groupShortLabel(g?.label||t.g)}</span>
               <div class="b-card-actions">
-                <span class="b-card-act read ${EW.isRead(i)?'on':''}" title="Marcar lido">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="b-card-act read ${EW.isRead(i)?'on':''}" title="Marcar lido" role="button" tabindex="0" aria-pressed="${EW.isRead(i)?'true':'false'}" aria-label="${EW.isRead(i)?'Marcado como lido':'Marcar como lido'}">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
                 </span>
-                <span class="b-card-act fav ${EW.isFav(i)?'on':''}" title="Favorito">
-                  <svg viewBox="0 0 24 24" fill="${EW.isFav(i)?'currentColor':'none'}" stroke="currentColor"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9"/></svg>
+                <span class="b-card-act fav ${EW.isFav(i)?'on':''}" title="Favorito" role="button" tabindex="0" aria-pressed="${EW.isFav(i)?'true':'false'}" aria-label="${EW.isFav(i)?'Remover dos favoritos':'Adicionar aos favoritos'}">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="${EW.isFav(i)?'currentColor':'none'}" stroke="currentColor"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9"/></svg>
                 </span>
               </div>
             </div>
@@ -942,13 +975,13 @@
 
     read.innerHTML = `
       <div class="b-read" style="--c-ac:${c.ac};--c-acl:${c.acl};--c-act:${c.act}">
-        <div class="b-read-crumbs">
-          <span class="crumb" data-back="dash">Tópicos</span>
-          <svg class="sep" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-          <span class="crumb" data-back="ch">${g?g.label:t.g}</span>
-          <svg class="sep" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-          <span style="color:var(--tx2)">Tópico ${i+1}</span>
-        </div>
+        <nav class="b-read-crumbs" aria-label="Localização">
+          <span class="crumb" data-back="dash" role="button" tabindex="0" aria-label="Voltar à lista de tópicos">Tópicos</span>
+          <svg aria-hidden="true" class="sep" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <span class="crumb" data-back="ch" role="button" tabindex="0" aria-label="Filtrar por ${g?g.label:t.g}">${g?g.label:t.g}</span>
+          <svg aria-hidden="true" class="sep" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          <span style="color:var(--tx2)" aria-current="page">Tópico ${i+1}</span>
+        </nav>
 
         <div class="b-read-head">
           <div class="b-read-tag">${g?g.label:t.g}</div>
@@ -962,15 +995,15 @@
           </div>
           <div class="b-read-actions">
             <button class="b-iconbtn ${EW.isRead(i)?'on':''}" id="b-mr" aria-pressed="${EW.isRead(i)?'true':'false'}" aria-label="${EW.isRead(i)?'Tópico marcado como lido':'Marcar tópico como lido'}">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               <span>${EW.isRead(i)?'Lido':'Marcar lido'}</span>
             </button>
             <button class="b-iconbtn fav ${EW.isFav(i)?'on':''}" id="b-mf" aria-pressed="${EW.isFav(i)?'true':'false'}" aria-label="${EW.isFav(i)?'Remover dos favoritos':'Adicionar aos favoritos'}">
-              <svg viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9"/></svg>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9"/></svg>
               <span>Favorito</span>
             </button>
             <button class="b-iconbtn" id="b-ask" aria-label="Abrir assistente para fazer uma pergunta sobre este tópico">
-              <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
               <span>Pergunta ao Assistente</span>
             </button>
           </div>
@@ -1011,21 +1044,30 @@
     `;
 
     read.querySelectorAll('[data-i]').forEach(el=> el.addEventListener('click', ()=> openTopic(parseInt(el.dataset.i))));
-    read.querySelectorAll('[data-back]').forEach(el=> el.addEventListener('click', ()=>{
-      if(el.dataset.back==='ch' && g){
-        dashFilter = 'ch:'+GS.indexOf(g);
-      } else {
-        dashFilter = 'all';
-      }
-      goDash();
-    }));
+    read.querySelectorAll('[data-back]').forEach(el=>{
+      const handler = ()=>{
+        if(el.dataset.back==='ch' && g){
+          dashFilter = 'ch:'+GS.indexOf(g);
+        } else {
+          dashFilter = 'all';
+        }
+        goDash();
+      };
+      el.addEventListener('click', handler);
+      el.addEventListener('keydown', e=>{
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); handler(); }
+      });
+    });
     read.querySelector('#b-mr').addEventListener('click', ()=>{ EW.toggleRead(i); renderRead(i); });
     read.querySelector('#b-mf').addEventListener('click', ()=>{ EW.toggleFav(i); renderRead(i); });
     read.querySelector('#b-ask').addEventListener('click', ()=> window.openChat && window.openChat(i));
 
     if(!EW.isRead(i)){
       clearTimeout(window.__bMarkTO);
-      window.__bMarkTO = setTimeout(()=>{ EW.markRead(i); }, 8000);
+      window.__bMarkTO = setTimeout(()=>{
+        // Apenas marca como lido se o utilizador ainda estiver no mesmo tópico
+        if(view==='read' && cur===i) EW.markRead(i);
+      }, 8000);
     }
   }
 
@@ -1044,12 +1086,13 @@
     else if(fcFilter==='fav') pool = T.map((_,i)=>i).filter(i=>EW.isFav(i));
     else if(fcFilter.startsWith('ch:')) pool = GS[parseInt(fcFilter.slice(3))]?.idx || [];
     else pool = T.map((_,i)=>i);
-    // each card = { ti, idx, q, a, label }
+    // each card = { id, ti, idx, q, a, label }
     const deck = [];
     pool.forEach(i=>{
       const t = T[i];
-      (t.cc||[]).forEach(cc=>{
-        deck.push({ idx:i, label:cc.l, q:cc.t, a:cc.d, name:t.name });
+      (t.cc||[]).forEach((cc,k)=>{
+        // id estável: índice do tópico + posição do conceito no array
+        deck.push({ id:'t'+i+'#'+k, idx:i, label:cc.l, q:cc.t, a:cc.d, name:t.name });
       });
     });
     // shuffle stable per session
@@ -1088,17 +1131,18 @@
             <div class="b-fc-sub">Estudo rápido a partir dos conceitos-chave do programa.</div>
           </div>
           <div class="b-fc-controls">
-            <select class="b-fc-select" id="b-fc-filter">
+            <label for="b-fc-filter" class="b-sr-only">Filtrar flashcards</label>
+            <select class="b-fc-select" id="b-fc-filter" aria-label="Filtrar flashcards">
               <option value="all" ${fcFilter==='all'?'selected':''}>Todos os capítulos</option>
               <option value="unread" ${fcFilter==='unread'?'selected':''}>Só de tópicos não lidos</option>
               <option value="fav" ${fcFilter==='fav'?'selected':''}>Só de favoritos</option>
               ${GS.map((g,gi)=>`<option value="ch:${gi}" ${fcFilter==='ch:'+gi?'selected':''}>Capítulo ${gi+1} · ${EW.groupShortLabel(g.label)}</option>`).join('')}
             </select>
-            <button class="b-fc-select" id="b-fc-shuffle" title="Baralhar">⤭ Baralhar</button>
+            <button class="b-fc-select" id="b-fc-shuffle" title="Baralhar" aria-label="Baralhar flashcards">⤭ Baralhar</button>
           </div>
         </div>
 
-        <div class="b-fc-stage" id="b-fc-stage" tabindex="0">
+        <div class="b-fc-stage" id="b-fc-stage" tabindex="0" role="button" aria-label="Cartão flashcard. Clique ou prima Espaço para virar." aria-pressed="${fcFlip?'true':'false'}">
           <div class="b-fc-pos">${fcPos+1} / ${total}</div>
           <div class="b-fc-tag">${EW.groupShortLabel(g?.label||'')} · Tópico ${card.idx+1}</div>
           ${fcFlip
@@ -1110,12 +1154,12 @@
         <div class="b-fc-foot">
           <div class="b-fc-nav">
             <button id="b-fc-prev" ${fcPos===0?'disabled':''}>
-              <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
               Anterior
             </button>
             <button id="b-fc-next" ${fcPos>=total-1?'disabled':''}>
               Seguinte
-              <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
             </button>
           </div>
           <div class="b-fc-actions">
@@ -1134,10 +1178,16 @@
     `;
     wireFcHead();
     fc.querySelector('#b-fc-stage').addEventListener('click', flipCard);
+    fc.querySelector('#b-fc-stage').addEventListener('keydown', e=>{
+      if(e.key==='Enter' || e.key===' '){
+        // Apenas virar quando o foco está no próprio palco — evitar conflito com teclas globais
+        if(e.target.id==='b-fc-stage'){ e.preventDefault(); flipCard(); }
+      }
+    });
     fc.querySelector('#b-fc-prev').addEventListener('click', prevCard);
     fc.querySelector('#b-fc-next').addEventListener('click', nextCard);
-    fc.querySelector('#b-fc-know').addEventListener('click', ()=>{ fcKnown.add(fcPos); nextCard(); });
-    fc.querySelector('#b-fc-later').addEventListener('click', ()=>{ fcLater.add(fcPos); nextCard(); });
+    fc.querySelector('#b-fc-know').addEventListener('click', ()=>{ const c=fcDeck[fcPos]; if(c) fcKnown.add(c.id); nextCard(); });
+    fc.querySelector('#b-fc-later').addEventListener('click', ()=>{ const c=fcDeck[fcPos]; if(c) fcLater.add(c.id); nextCard(); });
     setTimeout(()=>{ const s = fc.querySelector('#b-fc-stage'); if(s && view==='fc') s.focus(); }, 30);
 
     function wireFcHead(){
@@ -1160,11 +1210,13 @@
   document.addEventListener('keydown', e=>{
     if(view!=='fc') return;
     if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)) return;
+    // Ignorar modificadores em teclas simples (evita conflito com atalhos do navegador)
+    if(e.ctrlKey || e.metaKey || e.altKey) return;
     if(e.key===' '){ e.preventDefault(); flipCard(); }
     else if(e.key==='ArrowRight'){ e.preventDefault(); nextCard(); }
     else if(e.key==='ArrowLeft'){ e.preventDefault(); prevCard(); }
-    else if(e.key==='j' || e.key==='J'){ fcKnown.add(fcPos); nextCard(); }
-    else if(e.key==='l' || e.key==='L'){ fcLater.add(fcPos); nextCard(); }
+    else if(e.key==='j' || e.key==='J'){ const c=fcDeck[fcPos]; if(c) fcKnown.add(c.id); nextCard(); }
+    else if(e.key==='l' || e.key==='L'){ const c=fcDeck[fcPos]; if(c) fcLater.add(c.id); nextCard(); }
   });
 
   // ── Routing ─────────────────────────────────────────────
@@ -1245,7 +1297,7 @@
     window.scrollTo({top:0, behavior:'instant'});
     const host = root.querySelector('#b-intro');
     if(!host.dataset.loaded){
-      host.innerHTML = `<iframe src="Introdução ao Pensamento Económico.html?theme=${getTheme()}" title="Introdução ao Pensamento Económico" loading="lazy"></iframe>`;
+      host.innerHTML = `<iframe src="introducao.html?theme=${getTheme()}" title="Introdução ao Pensamento Económico" loading="lazy"></iframe>`;
       host.dataset.loaded = '1';
       const f = host.querySelector('iframe');
       f.addEventListener('load', ()=> syncIntroTheme(getTheme()));

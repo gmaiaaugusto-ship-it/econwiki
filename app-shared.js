@@ -132,7 +132,7 @@
     wrap.id = 'ew-cmdk';
     wrap.innerHTML = `
       <div class="ew-cmdk-bd"></div>
-      <div class="ew-cmdk-panel" role="dialog" aria-label="Pesquisa">
+      <div class="ew-cmdk-panel" role="dialog" aria-modal="true" aria-label="Pesquisa">
         <div class="ew-cmdk-input-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
           <input id="ew-cmdk-input" placeholder="Pesquisar tópicos, conceitos…" autocomplete="off">
@@ -152,12 +152,20 @@
     let active = 0;
     let results = [];
 
+    let lastFocus = null;
     function open(){
+      lastFocus = document.activeElement;
       wrap.classList.add('open');
       input.value=''; render('');
       setTimeout(()=>input.focus(), 30);
     }
-    function close(){ wrap.classList.remove('open'); }
+    function close(){
+      wrap.classList.remove('open');
+      if(lastFocus && typeof lastFocus.focus === 'function'){
+        try{ lastFocus.focus(); }catch(e){}
+      }
+      lastFocus = null;
+    }
     function render(q){
       results = q ? search(q, 12) : (window.T||[]).slice(0,8).map((t,i)=>({i,name:t.name,group:groupOf(i)?.label||t.g,snippet:plain(t.intro).slice(0,140)+'…'}));
       active = 0;
@@ -213,6 +221,18 @@
       else if(e.key==='Escape'){ close(); }
     });
     wrap.querySelector('.ew-cmdk-bd').addEventListener('click', close);
+
+    // Focus trap dentro do palette: ciclo Tab confinado ao painel
+    wrap.addEventListener('keydown', e=>{
+      if(e.key!=='Tab' || !wrap.classList.contains('open')) return;
+      const focusables = Array.from(wrap.querySelectorAll(
+        'a[href],button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])'
+      )).filter(el=> el.offsetParent !== null);
+      if(!focusables.length) return;
+      const first = focusables[0], last = focusables[focusables.length-1];
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+    });
 
     document.addEventListener('keydown', e=>{
       const isK = (e.key==='k'||e.key==='K');
