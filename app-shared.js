@@ -42,6 +42,7 @@
     try{ localStorage.setItem(LS_LAST, String(i)); }catch(e){}
     window.EW_AUTH?.syncToCloud();
   }
+  function getLast(){ try{ return parseInt(localStorage.getItem(LS_LAST)||'-1'); }catch(e){ return -1; } }
 
   function fire(name){ window.dispatchEvent(new CustomEvent('ew:'+name)); }
 
