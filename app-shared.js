@@ -18,11 +18,30 @@
 
   function isRead(i){ return readSet.has(i); }
   function isFav(i){ return favSet.has(i); }
-  function toggleRead(i){ readSet.has(i)?readSet.delete(i):readSet.add(i); saveSet(LS_READ, readSet); fire('readchange'); }
-  function toggleFav(i){ favSet.has(i)?favSet.delete(i):favSet.add(i); saveSet(LS_FAV, favSet); fire('favchange'); }
-  function markRead(i){ if(!readSet.has(i)){ readSet.add(i); saveSet(LS_READ, readSet); fire('readchange'); } }
-  function setLast(i){ try{ localStorage.setItem(LS_LAST, String(i)); }catch(e){} }
-  function getLast(){ try{ return parseInt(localStorage.getItem(LS_LAST)||'-1'); }catch(e){ return -1; } }
+  function toggleRead(i){
+    readSet.has(i)?readSet.delete(i):readSet.add(i);
+    saveSet(LS_READ, readSet);
+    fire('readchange');
+    window.EW_AUTH?.syncToCloud();
+  }
+  function toggleFav(i){
+    favSet.has(i)?favSet.delete(i):favSet.add(i);
+    saveSet(LS_FAV, favSet);
+    fire('favchange');
+    window.EW_AUTH?.syncToCloud();
+  }
+  function markRead(i){
+    if(!readSet.has(i)){
+      readSet.add(i);
+      saveSet(LS_READ, readSet);
+      fire('readchange');
+      window.EW_AUTH?.syncToCloud();
+    }
+  }
+  function setLast(i){
+    try{ localStorage.setItem(LS_LAST, String(i)); }catch(e){}
+    window.EW_AUTH?.syncToCloud();
+  }
 
   function fire(name){ window.dispatchEvent(new CustomEvent('ew:'+name)); }
 

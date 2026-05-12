@@ -644,6 +644,63 @@
     .b-fc-stage{ min-height:240px; padding:18px 22px;}
     .b-fc-q{ font-size:22px;}
   }
+
+  /* ── Página de Fórmulas ───────────────────────────────── */
+  .b-formulas-page{ padding:48px 56px 100px; max-width:860px;}
+  .b-formulas-head{ margin-bottom:40px;}
+  .b-formulas-title{ font-family:'Source Serif 4',serif; font-size:42px; font-weight:600; letter-spacing:-.025em; color:var(--tx); line-height:1.1; margin:0 0 12px;}
+  .b-formulas-sub{ font-size:15px; color:var(--tx2); line-height:1.6; margin:0 0 20px;}
+  .b-formulas-search{ display:flex; align-items:center; gap:10px; background:var(--surf); border:1px solid var(--bor); border-radius:10px; padding:0 14px; max-width:400px;}
+  .b-formulas-search svg{ width:16px;height:16px;stroke:var(--tx3);fill:none;stroke-width:2;flex-shrink:0;}
+  .b-formulas-search input{ border:none; background:transparent; font:inherit; font-size:14px; color:var(--tx); outline:none; flex:1; padding:12px 0;}
+  .b-formulas-group{ margin-bottom:40px;}
+  .b-formulas-group-label{ font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--tx3); margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--rule);}
+  .b-formula-card{ background:var(--surf); border:1px solid var(--bor); border-radius:12px; padding:18px 20px; margin-bottom:10px; transition:border-color .15s;}
+  .b-formula-card:hover{ border-color:var(--tx3);}
+  .b-formula-name{ font-size:13px; font-weight:600; color:var(--tx3); text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px;}
+  .b-formula-expr{ font-family:'JetBrains Mono',ui-monospace,monospace; font-size:22px; color:var(--ac); font-weight:500; margin-bottom:12px; padding:12px 16px; background:var(--acl); border-radius:8px; display:inline-block; line-height:1.4;}
+  html[data-theme="dark"] .b-formula-expr{ background:var(--acl);}
+  .b-formula-desc{ font-size:14px; line-height:1.6; color:var(--tx2); margin-bottom:12px;}
+  .b-formula-vars{ display:flex; flex-direction:column; gap:4px;}
+  .b-formula-var{ font-size:12.5px; color:var(--tx3); padding-left:14px; position:relative;}
+  .b-formula-var::before{ content:"·"; position:absolute; left:4px;}
+  .b-formula-topic-tag{ font-size:11.5px; color:var(--ac); font-weight:500; margin-top:12px; cursor:pointer; display:inline-flex;align-items:center;gap:4px;}
+  .b-formula-topic-tag:hover{ text-decoration:underline;}
+  .b-formulas-empty{ padding:60px 0; text-align:center; color:var(--tx3); font-size:15px;}
+
+  /* ── Página de Conceitos-Chave ───────────────────────── */
+  .b-concepts-page{ padding:48px 56px 100px; max-width:900px;}
+  .b-concepts-head{ margin-bottom:40px;}
+  .b-concepts-title{ font-family:'Source Serif 4',serif; font-size:42px; font-weight:600; letter-spacing:-.025em; color:var(--tx); line-height:1.1; margin:0 0 12px;}
+  .b-concepts-sub{ font-size:15px; color:var(--tx2); margin:0 0 20px;}
+  .b-concepts-controls{ display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  .b-concepts-search{ display:flex; align-items:center; gap:10px; background:var(--surf); border:1px solid var(--bor); border-radius:10px; padding:0 14px; flex:1; min-width:180px; max-width:380px;}
+  .b-concepts-search svg{ width:16px;height:16px;stroke:var(--tx3);fill:none;stroke-width:2;flex-shrink:0;}
+  .b-concepts-search input{ border:none; background:transparent; font:inherit; font-size:14px; color:var(--tx); outline:none; flex:1; padding:12px 0;}
+  .b-concepts-filter{ display:flex; gap:6px; flex-wrap:wrap;}
+  .b-concepts-pill{ border:1px solid var(--bor); background:var(--surf); border-radius:20px; padding:6px 14px; font-size:12px; font-weight:500; cursor:pointer; color:var(--tx2); transition:all .15s;}
+  .b-concepts-pill:hover{ border-color:var(--ac); color:var(--ac);}
+  .b-concepts-pill.active{ background:var(--ac); border-color:var(--ac); color:#fff;}
+  html[data-theme="dark"] .b-concepts-pill.active{ color:var(--bg);}
+  .b-concepts-group{ margin-bottom:40px;}
+  .b-concepts-group-label{ font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--tx3); margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--rule);}
+  .b-concepts-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:12px;}
+  .b-concept-card{ background:var(--surf); border:1px solid var(--bor); border-radius:12px; padding:16px 18px; display:flex; flex-direction:column; gap:8px; transition:border-color .15s, box-shadow .15s;}
+  .b-concept-card:hover{ border-color:var(--ac); box-shadow:0 2px 12px rgba(0,0,0,.06);}
+  .b-concept-cat{ font-size:10.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--tx3);}
+  .b-concept-title{ font-size:15px; font-weight:600; color:var(--tx); line-height:1.3;}
+  .b-concept-desc{ font-size:13px; line-height:1.55; color:var(--tx2); flex:1;}
+  .b-concept-source{ font-size:11.5px; color:var(--ac); cursor:pointer; font-weight:500; margin-top:4px; display:inline-flex;align-items:center;gap:4px;}
+  .b-concept-source:hover{ text-decoration:underline;}
+  .b-concepts-count{ font-size:12px;color:var(--tx3);margin-bottom:20px;}
+  .b-concepts-empty{ padding:60px 0; text-align:center; color:var(--tx3); font-size:15px;}
+
+  @media(max-width:768px){
+    .b-formulas-page,.b-concepts-page{ padding:24px 20px 64px;}
+    .b-formulas-title,.b-concepts-title{ font-size:28px;}
+    .b-formula-expr{ font-size:18px;}
+    .b-concepts-grid{ grid-template-columns:1fr;}
+  }
   `;
   root.appendChild(css);
 
@@ -659,6 +716,8 @@
         <div id="b-read" class="b-page"></div>
         <div id="b-fc" class="b-page"></div>
         <div id="b-intro" class="b-page b-intro-page"></div>
+        <div id="b-formulas" class="b-page"></div>
+        <div id="b-concepts" class="b-page"></div>
       </main>
     </div>
   `;
@@ -743,6 +802,15 @@
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
           <span>Flashcards</span>
         </div>
+        <div class="b-side-link ${view==='formulas'?'active':''}" data-view="formulas" style="--ch-color:#1B5FA8">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h7"/><circle cx="17" cy="17" r="3"/><path d="m19.5 19.5 1.5 1.5"/></svg>
+          <span>Formulário</span>
+        </div>
+        <div class="b-side-link ${view==='concepts'?'active':''}" data-view="concepts" style="--ch-color:#2D6A4F">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span>Conceitos-Chave</span>
+          <span class="count">${(window.T||[]).reduce((a,t)=>a+(t.cc||[]).length,0)}</span>
+        </div>
       </div>
 
       <div class="b-side-section">
@@ -784,6 +852,9 @@
             <span>${getTheme()==='dark'?'Modo claro':'Modo escuro'}</span>
           </button>
         </div>
+        <div class="ew-auth-widget" id="ew-auth-widget">
+          <!-- Preenchido por econwiki-auth.js -->
+        </div>
       </div>
     `;
 
@@ -794,6 +865,8 @@
       const v = el.dataset.view;
       if(v==='fc'){ goFlash(); return; }
       if(v==='intro'){ goIntro(); return; }
+      if(v==='formulas'){ goFormulas(); return; }
+      if(v==='concepts'){ goConcepts(); return; }
       dashFilter = el.dataset.filter;
       goDash();
     }));
@@ -802,6 +875,8 @@
       renderSide();
     });
     updateThemeBtn();
+    // Re-popular o widget de conta (o innerHTML da sidebar foi substituído)
+    if(window.EW_AUTH) window.EW_AUTH.refreshSidebarWidget();
   }
 
   function dashTopics(){
@@ -1270,7 +1345,7 @@
   })();
 
   function showPage(id){
-    ['b-dash','b-read','b-fc','b-intro'].forEach(p=> root.querySelector('#'+p).classList.toggle('active', p===id));
+    ['b-dash','b-read','b-fc','b-intro','b-formulas','b-concepts'].forEach(p=> root.querySelector('#'+p).classList.toggle('active', p===id));
   }
   function goDash(){
     view='dash';
@@ -1304,11 +1379,211 @@
     }
     renderSide();
   }
+  function goFormulas(){
+    view='formulas';
+    showPage('b-formulas');
+    window.scrollTo({top:0, behavior:'instant'});
+    renderSide(); renderFormulas();
+  }
+  function goConcepts(){
+    view='concepts';
+    showPage('b-concepts');
+    window.scrollTo({top:0, behavior:'instant'});
+    renderSide(); renderConcepts();
+  }
 
-  window.app = {
-    open:(i)=>{ if(typeof i==='number') openTopic(i); else goDash(); },
-    init:()=>{ renderSide(); renderDash(); }
-  };
+  // ── Página de Fórmulas ─────────────────────────────────
+  function renderFormulas(){
+    const FORMULAS = window.FORMULAS || [];
+    const el = root.querySelector('#b-formulas');
+    let fQuery = '';
+
+    function buildHtml(){
+      const q = fQuery.trim().toLowerCase();
+      const filtered = q ? FORMULAS.filter(f =>
+        f.nome.toLowerCase().includes(q) ||
+        f.expr.replace(/<[^>]+>/g,'').toLowerCase().includes(q) ||
+        f.desc.toLowerCase().includes(q) ||
+        f.g.toLowerCase().includes(q)
+      ) : FORMULAS;
+
+      const byGroup = {};
+      GS.forEach(g => { byGroup[g.label] = []; });
+      filtered.forEach(f => {
+        if(!byGroup[f.g]) byGroup[f.g] = [];
+        byGroup[f.g].push(f);
+      });
+
+      const groups = GS.map(g => g.label).filter(g => byGroup[g] && byGroup[g].length);
+
+      if(!filtered.length) return `
+        <div class="b-formulas-page">
+          <div class="b-formulas-head">
+            <h1 class="b-formulas-title">Formulário</h1>
+            <p class="b-formulas-sub">Todas as expressões matemáticas e condições de equilíbrio do programa.</p>
+            <div class="b-formulas-search">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input id="b-form-q" type="text" placeholder="Pesquisar fórmulas…" value="${q}" autocomplete="off">
+            </div>
+          </div>
+          <div class="b-formulas-empty">Nenhuma fórmula encontrada para «${q}».</div>
+        </div>`;
+
+      return `
+        <div class="b-formulas-page">
+          <div class="b-formulas-head">
+            <h1 class="b-formulas-title">Formulário</h1>
+            <p class="b-formulas-sub">Todas as expressões matemáticas e condições de equilíbrio do programa — ${FORMULAS.length} fórmulas.</p>
+            <div class="b-formulas-search">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input id="b-form-q" type="text" placeholder="Pesquisar fórmulas…" value="${q}" autocomplete="off">
+            </div>
+          </div>
+          ${groups.map(g => {
+            const c = EW.groupColor(g);
+            const fs = byGroup[g];
+            return `
+              <div class="b-formulas-group">
+                <div class="b-formulas-group-label" style="color:${c.ac}">${g}</div>
+                ${fs.map(f => `
+                  <div class="b-formula-card">
+                    <div class="b-formula-name">${f.nome}</div>
+                    <div class="b-formula-expr">${f.expr}</div>
+                    <div class="b-formula-desc">${f.desc}</div>
+                    ${f.vars && f.vars.length ? `<div class="b-formula-vars">${f.vars.map(v=>`<div class="b-formula-var">${v}</div>`).join('')}</div>` : ''}
+                    <div class="b-formula-topic-tag" data-ti="${f.ti}">
+                      <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2"><path d="m9 18 6-6-6-6"/></svg>
+                      Ver tópico: ${T[f.ti]?.name || ''}
+                    </div>
+                  </div>`).join('')}
+              </div>`;
+          }).join('')}
+        </div>`;
+    }
+
+    el.innerHTML = buildHtml();
+
+    el.querySelector('#b-form-q')?.addEventListener('input', e => {
+      fQuery = e.target.value;
+      el.innerHTML = buildHtml();
+      el.querySelector('#b-form-q')?.focus();
+      wireFormulas();
+    });
+    wireFormulas();
+
+    function wireFormulas(){
+      el.querySelectorAll('[data-ti]').forEach(tag => {
+        tag.addEventListener('click', () => openTopic(parseInt(tag.dataset.ti)));
+      });
+      // Re-attach search after re-render
+      el.querySelector('#b-form-q')?.addEventListener('input', e => {
+        fQuery = e.target.value;
+        el.innerHTML = buildHtml();
+        el.querySelector('#b-form-q')?.focus();
+        wireFormulas();
+      });
+    }
+  }
+
+  // ── Página de Conceitos-Chave ───────────────────────────
+  function renderConcepts(){
+    const el = root.querySelector('#b-concepts');
+    let cQuery = '';
+    let cFilter = 'all';
+
+    // Build flat list of all cc entries with group/topic context
+    const allCc = [];
+    T.forEach((t, ti) => {
+      const g = EW.groupOf(ti);
+      (t.cc || []).forEach(cc => {
+        allCc.push({ l: cc.l, t: cc.t, d: cc.d, ti, topicName: t.name, group: g ? g.label : t.g });
+      });
+    });
+    const total = allCc.length;
+
+    function buildHtml(){
+      const q = cQuery.trim().toLowerCase();
+      let filtered = allCc.filter(c => {
+        if(cFilter !== 'all' && c.group !== cFilter) return false;
+        if(!q) return true;
+        return c.t.toLowerCase().includes(q) || c.d.replace(/<[^>]+>/g,'').toLowerCase().includes(q) || c.l.toLowerCase().includes(q);
+      });
+
+      const byGroup = {};
+      GS.forEach(g => { byGroup[g.label] = []; });
+      filtered.forEach(c => {
+        if(!byGroup[c.group]) byGroup[c.group] = [];
+        byGroup[c.group].push(c);
+      });
+      const groups = GS.map(g => g.label).filter(g => byGroup[g] && byGroup[g].length);
+
+      const pills = ['all', ...GS.map(g => g.label)];
+
+      return `
+        <div class="b-concepts-page">
+          <div class="b-concepts-head">
+            <h1 class="b-concepts-title">Conceitos-Chave</h1>
+            <p class="b-concepts-sub">Todos os ${total} conceitos essenciais do programa, de todos os tópicos, numa só página.</p>
+            <div class="b-concepts-controls">
+              <div class="b-concepts-search">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input id="b-cc-q" type="text" placeholder="Pesquisar conceitos…" value="${q}" autocomplete="off">
+              </div>
+              <div class="b-concepts-filter">
+                ${pills.map(p => {
+                  const label = p === 'all' ? 'Todos' : EW.groupShortLabel(p);
+                  return `<button class="b-concepts-pill${cFilter===p?' active':''}" data-gf="${p}">${label}</button>`;
+                }).join('')}
+              </div>
+            </div>
+          </div>
+          <div class="b-concepts-count">${filtered.length} conceito${filtered.length!==1?'s':''} encontrado${filtered.length!==1?'s':''}</div>
+          ${!filtered.length ? `<div class="b-concepts-empty">Nenhum conceito encontrado para «${q}».</div>` :
+            groups.map(g => {
+              const c = EW.groupColor(g);
+              return `
+                <div class="b-concepts-group">
+                  <div class="b-concepts-group-label" style="color:${c.ac}">${g} <span style="font-weight:400;color:var(--tx3)">(${byGroup[g].length})</span></div>
+                  <div class="b-concepts-grid">
+                    ${byGroup[g].map(cc => `
+                      <div class="b-concept-card">
+                        <div class="b-concept-cat">${cc.l}</div>
+                        <div class="b-concept-title">${cc.t}</div>
+                        <div class="b-concept-desc">${cc.d.replace(/<[^>]+>/g,' ').substring(0,220)}${cc.d.length>220?'…':''}</div>
+                        <div class="b-concept-source" data-ti="${cc.ti}">
+                          <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2"><path d="m9 18 6-6-6-6"/></svg>
+                          ${cc.topicName}
+                        </div>
+                      </div>`).join('')}
+                  </div>
+                </div>`;
+            }).join('')
+          }
+        </div>`;
+    }
+
+    el.innerHTML = buildHtml();
+    wireConcepts();
+
+    function wireConcepts(){
+      el.querySelector('#b-cc-q')?.addEventListener('input', e => {
+        cQuery = e.target.value;
+        el.innerHTML = buildHtml(); wireConcepts();
+        const inp = el.querySelector('#b-cc-q'); if(inp){ inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+      });
+      el.querySelectorAll('[data-gf]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          cFilter = btn.dataset.gf;
+          el.innerHTML = buildHtml(); wireConcepts();
+        });
+      });
+      el.querySelectorAll('[data-ti]').forEach(src => {
+        src.addEventListener('click', () => openTopic(parseInt(src.dataset.ti)));
+      });
+    }
+  }
+
+
 
   window.addEventListener('ew:readchange', ()=>{ renderSide(); if(view==='dash') renderDash(); });
   window.addEventListener('ew:favchange', ()=>{ renderSide(); if(view==='dash') renderDash(); });
