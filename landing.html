@@ -837,33 +837,11 @@ footer{
   'use strict';
 
   // ── Auto-redirect: se já visitou, vai direto para o wiki ──
-  const VISITED_KEY = 'ew_visited_v1';
-  const skipKeys = ['#funcionalidades','#como-usar','#'];
-
-  function shouldAutoRedirect(){
-    // Não redirecionar se veio de dentro do wiki (referrer é index.html)
-    const ref = document.referrer;
-    if(ref && (ref.includes('index.html') || ref.endsWith('/'))) return false;
-    // Não redirecionar se há âncora na URL (utilizador quer ver uma secção)
-    if(window.location.hash) return false;
-    // Redirecionar se já visitou antes
-    try{ return !!localStorage.getItem(VISITED_KEY); }catch(e){ return false; }
-  }
-
-  // Marcar como visitado quando clica num CTA
-  document.addEventListener('click', e=>{
-    const a = e.target.closest('a[href="index.html"]');
-    if(a){ try{ localStorage.setItem(VISITED_KEY,'1'); }catch(e){} }
-  });
-
-  // Auto-redirect silencioso (apenas em retornos)
-  if(shouldAutoRedirect()){
-    window.location.replace('index.html');
-    return;
-  }
+  // Removido — a landing page é agora sempre visível quando acedida diretamente.
+  // O auto-redirect causava confusão ao impedir o acesso à página após a primeira visita.
 
   // Marcar visita atual
-  try{ localStorage.setItem(VISITED_KEY,'1'); }catch(e){}
+  try{ localStorage.setItem('ew_visited_v1','1'); }catch(e){}
 
   // Ler tema do Wiki e aplicar (para não perder o tema se o utilizador voltar)
   try{
