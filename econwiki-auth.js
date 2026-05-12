@@ -33,8 +33,8 @@
    3. Vai a Project Settings > API e copia os dois valores abaixo:
    ─────────────────────────────────────────────────────────────*/
 
-const SUPABASE_URL  = 'COLE_AQUI_O_PROJECT_URL';   // ex: https://xxxxxxxxxxxx.supabase.co
-const SUPABASE_KEY  = 'COLE_AQUI_O_ANON_KEY';       // começa por "eyJhbGci..."
+const SUPABASE_URL  = 'https://xiibexibzeaohzkjelbv.supabase.co';   // ex: https://xxxxxxxxxxxx.supabase.co
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhpaWJleGliemVhb2h6a2plbGJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1NzQzNjMsImV4cCI6MjA5NDE1MDM2M30.3tyAWqiVoAWSMOhNBOh4z3vU74jsO3UBbaOdcQUf4RA';       // começa por "eyJhbGci..."
 
 /* ════════════════════════════════════════════════════════════
    Não é necessário alterar nada abaixo desta linha.
