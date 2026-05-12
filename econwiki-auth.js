@@ -103,6 +103,25 @@ function init(){
 
 /* ── Stub (quando não configurado) ─────────────────────── */
 function buildStub(){
+  // Mesmo sem Supabase configurado, mostrar o botão com mensagem explicativa
+  function showUnconfigured(){
+    const w = document.getElementById('ew-auth-widget');
+    if(!w) return;
+    w.innerHTML = `
+      <button class="ew-auth-cta" id="ew-auth-open-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Entrar / Criar conta
+      </button>`;
+    w.querySelector('#ew-auth-open-btn').addEventListener('click', ()=>{
+      alert('Para ativar as contas de utilizador, configura o Supabase em econwiki-auth.js (ver instruções no ficheiro).');
+    });
+  }
+  // Tentar mostrar assim que o DOM estiver pronto
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', showUnconfigured);
+  } else {
+    setTimeout(showUnconfigured, 200);
+  }
   return {
     isConfigured       : ()=> false,
     getUser            : ()=> null,
@@ -112,7 +131,7 @@ function buildStub(){
     syncToCloud        : async()=> {},
     syncFromCloud      : async()=> {},
     openModal          : ()=> alert('Supabase não configurado. Vê as instruções em econwiki-auth.js.'),
-    refreshSidebarWidget: ()=> {},
+    refreshSidebarWidget: showUnconfigured,
   };
 }
 
@@ -353,69 +372,12 @@ function ptError(error){
   return error?.message || 'Erro inesperado. Tenta novamente.';
 }
 
-/* ── CSS ───────────────────────────────────────────────── */
+/* ── CSS (modal de login/registo) ──────────────────────── */
 function injectCSS(){
   if(document.getElementById('ew-auth-style')) return;
   const s = document.createElement('style');
   s.id = 'ew-auth-style';
   s.textContent = `
-  /* Widget na sidebar */
-  .ew-auth-widget{
-    padding:10px 12px;
-    border-top:1px solid var(--side-bor,#2C261F);
-    margin-top:auto;
-  }
-  .ew-auth-user{
-    display:flex;align-items:center;gap:8px;
-  }
-  .ew-auth-avatar{
-    width:30px;height:30px;
-    background:var(--ac,#1C5240);
-    border-radius:50%;
-    display:grid;place-items:center;
-    font-size:13px;font-weight:600;
-    color:#fff;
-    flex-shrink:0;
-  }
-  .ew-auth-info{flex:1;min-width:0}
-  .ew-auth-email{
-    font-size:11.5px;color:var(--side-tx,#E5DECF);
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    font-weight:500;
-  }
-  .ew-auth-sync{font-size:10px;color:var(--side-tx2,#7E7261);margin-top:1px}
-  .ew-auth-action{
-    width:28px;height:28px;
-    background:transparent;border:none;cursor:pointer;
-    color:var(--side-tx2,#7E7261);
-    border-radius:6px;
-    display:grid;place-items:center;
-    flex-shrink:0;
-    transition:background .15s,color .15s;
-  }
-  .ew-auth-action svg{width:14px;height:14px;stroke:currentColor}
-  .ew-auth-action:hover{background:var(--side-active,#2C261F);color:var(--side-tx,#E5DECF)}
-  .ew-auth-action.ew-auth-out:hover{color:#E86C6C}
-  .ew-auth-cta{
-    width:100%;
-    background:transparent;
-    border:1px solid var(--side-bor,#2C261F);
-    border-radius:8px;
-    padding:8px 10px;
-    display:flex;align-items:center;gap:8px;
-    font:inherit;font-size:12px;font-weight:500;
-    color:var(--side-tx2,#9C907B);
-    cursor:pointer;
-    transition:background .15s,color .15s,border-color .15s;
-    text-align:left;
-  }
-  .ew-auth-cta svg{width:14px;height:14px;stroke:currentColor;flex-shrink:0}
-  .ew-auth-cta:hover{
-    background:var(--side-active,#2C261F);
-    color:var(--side-tx,#E5DECF);
-    border-color:var(--side-tx2,#7E7261);
-  }
-
   /* Modal */
   #ew-auth-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:16px}
   .ew-auth-bd{position:absolute;inset:0;background:rgba(15,14,12,.6);backdrop-filter:blur(4px)}

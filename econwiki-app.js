@@ -701,6 +701,47 @@
     .b-formula-expr{ font-size:18px;}
     .b-concepts-grid{ grid-template-columns:1fr;}
   }
+
+  /* ── Widget de conta (sidebar) ───────────────────────── */
+  .ew-auth-widget{
+    padding:10px 0 0;
+    border-top:1px solid var(--side-bor,#2C261F);
+    margin-top:4px;
+  }
+  .ew-auth-user{ display:flex;align-items:center;gap:8px; }
+  .ew-auth-avatar{
+    width:30px;height:30px; background:var(--ac,#1C5240);
+    border-radius:50%; display:grid;place-items:center;
+    font-size:13px;font-weight:600; color:#fff; flex-shrink:0;
+  }
+  .ew-auth-info{ flex:1;min-width:0; }
+  .ew-auth-email{
+    font-size:11.5px; color:var(--side-tx,#E5DECF);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:500;
+  }
+  .ew-auth-sync{ font-size:10px; color:var(--side-tx2,#7E7261); margin-top:1px; }
+  .ew-auth-action{
+    width:28px;height:28px; background:transparent; border:none; cursor:pointer;
+    color:var(--side-tx2,#7E7261); border-radius:6px;
+    display:grid;place-items:center; flex-shrink:0; transition:background .15s,color .15s;
+  }
+  .ew-auth-action svg{ width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2; }
+  .ew-auth-action:hover{ background:var(--side-active,#2C261F); color:var(--side-tx,#E5DECF); }
+  .ew-auth-action.ew-auth-out:hover{ color:#E86C6C; }
+  .ew-auth-cta{
+    width:100%; background:transparent;
+    border:1px solid var(--side-bor,#2C261F); border-radius:8px;
+    padding:8px 10px; display:flex;align-items:center;gap:8px;
+    font:inherit; font-size:12px; font-weight:500;
+    color:var(--side-tx2,#9C907B); cursor:pointer;
+    transition:background .15s,color .15s,border-color .15s; text-align:left;
+  }
+  .ew-auth-cta svg{ width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0; }
+  .ew-auth-cta:hover{
+    background:var(--side-active,#2C261F);
+    color:var(--side-tx,#E5DECF);
+    border-color:var(--side-tx2,#7E7261);
+  }
   `;
   root.appendChild(css);
 
