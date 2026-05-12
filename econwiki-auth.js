@@ -318,9 +318,14 @@ function openModal(tab){
       const { data, error } = await signUp(email, pass);
       if(error){ showErr(ptError(error)); btn.disabled=false; btn.textContent='Criar conta'; }
       else if(data?.user && !data?.session){
-        showOk('Conta criada! Verifica o teu email para confirmar.');
+        showOk('✓ Conta criada! Enviámos um email de confirmação para ' + email + '. Clica no link do email para ativar a conta — depois volta aqui e usa "Entrar". Verifica também o spam.');
         btn.disabled=false; btn.textContent='Criar conta';
-      } else { close(); }
+      } else if(data?.session) {
+        close();
+      } else {
+        showOk('✓ Conta criada. Usa "Entrar" para iniciar sessão.');
+        btn.disabled=false; btn.textContent='Criar conta';
+      }
     }
   }
 
@@ -333,10 +338,18 @@ function openModal(tab){
 
 function ptError(error){
   const msg = (error?.message || '').toLowerCase();
-  if(msg.includes('invalid login')) return 'Email ou palavra-passe incorretos.';
-  if(msg.includes('already registered')) return 'Este email já tem conta. Usa "Entrar".';
-  if(msg.includes('password')) return 'A palavra-passe deve ter pelo menos 6 caracteres.';
-  if(msg.includes('rate limit')) return 'Muitas tentativas. Aguarda uns minutos.';
+  if(msg.includes('invalid login') || msg.includes('invalid credentials'))
+    return 'Email ou palavra-passe incorretos. Se criaste conta recentemente, confirma primeiro o email que recebeste (verifica também o spam).';
+  if(msg.includes('email not confirmed'))
+    return 'Confirma o teu email antes de entrar. Verifica a tua caixa de entrada (e a pasta de spam).';
+  if(msg.includes('already registered'))
+    return 'Este email já tem conta. Usa "Entrar" — ou confirma o email de verificação se ainda não o fizeste.';
+  if(msg.includes('password'))
+    return 'A palavra-passe deve ter pelo menos 6 caracteres.';
+  if(msg.includes('rate limit'))
+    return 'Muitas tentativas. Aguarda uns minutos.';
+  if(msg.includes('unable to validate') || msg.includes('invalid api'))
+    return 'Erro de configuração do Supabase. Verifica o URL e a chave em econwiki-auth.js.';
   return error?.message || 'Erro inesperado. Tenta novamente.';
 }
 
