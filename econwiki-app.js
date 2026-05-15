@@ -55,9 +55,9 @@
     --tx:#1C1814; --tx2:#5A5147; --tx3:#6A6256;
     --ac:#1C5240; --acl:#E2EDE6; --act:#0D3324;
     /* Tokens semânticos: favoritos (âmbar), know (verde-claro), later (dourado) */
-    --fav:var(--fav); --fav-bg:var(--fav-bg); --fav-bg-alt:var(--fav-bg-alt); --fav-bor:var(--fav-bor); --fav-tx:var(--fav-tx); --fav-tx-strong:var(--fav-tx-strong);
-    --know:var(--know); --know-bg:#E2EDE6; --know-bor:var(--know-bor);
-    --later:var(--fav-tx); --later-bg:var(--fav-bg); --later-bor:var(--fav-bor);
+    --fav:#B8763F; --fav-bg:#FDF3DC; --fav-bg-alt:#FAE8C8; --fav-bor:#D4A96A; --fav-tx:#7A5620; --fav-tx-strong:#4D3512;
+    --know:#2D6A4F; --know-bg:#E2EDE6; --know-bor:#B8D4C0;
+    --later:#7A5620; --later-bg:#FDF3DC; --later-bor:#D4A96A;
   }
   :root[data-theme="dark"] #app{
     --bg:#13110E; --surf:#1B1813; --surf2:#221E18;
@@ -65,9 +65,9 @@
     --bor:var(--side-bor); --bor2:#221E18; --rule:var(--side-bor);
     --tx:#EFE8D8; --tx2:#B8AC95; --tx3:#9C907B;
     --ac:#52B788; --acl:#1B2E25; --act:#A4D7B6;
-    --fav:var(--fav); --fav-bg:var(--fav-bg); --fav-bg-alt:var(--fav-bg); --fav-bor:var(--later-bor); --fav-tx:var(--fav); --fav-tx-strong:var(--fav-tx-strong);
-    --know:#A4D7B6; --know-bg:#1B2E25; --know-bor:var(--know-bor);
-    --later:var(--fav); --later-bg:var(--later-bg); --later-bor:var(--later-bor);
+    --fav:#D4A05A; --fav-bg:#2A2010; --fav-bg-alt:#2A2010; --fav-bor:#5C4420; --fav-tx:#D4A05A; --fav-tx-strong:#F0D8A8;
+    --know:#A4D7B6; --know-bg:#1B2E25; --know-bor:#2A4035;
+    --later:#D4A05A; --later-bg:#2A2010; --later-bor:#5C4420;
   }
   #app{
     background:var(--bg); color:var(--tx);
@@ -745,7 +745,7 @@
   `;
   root.appendChild(css);
 
-  root.innerHTML += `
+  root.insertAdjacentHTML('beforeend', `
     <button class="b-burger" id="b-burger" aria-label="Abrir menu" aria-controls="b-side" aria-expanded="false">
       <svg aria-hidden="true" viewBox="0 0 24 24" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
@@ -761,7 +761,7 @@
         <div id="b-concepts" class="b-page"></div>
       </main>
     </div>
-  `;
+  `);
 
   let view='dash', cur=-1, dashFilter='all';
 
@@ -799,7 +799,7 @@
     const last = EW.getLast();
     const isFc = view==='fc';
     side.innerHTML = `
-      <a class="b-side-brand" href="landing.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;cursor:pointer" title="Página inicial do EconWiki">
+      <a class="b-side-brand" href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;cursor:pointer" title="Página inicial do EconWiki">
         <div class="b-side-mark">E</div>
         <div>
           <div class="name">EconWiki</div>
@@ -1191,9 +1191,12 @@
   let fcDeck = [];
   let fcPos = 0;
   let fcFlip = false;
-  let fcFilter = 'all'; // all | unread | fav | ch:N
-  let fcKnown = new Set();
-  let fcLater = new Set();
+  let fcFilter = 'all';
+  function _loadFcSet(key){ try{ return new Set(JSON.parse(localStorage.getItem(key)||'[]')); }catch(e){ return new Set(); } }
+  function _saveFcSet(key, s){ try{ localStorage.setItem(key, JSON.stringify([...s])); }catch(e){} }
+  let fcKnown = _loadFcSet('ew_fc_known_v1');
+  let fcLater = _loadFcSet('ew_fc_later_v1');
+  function fcPersist(){ _saveFcSet('ew_fc_known_v1', fcKnown); _saveFcSet('ew_fc_later_v1', fcLater); }
 
   function buildDeck(){
     let pool;
@@ -1302,8 +1305,8 @@
     });
     fc.querySelector('#b-fc-prev').addEventListener('click', prevCard);
     fc.querySelector('#b-fc-next').addEventListener('click', nextCard);
-    fc.querySelector('#b-fc-know').addEventListener('click', ()=>{ const c=fcDeck[fcPos]; if(c) fcKnown.add(c.id); nextCard(); });
-    fc.querySelector('#b-fc-later').addEventListener('click', ()=>{ const c=fcDeck[fcPos]; if(c) fcLater.add(c.id); nextCard(); });
+    fc.querySelector('#b-fc-know').addEventListener('click', ()=>{ const c=fcDeck[fcPos]; if(c) fcKnown.add(c.id); fcPersist(); nextCard(); });
+    fc.querySelector('#b-fc-later').addEventListener('click', ()=>{ const c=fcDeck[fcPos]; if(c) fcLater.add(c.id); fcPersist(); nextCard(); });
     setTimeout(()=>{ const s = fc.querySelector('#b-fc-stage'); if(s && view==='fc') s.focus(); }, 30);
 
     function wireFcHead(){
@@ -1388,20 +1391,28 @@
   function showPage(id){
     ['b-dash','b-read','b-fc','b-intro','b-formulas','b-concepts'].forEach(p=> root.querySelector('#'+p).classList.toggle('active', p===id));
   }
+
+  // ── History API ──
+  let _fromPop = false;
+  function pushNav(state){ if(!_fromPop) history.pushState(state, '', ''); }
+
   function goDash(){
     view='dash';
+    pushNav({v:'dash', f:dashFilter});
     showPage('b-dash');
     window.scrollTo({top:0, behavior:'instant'});
     renderSide(); renderDash();
   }
   function openTopic(i){
     view='read'; cur=i; EW.setLast(i);
+    pushNav({v:'read', i:i});
     showPage('b-read');
     window.scrollTo({top:0, behavior:'instant'});
     renderSide(); renderRead(i);
   }
   function goFlash(){
     view='fc';
+    pushNav({v:'fc'});
     showPage('b-fc');
     window.scrollTo({top:0, behavior:'instant'});
     fcDeck = buildDeck(); fcPos = 0; fcFlip = false; fcKnown.clear(); fcLater.clear();
@@ -1409,6 +1420,7 @@
   }
   function goIntro(){
     view='intro';
+    pushNav({v:'intro'});
     showPage('b-intro');
     window.scrollTo({top:0, behavior:'instant'});
     const host = root.querySelector('#b-intro');
@@ -1422,12 +1434,14 @@
   }
   function goFormulas(){
     view='formulas';
+    pushNav({v:'formulas'});
     showPage('b-formulas');
     window.scrollTo({top:0, behavior:'instant'});
     renderSide(); renderFormulas();
   }
   function goConcepts(){
     view='concepts';
+    pushNav({v:'concepts'});
     showPage('b-concepts');
     window.scrollTo({top:0, behavior:'instant'});
     renderSide(); renderConcepts();
@@ -1503,13 +1517,6 @@
     }
 
     el.innerHTML = buildHtml();
-
-    el.querySelector('#b-form-q')?.addEventListener('input', e => {
-      fQuery = e.target.value;
-      el.innerHTML = buildHtml();
-      el.querySelector('#b-form-q')?.focus();
-      wireFormulas();
-    });
     wireFormulas();
 
     function wireFormulas(){
@@ -1628,6 +1635,22 @@
 
   window.addEventListener('ew:readchange', ()=>{ renderSide(); if(view==='dash') renderDash(); });
   window.addEventListener('ew:favchange', ()=>{ renderSide(); if(view==='dash') renderDash(); });
+
+  // ── History API: popstate ──
+  window.addEventListener('popstate', e=>{
+    const s = e.state;
+    _fromPop = true;
+    if(!s){ dashFilter='all'; goDash(); }
+    else if(s.v==='dash'){ dashFilter = s.f||'all'; goDash(); }
+    else if(s.v==='read' && typeof s.i==='number'){ openTopic(s.i); }
+    else if(s.v==='fc'){ goFlash(); }
+    else if(s.v==='intro'){ goIntro(); }
+    else if(s.v==='formulas'){ goFormulas(); }
+    else if(s.v==='concepts'){ goConcepts(); }
+    else { dashFilter='all'; goDash(); }
+    _fromPop = false;
+  });
+  history.replaceState({v:'dash', f:'all'}, '', '');
 
   // init
   renderSide();

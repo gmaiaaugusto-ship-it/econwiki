@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EconWiki — Introdução à Economia</title>
+
+<template id="__bundler_thumbnail" data-bg-color="#1F1B16">
+  <svg aria-hidden="true" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#1F1B16"/>
+    <rect x="360" y="240" width="480" height="320" rx="32" fill="var(--ac, #1C5240)"/>
+    <text x="600" y="450" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-weight="700" font-size="220" fill="#FBF8F0">E</text>
+    <rect x="480" y="600" width="240" height="6" rx="3" fill="var(--ac-bright, #52B788)"/>
+  </svg>
+</template>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400..700;1,400..700&family=Source+Serif+4:ital,wght@0,400..700;1,400..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  *,*::before,*::after{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  html[data-theme="dark"]{ background:#13110E; color-scheme:dark; }
+  html[data-theme="light"], html:not([data-theme]){ background:#FAF7F0; color-scheme:light; }
+
+  /* Variáveis globais (fora do #app) — respondem ao tema, em harmonia com os Tweaks */
+  html[data-theme="light"], html:not([data-theme]){
+    --ac: #1C5240;
+    --act: #0D3324;
+    --acl: #E2EDE6;
+    --ac-bright: #52B788;
+    --acl-bor: #C8DDD0;
+    --acl-dark: #1B2E25;
+    --acl-dark-bor: #264738;
+    --act-dark: #A4D7B6;
+    --side: #1F1B16;
+    --gol: #FBF1D6;
+    --tx: #1A1611;
+  }
+  html[data-theme="dark"]{
+    --ac: #52B788;
+    --act: #A4D7B6;
+    --acl: #1B2E25;
+    --ac-bright: #52B788;
+    --acl-bor: #2A4035;
+    --acl-dark: #1B2E25;
+    --acl-dark-bor: #264738;
+    --act-dark: #A4D7B6;
+    --side: #0B0A08;
+    --gol: #2A2210;
+    --tx: #EFE8D8;
+  }
+
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    min-height:100vh;
+  }
+
+  /* ── Cmd+K palette (shared) ── */
+  #ew-cmdk{ position:fixed; inset:0; z-index:300; display:none;}
+  #ew-cmdk.open{ display:block;}
+  .ew-cmdk-bd{ position:absolute; inset:0; background:rgba(15,14,12,.55); backdrop-filter:blur(4px); animation:ewfade .2s ease;}
+  .ew-cmdk-panel{
+    position:absolute; top:clamp(8px, 14vh, 80px); left:50%; transform:translateX(-50%);
+    width:min(680px, calc(100% - 32px));
+    max-height:calc(100vh - 24px);
+    background:var(--cmdk-bg,#FBF8F0);
+    border:1px solid var(--cmdk-bor,#D9CFB7);
+    border-radius:16px;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.4);
+    overflow:hidden; color:var(--cmdk-tx,var(--tx, #1A1611));
+    font-family:'Inter',-apple-system,sans-serif;
+    animation:ewpop .22s cubic-bezier(.2,.8,.3,1);
+    display:flex; flex-direction:column;
+  }
+  @media (max-width: 600px){
+    .ew-cmdk-panel{ top:8px; max-height:calc(100vh - 16px); width:calc(100% - 16px);}
+    .ew-cmdk-results{ max-height:none; flex:1;}
+  }
+  html[data-theme="dark"] .ew-cmdk-panel{ --cmdk-bg:#1B1813; --cmdk-bor:#2A251D; --cmdk-tx:#EFE8D8; --cmdk-tx2:#A89E89;}
+  @keyframes ewfade{ from{ opacity:0;}}
+  @keyframes ewpop{ from{ opacity:0; transform:translate(-50%,-8px);}}
+  .ew-cmdk-input-wrap{ display:flex; align-items:center; gap:12px; padding:14px 18px; border-bottom:1px solid var(--cmdk-bor,#E6DECC);}
+  .ew-cmdk-input-wrap svg{ width:18px; height:18px; color:var(--cmdk-tx2, #6A6256); flex-shrink:0;}
+  .ew-cmdk-input-wrap input{ flex:1; background:transparent; border:none; outline:none; font:inherit; font-size:16px; color:inherit;}
+  .ew-cmdk-input-wrap input::placeholder{ color:var(--cmdk-tx2, #6A6256);}
+  .ew-cmdk-input-wrap kbd{ font:inherit; font-size:11px; padding:3px 7px; border-radius:5px; background:rgba(127,116,98,.12); color:inherit; border:1px solid var(--cmdk-bor,#D9CFB7);}
+  .ew-cmdk-results{ max-height:60vh; overflow-y:auto; padding:6px;}
+  .ew-cmdk-row{
+    width:100%; text-align:left; background:none; border:none; cursor:pointer; font:inherit;
+    display:grid; grid-template-columns:8px 1fr auto; gap:14px;
+    padding:11px 14px; border-radius:10px; color:inherit; align-items:center;
+    transition:background .1s;
+  }
+  .ew-cmdk-row.active, .ew-cmdk-row:hover{ background:rgba(127,116,98,.12);}
+  .ew-cmdk-dot{ width:8px; height:8px; border-radius:50%;}
+  .ew-cmdk-body{ display:flex; flex-direction:column; gap:3px; min-width:0;}
+  .ew-cmdk-title{ font-family:'Source Serif 4',Georgia,serif; font-size:15.5px; font-weight:600; line-height:1.3;}
+  .ew-cmdk-sub{ font-size:12.5px; color:var(--cmdk-tx2, #6A6256); line-height:1.45; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .ew-cmdk-num{ font-family:'Source Serif 4',serif; font-style:italic; font-size:12px; color:var(--cmdk-tx2, #6A6256); font-variant-numeric:tabular-nums;}
+  mark{ background:var(--gol, #FBF1D6); color:var(--tx, #1A1611); padding:0 2px; border-radius:2px;}
+  .ew-cmdk-empty{ padding:32px 18px; text-align:center; color:var(--cmdk-tx2, #6A6256); font-size:13.5px;}
+  .ew-cmdk-foot{ display:flex; gap:18px; padding:10px 18px; border-top:1px solid var(--cmdk-bor,#E6DECC); background:rgba(127,116,98,.06); font-size:11.5px; color:var(--cmdk-tx2, #6A6256);}
+  .ew-cmdk-foot kbd{ font:inherit; font-size:10.5px; padding:2px 6px; border-radius:4px; margin:0 2px; background:transparent; color:inherit; border:1px solid var(--cmdk-bor,#D9CFB7);}
+
+  /* ── Chat modal (shared) ── */
+  .ew-fab{
+    position:fixed; bottom:24px; right:24px; z-index:150;
+    width:52px; height:52px; border-radius:50%;
+    background:var(--ac, #1C5240); color:#fff;
+    border:none; cursor:pointer;
+    box-shadow:0 12px 30px -6px rgba(28,82,64,.45);
+    display:grid; place-items:center;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .ew-fab:hover{ transform:scale(1.06);}
+  .ew-fab svg{ width:22px;height:22px; stroke:currentColor; fill:none; stroke-width:2;}
+  html[data-theme="dark"] .ew-fab{ background:var(--ac-bright, #52B788); color:var(--side, #0B0A08);}
+
+  #ew-chat{ position:fixed; inset:0; z-index:250; display:none;}
+  #ew-chat.open{ display:block;}
+  .ew-chat-bd{ position:absolute; inset:0; background:rgba(15,14,12,.5); backdrop-filter:blur(3px);}
+  .ew-chat-panel{
+    position:absolute; right:24px; bottom:24px;
+    width:min(420px, calc(100% - 48px));
+    height:min(640px, calc(100% - 48px));
+    background:var(--chat-bg,#FBF8F0);
+    border:1px solid var(--chat-bor,#D9CFB7);
+    border-radius:18px;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.4);
+    display:flex; flex-direction:column;
+    color:var(--chat-tx,var(--tx, #1A1611)); overflow:hidden;
+    animation:ewpop .22s cubic-bezier(.2,.8,.3,1);
+  }
+  html[data-theme="dark"] .ew-chat-panel{ --chat-bg:#1B1813; --chat-bor:#2A251D; --chat-tx:#EFE8D8; --chat-tx2:#A89E89;}
+  .ew-chat-head{ display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid var(--chat-bor,#E6DECC); background:rgba(127,116,98,.06);}
+  .ew-chat-head .icon{ width:34px;height:34px; border-radius:9px; background:var(--ac, #1C5240); color:#fff; display:grid;place-items:center; font-family:'Source Serif 4',serif; font-weight:700; font-size:16px;}
+  .ew-chat-head .ti{ font-family:'Source Serif 4',serif; font-size:16px; font-weight:600;}
+  .ew-chat-head .sub{ font-size:11.5px; color:var(--cmdk-tx2, #6A6256); margin-top:1px;}
+  .ew-chat-close{ margin-left:auto; background:none; border:none; cursor:pointer; color:var(--cmdk-tx2, #6A6256); padding:10px; border-radius:8px; display:grid;place-items:center; min-width:44px; min-height:44px;}
+  .ew-chat-close:hover{ background:rgba(127,116,98,.15); color:inherit;}
+  .ew-chat-close svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2;}
+  .ew-chat-body{ flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px;}
+  .ew-msg{ max-width:88%; padding:10px 14px; border-radius:14px; font-size:14px; line-height:1.55;}
+  .ew-msg.user{ align-self:flex-end; background:var(--ac, #1C5240); color:#fff; border-bottom-right-radius:4px;}
+  .ew-msg.ai{ align-self:flex-start; background:rgba(127,116,98,.08); border:1px solid var(--chat-bor,#E6DECC); border-bottom-left-radius:4px; font-family:'Source Serif 4',Georgia,serif; font-size:14.5px; color:inherit;}
+  .ew-msg.ai .typing{ display:inline-flex; gap:3px;}
+  .ew-msg.ai .typing span{ width:6px;height:6px;border-radius:50%; background:var(--cmdk-tx2, #6A6256); animation:ewdot 1.2s infinite;}
+  .ew-msg.ai .typing span:nth-child(2){ animation-delay:.2s;}
+  .ew-msg.ai .typing span:nth-child(3){ animation-delay:.4s;}
+  @keyframes ewdot{ 0%,60%,100%{opacity:.3;} 30%{opacity:1;}}
+  .ew-chat-sugs{ padding:0 16px 12px; display:flex; flex-wrap:wrap; gap:6px;}
+  .ew-chat-sugs button{ font:inherit; font-size:12px; background:transparent; border:1px solid var(--chat-bor,#D9CFB7); color:inherit; padding:7px 11px; border-radius:99px; cursor:pointer;}
+  .ew-chat-sugs button:hover{ background:rgba(127,116,98,.12);}
+  .ew-chat-input{ border-top:1px solid var(--chat-bor,#E6DECC); padding:12px 16px 14px; display:flex; gap:8px; align-items:flex-end;}
+  .ew-chat-input textarea{ flex:1; resize:none; font:inherit; font-size:14px; background:transparent; border:1px solid var(--chat-bor,#D9CFB7); border-radius:10px; padding:10px 12px; color:inherit; outline:none; min-height:40px; max-height:120px; line-height:1.4;}
+  .ew-chat-input textarea:focus{ border-color:var(--ac, #1C5240);}
+  .ew-chat-input button{ width:44px;height:44px; border-radius:10px; background:var(--ac, #1C5240); color:#fff; border:none; cursor:pointer; display:grid;place-items:center; flex-shrink:0;}
+  .ew-chat-input button:hover{ background:var(--act, #0D3324);}
+  .ew-chat-input button:disabled{ background:var(--cmdk-tx2, #6A6256); cursor:not-allowed;}
+  .ew-chat-input button svg{ width:16px;height:16px; stroke:currentColor; fill:none; stroke-width:2;}
+  .ew-chat-disclaimer{ font-size:11px; color:var(--chat-tx2, #8A8475); text-align:center; padding:6px 16px 10px; line-height:1.4; border-top:1px solid var(--chat-bor,#E6DECC);}
+  .ew-chat-gate{ padding:24px 20px; text-align:center;}
+  .ew-chat-gate strong{ display:block; font-size:16px; margin-bottom:8px; color:inherit;}
+  .ew-chat-gate p{ font-size:13.5px; line-height:1.55; color:var(--chat-tx2,#8A8475); margin:0 0 16px;}
+  .ew-chat-gate button{ font:inherit; font-size:13px; font-weight:600; background:var(--ac,#1C5240); color:#fff; border:none; border-radius:8px; padding:10px 24px; cursor:pointer;}
+  .ew-chat-gate button:hover{ filter:brightness(1.1);}
+  .ew-chat-gate-note{ display:block; font-size:11.5px; color:var(--chat-tx2,#8A8475); margin-top:8px;}
+  .ew-chat-gate-limit{ display:block; font-size:12px; color:var(--ac-error,#A33A2A); margin-top:8px; font-weight:500;}
+  .ew-chat-ctx{ padding:8px 16px; background:var(--acl, #E2EDE6); color:var(--act, #0D3324); font-size:12px; border-bottom:1px solid var(--acl-bor, #C8DDD0); display:flex; align-items:center; gap:8px;}
+  html[data-theme="dark"] .ew-chat-ctx{ background:var(--acl-dark, #1B2E25); color:var(--act-dark, #A4D7B6); border-bottom-color:var(--acl-dark-bor, #264738);}
+  .ew-chat-ctx svg{ width:13px;height:13px; stroke:currentColor; fill:none; stroke-width:2;}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<button class="ew-fab" id="ew-fab" title="Pergunta ao Assistente" aria-label="Abrir chat">
+  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+
+<div id="ew-chat" role="dialog" aria-modal="true" aria-label="Assistente">
+  <div class="ew-chat-bd" id="ew-chat-bd"></div>
+  <div class="ew-chat-panel">
+    <div class="ew-chat-head">
+      <div class="icon">A</div>
+      <div>
+        <div class="ti">Assistente EconWiki</div>
+        <div class="sub">Pergunta sobre qualquer tópico</div>
+      </div>
+      <button class="ew-chat-close" id="ew-chat-close" aria-label="Fechar">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div id="ew-chat-ctx-wrap"></div>
+    <div class="ew-chat-body" id="ew-chat-body"></div>
+    <div class="ew-chat-sugs" id="ew-chat-sugs"></div>
+    <div class="ew-chat-input">
+      <textarea id="ew-chat-input" rows="1" placeholder="Escreve a tua pergunta…"></textarea>
+      <button id="ew-chat-send" aria-label="Enviar">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+      </button>
+    </div>
+    <div class="ew-chat-disclaimer">As respostas são geradas por IA e podem conter erros. Verifica sempre com os materiais oficiais da cadeira.</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
+<script src="econwiki-data.js"></script>
+<script src="app-shared.js"></script>
+<script src="econwiki-auth.js"></script>
+<script src="econwiki-app.js"></script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+<script src="tweaks-panel.js"></script>
+<script src="econwiki-tweaks.js"></script>
+
+<script>
+(function(){
+  'use strict';
+  const T = window.T || [];
+  const EW = window.EW;
+  const SUPABASE_URL = (typeof window.SUPABASE_URL !== 'undefined')
+    ? window.SUPABASE_URL
+    : 'https://xiibexibzeaohzkjelbv.supabase.co';
+
+  if(window.app && window.app.init) window.app.init();
+
+  EW.installCmdK((i)=>{ if(window.app && window.app.open) window.app.open(i);});
+
+  const chat = document.getElementById('ew-chat');
+  const chatBody = document.getElementById('ew-chat-body');
+  const chatInput = document.getElementById('ew-chat-input');
+  const chatSend  = document.getElementById('ew-chat-send');
+  const chatSugs  = document.getElementById('ew-chat-sugs');
+  const chatCtxWrap = document.getElementById('ew-chat-ctx-wrap');
+  let chatCtxIdx = -1, chatBusy = false;
+
+  let chatLastFocus = null;
+  function openChat(idx){
+    chatLastFocus = document.activeElement;
+    chatCtxIdx = (typeof idx==='number') ? idx : -1;
+    chat.classList.add('open');
+    refreshChatCtx();
+    if(!chatBody.children.length) pushMsg('ai', 'Olá! Posso ajudar a explicar conceitos do programa, dar exemplos jurídicos, ou clarificar pontos do tópico que estás a ler. Faz a tua pergunta — ou clica numa das sugestões abaixo.');
+    setTimeout(()=>chatInput.focus(), 100);
+  }
+  function closeChat(){
+    chat.classList.remove('open');
+    if(chatLastFocus && typeof chatLastFocus.focus === 'function'){
+      try{ chatLastFocus.focus(); }catch(e){}
+    }
+    chatLastFocus = null;
+  }
+  function refreshChatCtx(){
+    if(chatCtxIdx>=0 && T[chatCtxIdx]){
+      chatCtxWrap.innerHTML = `<div class="ew-chat-ctx"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>A perguntar sobre: <strong>${T[chatCtxIdx].name}</strong></span></div>`;
+      const sugs = (T[chatCtxIdx].sug||[]).slice(0,4);
+      chatSugs.innerHTML = sugs.map(s=>`<button>${s}</button>`).join('');
+      chatSugs.querySelectorAll('button').forEach((b,k)=>b.addEventListener('click', ()=>{ chatInput.value = sugs[k]; chatInput.focus();}));
+    } else {
+      chatCtxWrap.innerHTML = '';
+      const seed = ['O que é custo de oportunidade?','Como funciona a curva de oferta e procura?','O que é um monopólio natural?','Diferença entre PIB nominal e real?'];
+      chatSugs.innerHTML = seed.map(s=>`<button>${s}</button>`).join('');
+      chatSugs.querySelectorAll('button').forEach((b,k)=>b.addEventListener('click', ()=>{ chatInput.value = seed[k]; chatInput.focus();}));
+    }
+  }
+  function pushMsg(who, text){
+    const el = document.createElement('div');
+    el.className = 'ew-msg '+who;
+    el.innerHTML = text;
+    chatBody.appendChild(el);
+    chatBody.scrollTop = chatBody.scrollHeight;
+    return el;
+  }
+  function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function formatReply(s){
+    let h = escapeHtml(s);
+    h = h.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    h = h.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    h = h.split(/\n\s*\n/).map(p=>`<p style="margin:0 0 10px">${p.replace(/\n/g,'<br>')}</p>`).join('');
+    return h;
+  }
+  function buildGateHtml(type){
+    if(type==='login') return `
+      <div class="ew-chat-gate">
+        <strong>Inicia sessão para usar o Assistente</strong>
+        <p>O chat com IA requer uma conta. Cria a tua conta gratuitamente e subscreve o plano Premium para aceder.</p>
+        <button onclick="window.EW_AUTH && window.EW_AUTH.openModal()">Iniciar sessão</button>
+      </div>`;
+    if(type==='subscribe') return `
+      <div class="ew-chat-gate">
+        <strong>Assistente Premium</strong>
+        <p>O chat com IA está disponível para subscritores. Inclui explicações personalizadas, exemplos jurídicos e ajuda com qualquer tópico do programa.</p>
+        <button onclick="window.EW_AUTH && window.EW_AUTH.startCheckout()">Subscrever Premium</button>
+        <span class="ew-chat-gate-note">Cancela quando quiseres · Sem compromisso</span>
+      </div>`;
+    if(type==='limit') return `
+      <div class="ew-chat-gate">
+        <strong>Limite diário atingido</strong>
+        <p>Atingiste o número máximo de mensagens por hoje. O contador volta a zero à meia-noite.</p>
+        <span class="ew-chat-gate-limit">Tenta novamente amanhã.</span>
+      </div>`;
+    return '';
+  }
+
+  async function sendMsg(){
+    if(chatBusy) return;
+    const q = chatInput.value.trim(); if(!q) return;
+    pushMsg('user', escapeHtml(q));
+    chatInput.value=''; chatInput.style.height='auto';
+    const aiEl = pushMsg('ai', '<span class="typing"><span></span><span></span><span></span></span>');
+    chatBusy = true; chatSend.disabled = true;
+
+    // 1. Verificar autenticação
+    const auth = window.EW_AUTH;
+    let session = null;
+    try{ session = auth?.getSession ? await auth.getSession() : null; }catch(e){}
+    if(!session){
+      aiEl.innerHTML = buildGateHtml('login');
+      chatBusy = false; chatSend.disabled = false;
+      return;
+    }
+
+    // 2. Construir prompt com contexto
+    let ctxText = '';
+    if(chatCtxIdx>=0 && T[chatCtxIdx]){
+      const t = T[chatCtxIdx];
+      ctxText = `Tópico em foco: "${t.name}". Introdução: ${EW.plain(t.intro)}. Conceitos: ${(t.cc||[]).map(c=>c.t+' — '+c.d).join('; ')}.`;
+    }
+    const prompt = `És o assistente do site EconWiki, um manual digital para a cadeira de Introdução à Economia da UCP Direito. Responde em português europeu, de forma clara, didática e concisa (3-6 frases). Se for relevante, dá um exemplo aplicado ao Direito (contratos, regulação, concorrência, propriedade).\n\n${ctxText ? 'Contexto: '+ctxText+'\n\n' : ''}Pergunta do aluno: ${q}`;
+
+    // 3. Chamar Edge Function (proxy para Claude API)
+    const EDGE_URL = SUPABASE_URL + '/functions/v1/chat-proxy';
+    try{
+      const res = await fetch(EDGE_URL, {
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer ' + session.access_token,
+        },
+        body: JSON.stringify({ prompt }),
+      });
+
+      if(res.status === 403){
+        aiEl.innerHTML = buildGateHtml('subscribe');
+        chatBusy = false; chatSend.disabled = false;
+        return;
+      }
+      if(res.status === 429){
+        aiEl.innerHTML = buildGateHtml('limit');
+        chatBusy = false; chatSend.disabled = false;
+        return;
+      }
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+
+      const data = await res.json();
+      aiEl.innerHTML = formatReply(data.reply || 'Sem resposta disponível.');
+    }catch(err){
+      aiEl.innerHTML = '<em style="color:var(--ac-error, #A33A2A)">Não consegui obter uma resposta neste momento. Tenta novamente.</em>';
+    }
+    chatBody.scrollTop = chatBody.scrollHeight;
+    chatBusy = false; chatSend.disabled = false;
+  }
+  document.getElementById('ew-fab').addEventListener('click', ()=> openChat());
+  document.getElementById('ew-chat-close').addEventListener('click', closeChat);
+  document.getElementById('ew-chat-bd').addEventListener('click', closeChat);
+  chatSend.addEventListener('click', sendMsg);
+  chatInput.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMsg();}});
+  chatInput.addEventListener('input', ()=>{ chatInput.style.height='auto'; chatInput.style.height = Math.min(120, chatInput.scrollHeight)+'px';});
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && chat.classList.contains('open')) closeChat();});
+
+  // Focus trap: ciclo Tab confinado ao painel do chat
+  chat.addEventListener('keydown', e=>{
+    if(e.key!=='Tab' || !chat.classList.contains('open')) return;
+    const focusables = Array.from(chat.querySelectorAll(
+      'a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
+    )).filter(el=> el.offsetParent !== null);
+    if(!focusables.length) return;
+    const first = focusables[0], last = focusables[focusables.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  });
+
+  window.openChat = openChat;
+})();
+</script>
+</body>
+</html>

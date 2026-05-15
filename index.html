@@ -3,315 +3,1001 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EconWiki — Introdução à Economia</title>
-
-<template id="__bundler_thumbnail" data-bg-color="#1F1B16">
-  <svg aria-hidden="true" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-    <rect width="1200" height="800" fill="#1F1B16"/>
-    <rect x="360" y="240" width="480" height="320" rx="32" fill="var(--ac, #1C5240)"/>
-    <text x="600" y="450" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-weight="700" font-size="220" fill="#FBF8F0">E</text>
-    <rect x="480" y="600" width="240" height="6" rx="3" fill="var(--ac-bright, #52B788)"/>
-  </svg>
-</template>
-
+<title>EconWiki — Introdução à Economia · UCP</title>
+<meta name="description" content="Manual interativo de Introdução à Economia para a Faculdade de Direito da UCP. 21 tópicos, 135 conceitos-chave, flashcards e formulário.">
+<meta property="og:title" content="EconWiki — Introdução à Economia · UCP">
+<meta property="og:description" content="Manual interativo para estudantes de Direito. Conceitos-chave, gráficos, exemplos jurídicos e assistente IA.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_PT">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400..700;1,400..700&family=Source+Serif+4:ital,wght@0,400..700;1,400..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-  *,*::before,*::after{ box-sizing:border-box; }
-  html,body{ margin:0; padding:0; }
-  html[data-theme="dark"]{ background:#13110E; color-scheme:dark; }
-  html[data-theme="light"], html:not([data-theme]){ background:#FAF7F0; color-scheme:light; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,sans-serif;
+  background:#FAF7F0;
+  color:#1C1814;
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-  /* Variáveis globais (fora do #app) — respondem ao tema, em harmonia com os Tweaks */
-  html[data-theme="light"], html:not([data-theme]){
-    --ac: #1C5240;
-    --act: #0D3324;
-    --acl: #E2EDE6;
-    --ac-bright: #52B788;
-    --acl-bor: #C8DDD0;
-    --acl-dark: #1B2E25;
-    --acl-dark-bor: #264738;
-    --act-dark: #A4D7B6;
-    --side: #1F1B16;
-    --gol: #FBF1D6;
-    --tx: #1A1611;
-  }
-  html[data-theme="dark"]{
-    --ac: #52B788;
-    --act: #A4D7B6;
-    --acl: #1B2E25;
-    --ac-bright: #52B788;
-    --acl-bor: #2A4035;
-    --acl-dark: #1B2E25;
-    --acl-dark-bor: #264738;
-    --act-dark: #A4D7B6;
-    --side: #0B0A08;
-    --gol: #2A2210;
-    --tx: #EFE8D8;
-  }
+/* ── CSS Variables ── */
+:root{
+  --ac:#1C5240;
+  --act:#0D3324;
+  --acl:#E2EDE6;
+  --acl-bor:#C8DDD0;
+  --ac-bright:#52B788;
+  --side:#1F1B16;
+  --bg:#FAF7F0;
+  --surf:#FFFFFF;
+  --bor:#E6DECC;
+  --tx:#1C1814;
+  --tx2:#5A5147;
+  --tx3:#9C907B;
+  --gol:#FBF1D6;
+  --ff-serif:'Source Serif 4',Georgia,serif;
+}
 
-  body{
-    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-    min-height:100vh;
-  }
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
-  /* ── Cmd+K palette (shared) ── */
-  #ew-cmdk{ position:fixed; inset:0; z-index:300; display:none;}
-  #ew-cmdk.open{ display:block;}
-  .ew-cmdk-bd{ position:absolute; inset:0; background:rgba(15,14,12,.55); backdrop-filter:blur(4px); animation:ewfade .2s ease;}
-  .ew-cmdk-panel{
-    position:absolute; top:clamp(8px, 14vh, 80px); left:50%; transform:translateX(-50%);
-    width:min(680px, calc(100% - 32px));
-    max-height:calc(100vh - 24px);
-    background:var(--cmdk-bg,#FBF8F0);
-    border:1px solid var(--cmdk-bor,#D9CFB7);
-    border-radius:16px;
-    box-shadow:0 30px 80px -20px rgba(0,0,0,.4);
-    overflow:hidden; color:var(--cmdk-tx,var(--tx, #1A1611));
-    font-family:'Inter',-apple-system,sans-serif;
-    animation:ewpop .22s cubic-bezier(.2,.8,.3,1);
-    display:flex; flex-direction:column;
-  }
-  @media (max-width: 600px){
-    .ew-cmdk-panel{ top:8px; max-height:calc(100vh - 16px); width:calc(100% - 16px);}
-    .ew-cmdk-results{ max-height:none; flex:1;}
-  }
-  html[data-theme="dark"] .ew-cmdk-panel{ --cmdk-bg:#1B1813; --cmdk-bor:#2A251D; --cmdk-tx:#EFE8D8; --cmdk-tx2:#A89E89;}
-  @keyframes ewfade{ from{ opacity:0;}}
-  @keyframes ewpop{ from{ opacity:0; transform:translate(-50%,-8px);}}
-  .ew-cmdk-input-wrap{ display:flex; align-items:center; gap:12px; padding:14px 18px; border-bottom:1px solid var(--cmdk-bor,#E6DECC);}
-  .ew-cmdk-input-wrap svg{ width:18px; height:18px; color:var(--cmdk-tx2, #6A6256); flex-shrink:0;}
-  .ew-cmdk-input-wrap input{ flex:1; background:transparent; border:none; outline:none; font:inherit; font-size:16px; color:inherit;}
-  .ew-cmdk-input-wrap input::placeholder{ color:var(--cmdk-tx2, #6A6256);}
-  .ew-cmdk-input-wrap kbd{ font:inherit; font-size:11px; padding:3px 7px; border-radius:5px; background:rgba(127,116,98,.12); color:inherit; border:1px solid var(--cmdk-bor,#D9CFB7);}
-  .ew-cmdk-results{ max-height:60vh; overflow-y:auto; padding:6px;}
-  .ew-cmdk-row{
-    width:100%; text-align:left; background:none; border:none; cursor:pointer; font:inherit;
-    display:grid; grid-template-columns:8px 1fr auto; gap:14px;
-    padding:11px 14px; border-radius:10px; color:inherit; align-items:center;
-    transition:background .1s;
-  }
-  .ew-cmdk-row.active, .ew-cmdk-row:hover{ background:rgba(127,116,98,.12);}
-  .ew-cmdk-dot{ width:8px; height:8px; border-radius:50%;}
-  .ew-cmdk-body{ display:flex; flex-direction:column; gap:3px; min-width:0;}
-  .ew-cmdk-title{ font-family:'Source Serif 4',Georgia,serif; font-size:15.5px; font-weight:600; line-height:1.3;}
-  .ew-cmdk-sub{ font-size:12.5px; color:var(--cmdk-tx2, #6A6256); line-height:1.45; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-  .ew-cmdk-num{ font-family:'Source Serif 4',serif; font-style:italic; font-size:12px; color:var(--cmdk-tx2, #6A6256); font-variant-numeric:tabular-nums;}
-  mark{ background:var(--gol, #FBF1D6); color:var(--tx, #1A1611); padding:0 2px; border-radius:2px;}
-  .ew-cmdk-empty{ padding:32px 18px; text-align:center; color:var(--cmdk-tx2, #6A6256); font-size:13.5px;}
-  .ew-cmdk-foot{ display:flex; gap:18px; padding:10px 18px; border-top:1px solid var(--cmdk-bor,#E6DECC); background:rgba(127,116,98,.06); font-size:11.5px; color:var(--cmdk-tx2, #6A6256);}
-  .ew-cmdk-foot kbd{ font:inherit; font-size:10.5px; padding:2px 6px; border-radius:4px; margin:0 2px; background:transparent; color:inherit; border:1px solid var(--cmdk-bor,#D9CFB7);}
+.fade-up{animation:fadeUp .6s cubic-bezier(.2,.8,.3,1) both}
+.fade-up:nth-child(1){animation-delay:.05s}
+.fade-up:nth-child(2){animation-delay:.15s}
+.fade-up:nth-child(3){animation-delay:.25s}
+.fade-up:nth-child(4){animation-delay:.35s}
 
-  /* ── Chat modal (shared) ── */
-  .ew-fab{
-    position:fixed; bottom:24px; right:24px; z-index:150;
-    width:52px; height:52px; border-radius:50%;
-    background:var(--ac, #1C5240); color:#fff;
-    border:none; cursor:pointer;
-    box-shadow:0 12px 30px -6px rgba(28,82,64,.45);
-    display:grid; place-items:center;
-    transition:transform .15s, box-shadow .15s;
-  }
-  .ew-fab:hover{ transform:scale(1.06);}
-  .ew-fab svg{ width:22px;height:22px; stroke:currentColor; fill:none; stroke-width:2;}
-  html[data-theme="dark"] .ew-fab{ background:var(--ac-bright, #52B788); color:var(--side, #0B0A08);}
+/* ── Topbar ── */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(20px,5vw,72px);
+  height:60px;
+  background:rgba(250,247,240,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--bor);
+}
+.topbar-brand{
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;color:inherit;
+}
+.topbar-mark{
+  width:32px;height:32px;
+  background:var(--side);
+  border-radius:8px;
+  display:grid;place-items:center;
+  font-family:var(--ff-serif);
+  font-style:italic;
+  font-weight:700;
+  font-size:18px;
+  color:#FBF8F0;
+  flex-shrink:0;
+}
+.topbar-name{
+  font-family:var(--ff-serif);
+  font-weight:600;
+  font-size:16px;
+  letter-spacing:-.02em;
+  color:var(--tx);
+}
+.topbar-sub{
+  font-size:11px;
+  color:var(--tx3);
+  margin-top:1px;
+}
+.topbar-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--ac);
+  color:#fff;
+  text-decoration:none;
+  padding:8px 18px;
+  border-radius:8px;
+  font-size:13.5px;
+  font-weight:500;
+  transition:background .15s,transform .12s;
+}
+.topbar-cta:hover{background:var(--act);transform:translateY(-1px)}
+.topbar-cta svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
 
-  #ew-chat{ position:fixed; inset:0; z-index:250; display:none;}
-  #ew-chat.open{ display:block;}
-  .ew-chat-bd{ position:absolute; inset:0; background:rgba(15,14,12,.5); backdrop-filter:blur(3px);}
-  .ew-chat-panel{
-    position:absolute; right:24px; bottom:24px;
-    width:min(420px, calc(100% - 48px));
-    height:min(640px, calc(100% - 48px));
-    background:var(--chat-bg,#FBF8F0);
-    border:1px solid var(--chat-bor,#D9CFB7);
-    border-radius:18px;
-    box-shadow:0 30px 80px -20px rgba(0,0,0,.4);
-    display:flex; flex-direction:column;
-    color:var(--chat-tx,var(--tx, #1A1611)); overflow:hidden;
-    animation:ewpop .22s cubic-bezier(.2,.8,.3,1);
-  }
-  html[data-theme="dark"] .ew-chat-panel{ --chat-bg:#1B1813; --chat-bor:#2A251D; --chat-tx:#EFE8D8; --chat-tx2:#A89E89;}
-  .ew-chat-head{ display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid var(--chat-bor,#E6DECC); background:rgba(127,116,98,.06);}
-  .ew-chat-head .icon{ width:34px;height:34px; border-radius:9px; background:var(--ac, #1C5240); color:#fff; display:grid;place-items:center; font-family:'Source Serif 4',serif; font-weight:700; font-size:16px;}
-  .ew-chat-head .ti{ font-family:'Source Serif 4',serif; font-size:16px; font-weight:600;}
-  .ew-chat-head .sub{ font-size:11.5px; color:var(--cmdk-tx2, #6A6256); margin-top:1px;}
-  .ew-chat-close{ margin-left:auto; background:none; border:none; cursor:pointer; color:var(--cmdk-tx2, #6A6256); padding:10px; border-radius:8px; display:grid;place-items:center; min-width:44px; min-height:44px;}
-  .ew-chat-close:hover{ background:rgba(127,116,98,.15); color:inherit;}
-  .ew-chat-close svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2;}
-  .ew-chat-body{ flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px;}
-  .ew-msg{ max-width:88%; padding:10px 14px; border-radius:14px; font-size:14px; line-height:1.55;}
-  .ew-msg.user{ align-self:flex-end; background:var(--ac, #1C5240); color:#fff; border-bottom-right-radius:4px;}
-  .ew-msg.ai{ align-self:flex-start; background:rgba(127,116,98,.08); border:1px solid var(--chat-bor,#E6DECC); border-bottom-left-radius:4px; font-family:'Source Serif 4',Georgia,serif; font-size:14.5px; color:inherit;}
-  .ew-msg.ai .typing{ display:inline-flex; gap:3px;}
-  .ew-msg.ai .typing span{ width:6px;height:6px;border-radius:50%; background:var(--cmdk-tx2, #6A6256); animation:ewdot 1.2s infinite;}
-  .ew-msg.ai .typing span:nth-child(2){ animation-delay:.2s;}
-  .ew-msg.ai .typing span:nth-child(3){ animation-delay:.4s;}
-  @keyframes ewdot{ 0%,60%,100%{opacity:.3;} 30%{opacity:1;}}
-  .ew-chat-sugs{ padding:0 16px 12px; display:flex; flex-wrap:wrap; gap:6px;}
-  .ew-chat-sugs button{ font:inherit; font-size:12px; background:transparent; border:1px solid var(--chat-bor,#D9CFB7); color:inherit; padding:7px 11px; border-radius:99px; cursor:pointer;}
-  .ew-chat-sugs button:hover{ background:rgba(127,116,98,.12);}
-  .ew-chat-input{ border-top:1px solid var(--chat-bor,#E6DECC); padding:12px 16px 14px; display:flex; gap:8px; align-items:flex-end;}
-  .ew-chat-input textarea{ flex:1; resize:none; font:inherit; font-size:14px; background:transparent; border:1px solid var(--chat-bor,#D9CFB7); border-radius:10px; padding:10px 12px; color:inherit; outline:none; min-height:40px; max-height:120px; line-height:1.4;}
-  .ew-chat-input textarea:focus{ border-color:var(--ac, #1C5240);}
-  .ew-chat-input button{ width:44px;height:44px; border-radius:10px; background:var(--ac, #1C5240); color:#fff; border:none; cursor:pointer; display:grid;place-items:center; flex-shrink:0;}
-  .ew-chat-input button:hover{ background:var(--act, #0D3324);}
-  .ew-chat-input button:disabled{ background:var(--cmdk-tx2, #6A6256); cursor:not-allowed;}
-  .ew-chat-input button svg{ width:16px;height:16px; stroke:currentColor; fill:none; stroke-width:2;}
-  .ew-chat-ctx{ padding:8px 16px; background:var(--acl, #E2EDE6); color:var(--act, #0D3324); font-size:12px; border-bottom:1px solid var(--acl-bor, #C8DDD0); display:flex; align-items:center; gap:8px;}
-  html[data-theme="dark"] .ew-chat-ctx{ background:var(--acl-dark, #1B2E25); color:var(--act-dark, #A4D7B6); border-bottom-color:var(--acl-dark-bor, #264738);}
-  .ew-chat-ctx svg{ width:13px;height:13px; stroke:currentColor; fill:none; stroke-width:2;}
+/* ── Hero ── */
+.hero{
+  min-height:calc(100vh - 60px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:clamp(60px,10vh,120px) clamp(20px,5vw,72px);
+  position:relative;
+}
+/* Subtle grid texture */
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(var(--bor) 1px,transparent 1px),
+    linear-gradient(90deg,var(--bor) 1px,transparent 1px);
+  background-size:48px 48px;
+  opacity:.35;
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--gol);
+  border:1px solid #D9C9A3;
+  border-radius:20px;
+  padding:5px 14px;
+  font-size:12px;
+  font-weight:600;
+  color:#7A5C1A;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  margin-bottom:28px;
+}
+.hero-badge span{
+  width:7px;height:7px;
+  background:#B5832A;
+  border-radius:50%;
+  animation:pulse 2s ease-in-out infinite;
+}
+.hero-title{
+  font-family:var(--ff-serif);
+  font-size:clamp(42px,7vw,80px);
+  font-weight:600;
+  letter-spacing:-.035em;
+  line-height:1.05;
+  color:var(--tx);
+  max-width:12ch;
+  margin:0 auto 24px;
+}
+.hero-title em{
+  font-style:italic;
+  color:var(--ac);
+}
+.hero-lead{
+  font-size:clamp(16px,2vw,19px);
+  line-height:1.65;
+  color:var(--tx2);
+  max-width:52ch;
+  margin:0 auto 40px;
+}
+.hero-actions{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:60px;
+}
+.btn-pri{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--ac);
+  color:#fff;
+  text-decoration:none;
+  padding:14px 28px;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:500;
+  transition:background .15s,transform .12s,box-shadow .15s;
+  box-shadow:0 4px 20px rgba(28,82,64,.25);
+}
+.btn-pri:hover{background:var(--act);transform:translateY(-2px);box-shadow:0 8px 28px rgba(28,82,64,.35)}
+.btn-pri svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+.btn-sec{
+  display:inline-flex;align-items:center;gap:8px;
+  background:transparent;
+  color:var(--tx2);
+  text-decoration:none;
+  padding:14px 24px;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:500;
+  border:1px solid var(--bor);
+  transition:border-color .15s,color .15s,transform .12s;
+}
+.btn-sec:hover{border-color:var(--tx3);color:var(--tx);transform:translateY(-2px)}
+.btn-sec svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* Mini stats */
+.hero-stats{
+  display:flex;align-items:center;gap:24px;
+  flex-wrap:wrap;justify-content:center;
+}
+.hero-stat{
+  display:flex;align-items:center;gap:6px;
+  font-size:13px;
+  color:var(--tx3);
+}
+.hero-stat strong{color:var(--tx);font-weight:600}
+.hero-stat-dot{width:3px;height:3px;background:var(--bor);border-radius:50%}
+
+/* ── App preview ── */
+.preview-wrap{
+  width:100%;
+  max-width:860px;
+  margin:0 auto;
+  position:relative;
+}
+.preview-frame{
+  background:var(--side);
+  border-radius:16px;
+  padding:2px;
+  box-shadow:0 40px 80px -20px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.05);
+  overflow:hidden;
+  animation:float 6s ease-in-out infinite;
+}
+.preview-bar{
+  background:#2C261F;
+  padding:10px 14px;
+  display:flex;align-items:center;gap:8px;
+  border-radius:14px 14px 0 0;
+}
+.preview-dot{width:10px;height:10px;border-radius:50%}
+.preview-dot:nth-child(1){background:#E86C6C}
+.preview-dot:nth-child(2){background:#E8B86C}
+.preview-dot:nth-child(3){background:#6CE89C}
+.preview-url{
+  flex:1;text-align:center;
+  background:#1F1B16;
+  border-radius:5px;
+  padding:4px 12px;
+  font-size:11px;
+  color:#7E7261;
+  font-family:ui-monospace,monospace;
+}
+.preview-body{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  height:320px;
+  background:#FAF7F0;
+  border-radius:0 0 14px 14px;
+  overflow:hidden;
+}
+.preview-sidebar{
+  background:#1F1B16;
+  padding:16px 0;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.preview-brand{
+  display:flex;align-items:center;gap:8px;
+  padding:0 12px 14px;
+  border-bottom:1px solid #2C261F;
+  margin-bottom:6px;
+}
+.preview-mark{
+  width:28px;height:28px;
+  background:var(--ac);
+  border-radius:6px;
+  display:grid;place-items:center;
+  font-family:var(--ff-serif);
+  font-style:italic;
+  font-weight:700;
+  font-size:15px;
+  color:#FBF8F0;
+  flex-shrink:0;
+}
+.preview-name{font-size:11px;font-weight:600;color:#E5DECF;font-family:var(--ff-serif)}
+.preview-sub-text{font-size:9px;color:#7E7261}
+.preview-nav-item{
+  margin:0 8px;
+  padding:7px 10px;
+  border-radius:7px;
+  display:flex;align-items:center;gap:8px;
+  font-size:10px;
+  color:#7E7261;
+}
+.preview-nav-item.active{background:#2C261F;color:#E5DECF}
+.preview-nav-dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.5;flex-shrink:0}
+.preview-nav-item.active .preview-nav-dot{opacity:1;background:var(--ac-bright)}
+.preview-main{
+  padding:20px 24px;
+  overflow:hidden;
+}
+.preview-h{
+  font-family:var(--ff-serif);
+  font-size:18px;
+  font-weight:600;
+  color:#1C1814;
+  margin-bottom:6px;
+}
+.preview-p{font-size:10px;color:#9C907B;margin-bottom:16px;line-height:1.5}
+.preview-cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.preview-card{
+  background:#fff;
+  border:1px solid #E6DECC;
+  border-radius:8px;
+  padding:10px 12px;
+}
+.preview-card-tag{font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#9C907B;font-weight:600;margin-bottom:4px}
+.preview-card-title{font-size:10px;font-weight:600;color:#1C1814;line-height:1.3}
+
+/* ── Sections ── */
+section{padding:clamp(60px,8vw,100px) clamp(20px,5vw,72px)}
+.section-eyebrow{
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ac);
+  margin-bottom:12px;
+}
+.section-title{
+  font-family:var(--ff-serif);
+  font-size:clamp(28px,4vw,44px);
+  font-weight:600;
+  letter-spacing:-.025em;
+  line-height:1.1;
+  color:var(--tx);
+  max-width:16ch;
+  margin-bottom:18px;
+}
+.section-lead{
+  font-size:16px;
+  line-height:1.65;
+  color:var(--tx2);
+  max-width:54ch;
+  margin-bottom:48px;
+}
+
+/* ── Features grid ── */
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:16px;
+  max-width:1100px;
+}
+.feature-card{
+  background:var(--surf);
+  border:1px solid var(--bor);
+  border-radius:14px;
+  padding:24px 26px;
+  transition:border-color .15s,box-shadow .15s,transform .15s;
+  position:relative;
+  overflow:hidden;
+}
+.feature-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:var(--fc-ac,var(--ac));
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .25s cubic-bezier(.2,.8,.3,1);
+}
+.feature-card:hover{border-color:var(--tx3);box-shadow:0 8px 28px rgba(0,0,0,.08);transform:translateY(-3px)}
+.feature-card:hover::before{transform:scaleX(1)}
+.feature-icon{
+  width:40px;height:40px;
+  border-radius:10px;
+  background:var(--fc-bg,var(--acl));
+  display:grid;place-items:center;
+  margin-bottom:16px;
+}
+.feature-icon svg{width:20px;height:20px;stroke:var(--fc-ac,var(--ac));fill:none;stroke-width:1.8}
+.feature-title{font-size:15px;font-weight:600;color:var(--tx);margin-bottom:8px;line-height:1.3}
+.feature-desc{font-size:13.5px;line-height:1.6;color:var(--tx2)}
+.feature-tag{
+  display:inline-block;
+  margin-top:14px;
+  font-size:11px;
+  font-weight:600;
+  color:var(--fc-ac,var(--ac));
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+/* ── How-to guide ── */
+.howto-wrap{
+  max-width:900px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  align-items:start;
+}
+.howto-steps{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+.howto-step{
+  display:flex;
+  gap:16px;
+  padding:20px 0;
+  border-bottom:1px solid var(--bor);
+}
+.howto-step:last-child{border-bottom:none}
+.howto-num{
+  width:32px;height:32px;
+  border-radius:50%;
+  background:var(--ac);
+  color:#fff;
+  display:grid;place-items:center;
+  font-size:13px;
+  font-weight:600;
+  flex-shrink:0;
+  margin-top:2px;
+}
+.howto-label{font-size:14.5px;font-weight:600;color:var(--tx);margin-bottom:5px}
+.howto-text{font-size:13.5px;line-height:1.6;color:var(--tx2)}
+.howto-kbd{
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--surf);
+  border:1px solid var(--bor);
+  border-bottom-width:2px;
+  border-radius:5px;
+  padding:1px 6px;
+  font-size:11px;
+  font-family:ui-monospace,monospace;
+  color:var(--tx);
+}
+
+/* Keyboard shortcut cards */
+.shortcuts{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.shortcut-card{
+  background:var(--surf);
+  border:1px solid var(--bor);
+  border-radius:10px;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.shortcut-key{
+  font-family:ui-monospace,monospace;
+  font-size:12px;
+  font-weight:600;
+  background:var(--side);
+  color:#E5DECF;
+  padding:4px 8px;
+  border-radius:5px;
+  flex-shrink:0;
+  min-width:58px;
+  text-align:center;
+}
+.shortcut-desc{font-size:13px;color:var(--tx2)}
+
+/* ── CTA banner ── */
+.cta-banner{
+  background:var(--side);
+  color:#E5DECF;
+  text-align:center;
+  padding:clamp(60px,8vw,100px) clamp(20px,5vw,72px);
+  position:relative;
+  overflow:hidden;
+}
+.cta-banner::before{
+  content:'E';
+  position:absolute;
+  font-family:var(--ff-serif);
+  font-style:italic;
+  font-weight:700;
+  font-size:400px;
+  color:rgba(255,255,255,.03);
+  right:-60px;
+  top:-80px;
+  line-height:1;
+  pointer-events:none;
+}
+.cta-banner .section-eyebrow{color:var(--ac-bright)}
+.cta-banner .section-title{
+  color:#FBF8F0;
+  max-width:100%;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+}
+.cta-banner .section-lead{
+  color:#9C907B;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+}
+.cta-banner .btn-pri{
+  box-shadow:0 4px 20px rgba(82,183,136,.25);
+}
+.cta-banner .btn-pri:hover{
+  box-shadow:0 8px 32px rgba(82,183,136,.4);
+}
+
+/* ── Footer ── */
+footer{
+  background:#FAF7F0;
+  border-top:1px solid var(--bor);
+  padding:28px clamp(20px,5vw,72px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.footer-brand{
+  display:flex;align-items:center;gap:8px;
+  text-decoration:none;
+}
+.footer-info{font-size:12px;color:var(--tx3);line-height:1.5}
+.footer-link{color:var(--tx3);text-decoration:none;font-size:12px}
+.footer-link:hover{color:var(--ac)}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .preview-body{grid-template-columns:1fr;height:auto}
+  .preview-sidebar{display:none}
+  .preview-main{padding:16px}
+  .howto-wrap{grid-template-columns:1fr;gap:32px}
+  .features-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;text-align:center}
+}
+@media(max-width:480px){
+  .topbar-sub{display:none}
+  .hero-stats{gap:14px}
+}
+
+/* ── Modais Legais ── */
+.legal-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;}
+.legal-bd{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);}
+.legal-panel{position:relative;background:var(--bg,#FAF7F0);border-radius:16px;max-width:640px;width:90vw;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.2);}
+.legal-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--bor,#E6DECC);}
+.legal-title{font-family:'Source Serif 4',serif;font-size:22px;font-weight:600;margin:0;color:var(--tx,#1C1814);}
+.legal-close{background:none;border:none;font-size:28px;cursor:pointer;color:var(--tx3,#9C907B);line-height:1;padding:0 4px;}
+.legal-close:hover{color:var(--tx,#1C1814);}
+.legal-body{padding:24px;overflow-y:auto;font-size:14px;line-height:1.7;color:var(--tx2,#5A5147);}
+.legal-body h3{font-size:15px;font-weight:600;color:var(--tx,#1C1814);margin:20px 0 8px;}
+.legal-body h3:first-child{margin-top:0;}
+.legal-body p{margin:0 0 12px;}
+.legal-body ul{margin:0 0 12px;padding-left:20px;}
+.legal-body li{margin-bottom:6px;}
 </style>
 </head>
 <body>
 
-<div id="app"></div>
-
-<button class="ew-fab" id="ew-fab" title="Pergunta ao Assistente" aria-label="Abrir chat">
-  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-</button>
-
-<div id="ew-chat" role="dialog" aria-modal="true" aria-label="Assistente">
-  <div class="ew-chat-bd" id="ew-chat-bd"></div>
-  <div class="ew-chat-panel">
-    <div class="ew-chat-head">
-      <div class="icon">A</div>
-      <div>
-        <div class="ti">Assistente EconWiki</div>
-        <div class="sub">Pergunta sobre qualquer tópico</div>
-      </div>
-      <button class="ew-chat-close" id="ew-chat-close" aria-label="Fechar">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></svg>
-      </button>
+<!-- ── Topbar ── -->
+<header class="topbar">
+  <a class="topbar-brand" href="index.html">
+    <div class="topbar-mark">E</div>
+    <div>
+      <div class="topbar-name">EconWiki</div>
+      <div class="topbar-sub">UCP · Introdução à Economia</div>
     </div>
-    <div id="ew-chat-ctx-wrap"></div>
-    <div class="ew-chat-body" id="ew-chat-body"></div>
-    <div class="ew-chat-sugs" id="ew-chat-sugs"></div>
-    <div class="ew-chat-input">
-      <textarea id="ew-chat-input" rows="1" placeholder="Escreve a tua pergunta…"></textarea>
-      <button id="ew-chat-send" aria-label="Enviar">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-      </button>
+  </a>
+  <a class="topbar-cta" href="app.html" id="cta-topbar">
+    Entrar no Wiki
+    <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+  </a>
+</header>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-badge"><span></span> Manual digital · UCP Direito</div>
+
+  <h1 class="hero-title fade-up">
+    Economia<br>explicada <em>para juristas</em>
+  </h1>
+
+  <p class="hero-lead fade-up">
+    O EconWiki é o teu manual interativo para a cadeira de Introdução à Economia da UCP Direito.
+    21 tópicos, 135 conceitos-chave, flashcards e um formulário — tudo num só sítio.
+  </p>
+
+  <div class="hero-actions fade-up">
+    <a class="btn-pri" href="app.html" id="cta-hero">
+      <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+      Começar a estudar
+    </a>
+    <a class="btn-sec" href="#funcionalidades">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      O que tem o Wiki?
+    </a>
+  </div>
+
+  <div class="hero-stats fade-up">
+    <div class="hero-stat"><strong>21</strong> tópicos</div>
+    <div class="hero-stat-dot"></div>
+    <div class="hero-stat"><strong>5</strong> capítulos</div>
+    <div class="hero-stat-dot"></div>
+    <div class="hero-stat"><strong>135</strong> conceitos-chave</div>
+    <div class="hero-stat-dot"></div>
+    <div class="hero-stat"><strong>27</strong> fórmulas</div>
+    <div class="hero-stat-dot"></div>
+    <div class="hero-stat">Flashcards + IA</div>
+  </div>
+</section>
+
+<!-- ── Prévia do App ── -->
+<div style="padding:0 clamp(20px,5vw,72px) clamp(60px,8vw,80px);display:flex;justify-content:center">
+  <div class="preview-wrap fade-up">
+    <div class="preview-frame">
+      <div class="preview-bar">
+        <div class="preview-dot"></div>
+        <div class="preview-dot"></div>
+        <div class="preview-dot"></div>
+        <div class="preview-url">econwiki · UCP Direito</div>
+      </div>
+      <div class="preview-body">
+        <div class="preview-sidebar">
+          <div class="preview-brand">
+            <div class="preview-mark">E</div>
+            <div>
+              <div class="preview-name">EconWiki</div>
+              <div class="preview-sub-text">UCP · Direito</div>
+            </div>
+          </div>
+          <div class="preview-nav-item active">
+            <div class="preview-nav-dot"></div> Todos os tópicos
+          </div>
+          <div class="preview-nav-item">
+            <div class="preview-nav-dot"></div> Flashcards
+          </div>
+          <div class="preview-nav-item">
+            <div class="preview-nav-dot"></div> Formulário
+          </div>
+          <div class="preview-nav-item">
+            <div class="preview-nav-dot"></div> Conceitos-Chave
+          </div>
+          <div style="margin:8px 8px 4px;padding:6px 10px;background:#0B0A08;border-radius:6px;font-size:9px;color:#7E7261">
+            1. Fundamentos
+          </div>
+          <div class="preview-nav-item" style="padding-left:20px">
+            <div class="preview-nav-dot"></div> O Problema Económico
+          </div>
+          <div class="preview-nav-item" style="padding-left:20px">
+            <div class="preview-nav-dot"></div> Eficiência Económica
+          </div>
+          <div class="preview-nav-item" style="padding-left:20px">
+            <div class="preview-nav-dot"></div> Procura
+          </div>
+        </div>
+        <div class="preview-main">
+          <div class="preview-h">Todos os tópicos</div>
+          <div class="preview-p">5 capítulos · 21 tópicos · 8 lidos</div>
+          <div class="preview-cards">
+            <div class="preview-card">
+              <div class="preview-card-tag">Fundamentos</div>
+              <div class="preview-card-title">O Problema Económico</div>
+            </div>
+            <div class="preview-card">
+              <div class="preview-card-tag">Fundamentos</div>
+              <div class="preview-card-title">Eficiência Económica</div>
+            </div>
+            <div class="preview-card">
+              <div class="preview-card-tag">Mercados</div>
+              <div class="preview-card-title">Concorrência Perfeita</div>
+            </div>
+            <div class="preview-card" style="background:#E2EDE6;border-color:#C8DDD0">
+              <div class="preview-card-tag" style="color:#0D3324">Macroeconomia</div>
+              <div class="preview-card-title">Medição Económica</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="econwiki-data.js"></script>
-<script src="app-shared.js"></script>
-<script src="econwiki-auth.js"></script>
-<script src="econwiki-app.js"></script>
+<!-- ── Funcionalidades ── -->
+<section id="funcionalidades">
+  <div class="section-eyebrow">Funcionalidades</div>
+  <h2 class="section-title">Tudo o que precisas para estudar</h2>
+  <p class="section-lead">Cada funcionalidade foi desenhada para estudantes de Direito sem formação prévia em economia, com base no programa da cadeira de Introdução à Economia da UCP.</p>
 
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script type="text/babel" src="tweaks-panel.jsx"></script>
-<script type="text/babel" src="econwiki-tweaks.jsx"></script>
+  <div class="features-grid">
+
+    <div class="feature-card" style="--fc-ac:#1C5240;--fc-bg:#E2EDE6">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      </div>
+      <div class="feature-title">21 Tópicos do programa</div>
+      <div class="feature-desc">Microeconomia e Macroeconomia organizados nos 5 capítulos do curso. Cada tópico inclui introdução, conceitos-chave, gráficos e exemplos aplicados ao Direito.</div>
+      <div class="feature-tag">Micro · Macro</div>
+    </div>
+
+    <div class="feature-card" style="--fc-ac:#7B3FA0;--fc-bg:#F1E8F6">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+      </div>
+      <div class="feature-title">Flashcards interativos</div>
+      <div class="feature-desc">Estuda os conceitos-chave com cartões de frente e verso. Filtra por capítulo, baralha e marca os que já sabes. Atalhos de teclado para máxima velocidade.</div>
+      <div class="feature-tag">135 conceitos</div>
+    </div>
+
+    <div class="feature-card" style="--fc-ac:#1B5FA8;--fc-bg:#E8F0F8">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h7"/><circle cx="17" cy="17" r="3"/><path d="m19.5 19.5 1.5 1.5"/></svg>
+      </div>
+      <div class="feature-title">Formulário completo</div>
+      <div class="feature-desc">Todas as 27 fórmulas e condições de equilíbrio do programa numa só página. Pesquisa por nome, expressão ou capítulo. Cada fórmula com descrição e legenda.</div>
+      <div class="feature-tag">27 fórmulas</div>
+    </div>
+
+    <div class="feature-card" style="--fc-ac:#2D6A4F;--fc-bg:#EBF4EE">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="feature-title">Glossário de conceitos-chave</div>
+      <div class="feature-desc">Os 135 conceitos de todos os tópicos numa só página, com filtro por capítulo e pesquisa em tempo real. Cada conceito tem link direto para o tópico de origem.</div>
+      <div class="feature-tag">135 conceitos</div>
+    </div>
+
+    <div class="feature-card" style="--fc-ac:#B8763F;--fc-bg:#FDF3DC">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </div>
+      <div class="feature-title">Pesquisa ⌘K instantânea</div>
+      <div class="feature-desc">Pesquisa qualquer tópico ou conceito com <kbd style="font:inherit;font-size:11px;background:#F5F0E3;border:1px solid #D9CFB7;border-radius:4px;padding:1px 5px">⌘K</kbd> ou <kbd style="font:inherit;font-size:11px;background:#F5F0E3;border:1px solid #D9CFB7;border-radius:4px;padding:1px 5px">/</kbd>. Resultados com excerto, capítulo e navegação por teclado.</div>
+      <div class="feature-tag">Pesquisa rápida</div>
+    </div>
+
+    <div class="feature-card" style="--fc-ac:#A33A2A;--fc-bg:#FBEAE6">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="feature-title">Assistente IA por tópico</div>
+      <div class="feature-desc">Em cada tópico, o assistente responde às tuas dúvidas com contexto específico — conceitos, gráficos, exemplos jurídicos. Clica no ícone de chat em qualquer página.</div>
+      <div class="feature-tag">Powered by Claude</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Como navegar ── -->
+<section id="como-usar" style="background:#FFFFFF;border-top:1px solid var(--bor);border-bottom:1px solid var(--bor)">
+  <div class="section-eyebrow">Como navegar</div>
+  <h2 class="section-title">O Wiki em 4 passos</h2>
+  <p class="section-lead">Em menos de dois minutos estás a navegar com fluidez.</p>
+
+  <div class="howto-wrap">
+    <div class="howto-steps">
+      <div class="howto-step">
+        <div class="howto-num">1</div>
+        <div>
+          <div class="howto-label">Escolhe um tópico na barra lateral</div>
+          <div class="howto-text">À esquerda encontras todos os 5 capítulos e 21 tópicos. Clica em qualquer um para entrar. O teu progresso de leitura é guardado automaticamente.</div>
+        </div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-num">2</div>
+        <div>
+          <div class="howto-label">Pesquisa com ⌘K ou /</div>
+          <div class="howto-text">Carrega em <span class="howto-kbd">⌘K</span> ou <span class="howto-kbd">/</span> para abrir a pesquisa instantânea. Funciona em qualquer página do Wiki — é a forma mais rápida de navegar.</div>
+        </div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-num">3</div>
+        <div>
+          <div class="howto-label">Treina com os Flashcards</div>
+          <div class="howto-text">Na secção Flashcards, percorre os conceitos com <span class="howto-kbd">←</span> <span class="howto-kbd">→</span>. Vira com <span class="howto-kbd">Espaço</span>. Marca os que já sabes com <span class="howto-kbd">J</span> e os que precisas rever com <span class="howto-kbd">L</span>.</div>
+        </div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-num">4</div>
+        <div>
+          <div class="howto-label">Usa o Assistente para dúvidas</div>
+          <div class="howto-text">Clica no botão de chat no canto inferior direito em qualquer tópico. O assistente responde com contexto específico — podes perguntar exemplos jurídicos, pedir explicações ou comparações com outros conceitos.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shortcuts">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);margin-bottom:4px">Atalhos de teclado</div>
+      <div class="shortcut-card">
+        <div class="shortcut-key">⌘K ou /</div>
+        <div class="shortcut-desc">Abrir pesquisa rápida</div>
+      </div>
+      <div class="shortcut-card">
+        <div class="shortcut-key">← →</div>
+        <div class="shortcut-desc">Navegar entre flashcards</div>
+      </div>
+      <div class="shortcut-card">
+        <div class="shortcut-key">Espaço</div>
+        <div class="shortcut-desc">Virar flashcard</div>
+      </div>
+      <div class="shortcut-card">
+        <div class="shortcut-key">J</div>
+        <div class="shortcut-desc">Marcar flashcard como "Já sei"</div>
+      </div>
+      <div class="shortcut-card">
+        <div class="shortcut-key">L</div>
+        <div class="shortcut-desc">Marcar para rever depois</div>
+      </div>
+      <div class="shortcut-card">
+        <div class="shortcut-key">Esc</div>
+        <div class="shortcut-desc">Fechar painéis / pesquisa</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA final ── -->
+<section class="cta-banner">
+  <div class="section-eyebrow">Pronto para começar?</div>
+  <h2 class="section-title" style="font-size:clamp(28px,4vw,48px)">O exame está<br>mais perto do que pensas.</h2>
+  <p class="section-lead" style="margin-left:auto;margin-right:auto;text-align:center">Entra no Wiki agora e começa pelo tópico que tens mais dificuldade.</p>
+  <div style="display:flex;justify-content:center">
+    <a class="btn-pri" href="app.html" id="cta-final">
+      <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+      Abrir o EconWiki
+    </a>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <a class="footer-brand" href="index.html">
+    <div class="topbar-mark" style="width:26px;height:26px;font-size:14px">E</div>
+    <div class="footer-info">
+      <strong style="color:var(--tx)">EconWiki</strong><br>
+      UCP Direito · Introdução à Economia
+    </div>
+  </a>
+  <div class="footer-info" style="text-align:center">
+    <a class="footer-link" href="#" id="link-privacy">Política de Privacidade</a> ·
+    <a class="footer-link" href="#" id="link-terms">Termos de Utilização</a>
+  </div>
+  <div class="footer-info" style="text-align:right">
+    Manual de estudo interativo.<br>
+    <a class="footer-link" href="app.html">Entrar no Wiki →</a>
+  </div>
+</footer>
+
+<!-- ── Modal Legal ── -->
+<div class="legal-overlay" id="legal-overlay" style="display:none">
+  <div class="legal-bd" id="legal-bd"></div>
+  <div class="legal-panel" role="dialog" aria-modal="true">
+    <div class="legal-head">
+      <h2 class="legal-title" id="legal-title"></h2>
+      <button class="legal-close" id="legal-close" aria-label="Fechar">&times;</button>
+    </div>
+    <div class="legal-body" id="legal-body"></div>
+  </div>
+</div>
 
 <script>
 (function(){
   'use strict';
-  const T = window.T || [];
-  const EW = window.EW;
 
-  if(window.app && window.app.init) window.app.init();
+  // ── Auto-redirect: se já visitou, vai direto para o wiki ──
+  // Removido — a landing page é agora sempre visível quando acedida diretamente.
+  // O auto-redirect causava confusão ao impedir o acesso à página após a primeira visita.
 
-  EW.installCmdK((i)=>{ if(window.app && window.app.open) window.app.open(i);});
+  // Marcar visita atual
+  try{ localStorage.setItem('ew_visited_v1','1'); }catch(e){}
 
-  const chat = document.getElementById('ew-chat');
-  const chatBody = document.getElementById('ew-chat-body');
-  const chatInput = document.getElementById('ew-chat-input');
-  const chatSend  = document.getElementById('ew-chat-send');
-  const chatSugs  = document.getElementById('ew-chat-sugs');
-  const chatCtxWrap = document.getElementById('ew-chat-ctx-wrap');
-  let chatCtxIdx = -1, chatBusy = false;
-
-  let chatLastFocus = null;
-  function openChat(idx){
-    chatLastFocus = document.activeElement;
-    chatCtxIdx = (typeof idx==='number') ? idx : -1;
-    chat.classList.add('open');
-    refreshChatCtx();
-    if(!chatBody.children.length) pushMsg('ai', 'Olá! Posso ajudar a explicar conceitos do programa, dar exemplos jurídicos, ou clarificar pontos do tópico que estás a ler. Faz a tua pergunta — ou clica numa das sugestões abaixo.');
-    setTimeout(()=>chatInput.focus(), 100);
-  }
-  function closeChat(){
-    chat.classList.remove('open');
-    if(chatLastFocus && typeof chatLastFocus.focus === 'function'){
-      try{ chatLastFocus.focus(); }catch(e){}
+  // Ler tema do Wiki e aplicar (para não perder o tema se o utilizador voltar)
+  try{
+    const theme = localStorage.getItem('ew_theme_v1') || 'light';
+    // Apenas CSS cosmético — a landing não suporta dark mode completo,
+    // mas podemos ajustar levemente
+    if(theme === 'dark'){
+      document.body.style.background = '#13110E';
+      document.body.style.color = '#EFE8D8';
     }
-    chatLastFocus = null;
-  }
-  function refreshChatCtx(){
-    if(chatCtxIdx>=0 && T[chatCtxIdx]){
-      chatCtxWrap.innerHTML = `<div class="ew-chat-ctx"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>A perguntar sobre: <strong>${T[chatCtxIdx].name}</strong></span></div>`;
-      const sugs = (T[chatCtxIdx].sug||[]).slice(0,4);
-      chatSugs.innerHTML = sugs.map(s=>`<button>${s}</button>`).join('');
-      chatSugs.querySelectorAll('button').forEach((b,k)=>b.addEventListener('click', ()=>{ chatInput.value = sugs[k]; chatInput.focus();}));
-    } else {
-      chatCtxWrap.innerHTML = '';
-      const seed = ['O que é custo de oportunidade?','Como funciona a curva de oferta e procura?','O que é um monopólio natural?','Diferença entre PIB nominal e real?'];
-      chatSugs.innerHTML = seed.map(s=>`<button>${s}</button>`).join('');
-      chatSugs.querySelectorAll('button').forEach((b,k)=>b.addEventListener('click', ()=>{ chatInput.value = seed[k]; chatInput.focus();}));
-    }
-  }
-  function pushMsg(who, text){
-    const el = document.createElement('div');
-    el.className = 'ew-msg '+who;
-    el.innerHTML = text;
-    chatBody.appendChild(el);
-    chatBody.scrollTop = chatBody.scrollHeight;
-    return el;
-  }
-  function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function formatReply(s){
-    let h = escapeHtml(s);
-    h = h.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-    h = h.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-    h = h.split(/\n\s*\n/).map(p=>`<p style="margin:0 0 10px">${p.replace(/\n/g,'<br>')}</p>`).join('');
-    return h;
-  }
-  async function sendMsg(){
-    if(chatBusy) return;
-    const q = chatInput.value.trim(); if(!q) return;
-    pushMsg('user', escapeHtml(q));
-    chatInput.value=''; chatInput.style.height='auto';
-    const aiEl = pushMsg('ai', '<span class="typing"><span></span><span></span><span></span></span>');
-    chatBusy = true; chatSend.disabled = true;
-    let ctxText = '';
-    if(chatCtxIdx>=0 && T[chatCtxIdx]){
-      const t = T[chatCtxIdx];
-      ctxText = `Tópico em foco: "${t.name}". Introdução: ${EW.plain(t.intro)}. Conceitos: ${(t.cc||[]).map(c=>c.t+' — '+c.d).join('; ')}.`;
-    }
-    const prompt = `És o assistente do site EconWiki, um manual digital para a cadeira de Introdução à Economia da UCP Direito. Responde em português europeu, de forma clara, didática e concisa (3-6 frases). Se for relevante, dá um exemplo aplicado ao Direito (contratos, regulação, concorrência, propriedade).\n\n${ctxText ? 'Contexto: '+ctxText+'\n\n' : ''}Pergunta do aluno: ${q}`;
-    try{ const reply = await window.claude.complete(prompt); aiEl.innerHTML = formatReply(reply);}
-    catch(err){ aiEl.innerHTML = '<em style="color:var(--ac-error, #A33A2A)">Não consegui obter uma resposta neste momento. Tenta novamente.</em>';}
-    chatBody.scrollTop = chatBody.scrollHeight;
-    chatBusy = false; chatSend.disabled = false;
-  }
-  document.getElementById('ew-fab').addEventListener('click', ()=> openChat());
-  document.getElementById('ew-chat-close').addEventListener('click', closeChat);
-  document.getElementById('ew-chat-bd').addEventListener('click', closeChat);
-  chatSend.addEventListener('click', sendMsg);
-  chatInput.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMsg();}});
-  chatInput.addEventListener('input', ()=>{ chatInput.style.height='auto'; chatInput.style.height = Math.min(120, chatInput.scrollHeight)+'px';});
-  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && chat.classList.contains('open')) closeChat();});
+  }catch(e){}
 
-  // Focus trap: ciclo Tab confinado ao painel do chat
-  chat.addEventListener('keydown', e=>{
-    if(e.key!=='Tab' || !chat.classList.contains('open')) return;
-    const focusables = Array.from(chat.querySelectorAll(
-      'a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
-    )).filter(el=> el.offsetParent !== null);
-    if(!focusables.length) return;
-    const first = focusables[0], last = focusables[focusables.length-1];
-    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
-    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  // Smooth fade in ao carregar
+  document.body.style.opacity = '0';
+  document.body.style.transition = 'opacity .4s ease';
+  window.addEventListener('load', ()=>{
+    document.body.style.opacity = '1';
+  });
+  // Fallback se load já disparou
+  if(document.readyState === 'complete'){
+    document.body.style.opacity = '1';
+  }
+
+  // Scroll suave para âncoras internas
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const target = document.querySelector(a.getAttribute('href'));
+      if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth',block:'start'}); }
+    });
   });
 
-  window.openChat = openChat;
+  // ── Modais legais ──
+  const LEGAL = {
+    privacy: {
+      title: 'Política de Privacidade',
+      html: `
+<h3>1. Responsável pelo tratamento</h3>
+<p>O EconWiki é um projeto académico independente criado por estudantes da Universidade Católica Portuguesa. O tratamento de dados pessoais é efetuado exclusivamente no âmbito deste projeto educativo.</p>
+
+<h3>2. Dados recolhidos</h3>
+<p>Recolhemos apenas os dados estritamente necessários ao funcionamento do serviço:</p>
+<ul>
+<li><strong>Conta de utilizador:</strong> endereço de email e palavra-passe (armazenados de forma encriptada pelo Supabase).</li>
+<li><strong>Dados de utilização:</strong> progresso de leitura, tópicos marcados como favoritos e estado dos flashcards (armazenados localmente no browser via localStorage e, para utilizadores autenticados, sincronizados com o Supabase).</li>
+<li><strong>Dados de pagamento:</strong> processados integralmente pelo Lemon Squeezy. O EconWiki não armazena, acede nem processa dados de cartão de crédito ou débito.</li>
+<li><strong>Mensagens do chat IA:</strong> as perguntas enviadas ao Assistente são transmitidas à API da Anthropic para gerar respostas. Não são armazenadas permanentemente pelo EconWiki.</li>
+</ul>
+
+<h3>3. Finalidade do tratamento</h3>
+<p>Os dados são utilizados exclusivamente para: (a) autenticar o utilizador; (b) sincronizar o progresso de estudo entre dispositivos; (c) processar pagamentos de subscrição; (d) gerar respostas do Assistente IA.</p>
+
+<h3>4. Base legal</h3>
+<p>O tratamento funda-se no consentimento do utilizador (art. 6.º, n.º 1, al. a) do RGPD) e na execução do contrato de prestação de serviço (art. 6.º, n.º 1, al. b) do RGPD).</p>
+
+<h3>5. Partilha com terceiros</h3>
+<p>Os dados são partilhados apenas com os prestadores técnicos indispensáveis ao funcionamento: Supabase (autenticação e base de dados), Lemon Squeezy (pagamentos) e Anthropic (processamento de linguagem natural). Cada um destes prestadores tem a sua própria política de privacidade e opera sob condições conformes ao RGPD.</p>
+
+<h3>6. Conservação dos dados</h3>
+<p>Os dados de conta são conservados enquanto a conta estiver ativa. Após eliminação da conta, os dados são removidos no prazo de 30 dias. Os dados de pagamento são conservados pelo Lemon Squeezy de acordo com obrigações legais e fiscais aplicáveis.</p>
+
+<h3>7. Direitos do titular</h3>
+<p>Nos termos do RGPD, tens o direito de aceder, retificar, apagar, limitar ou portar os teus dados pessoais, bem como de retirar o consentimento a qualquer momento. Para exercer estes direitos, contacta-nos por email.</p>
+
+<h3>8. Segurança</h3>
+<p>As comunicações são encriptadas via HTTPS. As palavras-passe são armazenadas com hash criptográfico. Os dados de pagamento nunca transitam pelos nossos servidores.</p>
+      `
+    },
+    terms: {
+      title: 'Termos de Utilização',
+      html: `
+<h3>1. Objeto</h3>
+<p>O EconWiki é um manual de estudo interativo para a cadeira de Introdução à Economia, criado como projeto académico independente. Não é um serviço oficial da Universidade Católica Portuguesa.</p>
+
+<h3>2. Natureza do conteúdo</h3>
+<p>O conteúdo do EconWiki tem finalidade exclusivamente educativa e de apoio ao estudo. Não substitui a frequência das aulas, a consulta dos materiais oficiais da cadeira, nem o aconselhamento de profissionais nas áreas económica ou jurídica.</p>
+
+<h3>3. Assistente com Inteligência Artificial — Aviso importante</h3>
+<p>O EconWiki disponibiliza um assistente baseado em inteligência artificial (modelo Claude, da Anthropic). É fundamental que o utilizador compreenda que:</p>
+<ul>
+<li><strong>As respostas da IA podem conter erros.</strong> Os modelos de linguagem podem gerar informação incorreta, imprecisa, desatualizada ou incompleta, incluindo conceitos económicos mal aplicados, fórmulas erradas ou exemplos inadequados.</li>
+<li><strong>A IA não substitui o estudo.</strong> As respostas devem ser sempre verificadas contra os materiais oficiais da cadeira (slides, manuais recomendados, apontamentos das aulas).</li>
+<li><strong>Nenhuma responsabilidade é assumida</strong> pelo EconWiki ou pelos seus criadores relativamente a erros nas respostas da IA, incluindo eventual impacto no desempenho académico do utilizador.</li>
+<li><strong>O utilizador é o único responsável</strong> pela utilização que faz das respostas geradas pela IA, incluindo a sua eventual reprodução em trabalhos académicos.</li>
+</ul>
+
+<h3>4. Subscrição e pagamento</h3>
+<p>O acesso ao conteúdo do wiki é gratuito. O Assistente IA requer uma subscrição paga, processada pelo Lemon Squeezy. O utilizador pode cancelar a subscrição a qualquer momento, mantendo o acesso até ao final do período pago. Não são efetuados reembolsos por períodos parcialmente utilizados, salvo nas condições previstas na legislação aplicável.</p>
+
+<h3>5. Propriedade intelectual</h3>
+<p>O conteúdo do EconWiki é original ou baseado em fontes académicas devidamente identificadas. A reprodução, distribuição ou comercialização do conteúdo sem autorização prévia não é permitida.</p>
+
+<h3>6. Limitação de responsabilidade</h3>
+<p>O EconWiki é fornecido «tal como está» (<em>as is</em>), sem garantias de qualquer natureza, expressas ou implícitas. Os criadores não são responsáveis por danos diretos, indiretos ou consequenciais resultantes da utilização do serviço.</p>
+
+<h3>7. Alterações</h3>
+<p>Estes termos podem ser atualizados a qualquer momento. A continuação da utilização do serviço após alterações constitui aceitação das novas condições.</p>
+
+<h3>8. Lei aplicável</h3>
+<p>Estes termos são regidos pela lei portuguesa. Para resolução de litígios é competente o foro da comarca de Lisboa.</p>
+      `
+    }
+  };
+
+  const overlay = document.getElementById('legal-overlay');
+  if(overlay){
+    const legalBd = document.getElementById('legal-bd');
+    const legalClose = document.getElementById('legal-close');
+    function openLegal(key){
+      document.getElementById('legal-title').textContent = LEGAL[key].title;
+      document.getElementById('legal-body').innerHTML = LEGAL[key].html;
+      overlay.style.display = 'flex';
+    }
+    function closeLegal(){ overlay.style.display = 'none'; }
+    document.getElementById('link-privacy')?.addEventListener('click', e=>{ e.preventDefault(); openLegal('privacy'); });
+    document.getElementById('link-terms')?.addEventListener('click', e=>{ e.preventDefault(); openLegal('terms'); });
+    legalBd?.addEventListener('click', closeLegal);
+    legalClose?.addEventListener('click', closeLegal);
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape' && overlay.style.display==='flex') closeLegal(); });
+  }
+
 })();
 </script>
 </body>

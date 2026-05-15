@@ -80,6 +80,9 @@
     return (html||'').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/&[a-z]+;/g,' ').replace(/\s+/g,' ').trim();
   }
 
+  // ── Normalização de acentos ──
+  function stripAccents(s){ return s.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+
   // ── Search index ──
   let _index = null;
   function buildIndex(){
@@ -93,13 +96,14 @@
         t.callout?[t.callout.l,t.callout.tx].join(' '):'',
         ...(t.sug||[]),
       ].join(' ');
-      return { i, name:t.name, g:t.g, group:groupOf(i)?.label||'', text:plain(text).toLowerCase() };
+      const norm = stripAccents(plain(text).toLowerCase());
+      return { i, name:t.name, nameNorm:stripAccents(t.name.toLowerCase()), g:t.g, group:groupOf(i)?.label||'', text:norm };
     });
     return _index;
   }
 
   function search(q, limit){
-    q = (q||'').trim().toLowerCase();
+    q = stripAccents((q||'').trim().toLowerCase());
     if(!q) return [];
     const idx = buildIndex();
     const tokens = q.split(/\s+/).filter(Boolean);
@@ -107,7 +111,7 @@
     for(const r of idx){
       let score = 0;
       for(const tok of tokens){
-        if(r.name.toLowerCase().includes(tok)) score += 5;
+        if(r.nameNorm.includes(tok)) score += 5;
         if(r.text.includes(tok)) score += 1;
         else { score = -1; break; }
       }

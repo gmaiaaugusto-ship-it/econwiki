@@ -33,8 +33,17 @@
    3. Vai a Project Settings > API e copia os dois valores abaixo:
    ─────────────────────────────────────────────────────────────*/
 
-const SUPABASE_URL  = 'https://xiibexibzeaohzkjelbv.supabase.co';   // ex: https://xxxxxxxxxxxx.supabase.co
-const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhpaWJleGliemVhb2h6a2plbGJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1NzQzNjMsImV4cCI6MjA5NDE1MDM2M30.3tyAWqiVoAWSMOhNBOh4z3vU74jsO3UBbaOdcQUf4RA';       // começa por "eyJhbGci..."
+const SUPABASE_URL  = 'https://xiibexibzeaohzkjelbv.supabase.co';
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhpaWJleGliemVhb2h6a2plbGJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1NzQzNjMsImV4cCI6MjA5NDE1MDM2M30.3tyAWqiVoAWSMOhNBOh4z3vU74jsO3UBbaOdcQUf4RA';
+window.SUPABASE_URL = SUPABASE_URL;
+
+/* ── Lemon Squeezy ────────────────────────────────────────────
+   Cola abaixo o checkout URL do teu produto Membership no Lemon Squeezy.
+   Configura o webhook em LS Settings > Webhooks:
+     URL: https://xiibexibzeaohzkjelbv.supabase.co/functions/v1/lemonsqueezy-webhook
+     Eventos: subscription_created, subscription_updated, subscription_cancelled, subscription_expired
+   ──────────────────────────────────────────────────────────── */
+const LEMON_CHECKOUT_URL = 'COLA_AQUI_O_TEU_CHECKOUT_URL';
 
 /* ════════════════════════════════════════════════════════════
    Não é necessário alterar nada abaixo desta linha.
@@ -46,6 +55,8 @@ const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const LS_READ = 'ew_read_v1';
 const LS_FAV  = 'ew_fav_v1';
 const LS_LAST = 'ew_last_v1';
+
+function _esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 let _sb = null;         // Supabase client
 let _user = null;       // utilizador atual (ou null)
@@ -80,21 +91,76 @@ function init(){
     _user = session?.user ?? null;
     if(event === 'SIGNED_IN'){
       await syncFromCloud();
+      await loadSubscription();
+    }
+    if(event === 'SIGNED_OUT'){
+      _subscription = { plan:'free', status:'inactive', daily_used:0, daily_limit:30 };
     }
     refreshSidebarWidget();
   });
 
-  // Sessão atual
-  _sb.auth.getSession().then(({ data }) => {
+  _sb.auth.getSession().then(async ({ data }) => {
     _user = data?.session?.user ?? null;
-    if(_user) syncFromCloud();
+    if(_user){
+      syncFromCloud();
+      await loadSubscription();
+    }
     refreshSidebarWidget();
   });
+
+  // ── Subscrição ──────────────────────────────────────────
+  let _subscription = { plan:'free', status:'inactive', daily_used:0, daily_limit:30 };
+
+  async function loadSubscription(){
+    if(!_user) return;
+    try{
+      const { data } = await _sb.from('subscriptions').select('*').eq('user_id', _user.id).single();
+      if(data) _subscription = {
+        plan: data.plan || 'free',
+        status: data.status || 'inactive',
+        daily_used: data.daily_messages_used || 0,
+        daily_limit: 30,
+        update_payment_url: data.update_payment_url || null,
+      };
+    }catch(e){ /* tabela ainda não existe */ }
+  }
+
+  async function getSession(){
+    const { data } = await _sb.auth.getSession();
+    return data?.session || null;
+  }
+
+  function startCheckout(){
+    if(!_user){ openModal('login'); return; }
+    if(LEMON_CHECKOUT_URL.startsWith('COLA')){
+      alert('O checkout URL do Lemon Squeezy ainda não está configurado.\nEdita econwiki-auth.js e cola o URL do teu produto.');
+      return;
+    }
+    const sep = LEMON_CHECKOUT_URL.includes('?') ? '&' : '?';
+    const url = LEMON_CHECKOUT_URL
+      + sep + 'checkout[custom][user_id]=' + encodeURIComponent(_user.id)
+      + '&checkout[email]=' + encodeURIComponent(_user.email || '');
+    if(window.LemonSqueezy && window.LemonSqueezy.Url){
+      window.LemonSqueezy.Url.Open(url);
+    } else { window.open(url, '_blank'); }
+  }
+
+  function openPortal(){
+    if(!_user){ openModal('login'); return; }
+    const url = _subscription.update_payment_url;
+    if(!url){ alert('Portal de gestão não disponível. Recarrega a página.'); return; }
+    if(window.LemonSqueezy && window.LemonSqueezy.Url){
+      window.LemonSqueezy.Url.Open(url);
+    } else { window.open(url, '_blank'); }
+  }
 
   window.EW_AUTH = {
     isConfigured : ()=> true,
     getUser      : ()=> _user,
+    getSubscription: ()=> _subscription,
+    getSession,
     signIn, signUp, signOut,
+    startCheckout, openPortal,
     syncToCloud, syncFromCloud,
     openModal    : ()=> openModal('login'),
     refreshSidebarWidget,
@@ -125,9 +191,13 @@ function buildStub(){
   return {
     isConfigured       : ()=> false,
     getUser            : ()=> null,
+    getSubscription    : ()=> ({ plan:'free', status:'inactive', daily_used:0, daily_limit:30 }),
+    getSession         : async()=> null,
     signIn             : async()=> ({ error: new Error('não configurado') }),
     signUp             : async()=> ({ error: new Error('não configurado') }),
     signOut            : async()=> {},
+    startCheckout      : ()=> alert('Supabase não configurado.'),
+    openPortal         : ()=> alert('Supabase não configurado.'),
     syncToCloud        : async()=> {},
     syncFromCloud      : async()=> {},
     openModal          : ()=> alert('Supabase não configurado. Vê as instruções em econwiki-auth.js.'),
@@ -217,7 +287,7 @@ function refreshSidebarWidget(){
 
   if(_user){
     const initial = (_user.email || 'U')[0].toUpperCase();
-    const email   = _user.email || '';
+    const email   = _esc(_user.email || '');
     const syncTxt = _lastSync
       ? 'Sincronizado ' + _lastSync.toLocaleTimeString('pt-PT', {hour:'2-digit',minute:'2-digit'})
       : 'A sincronizar…';
