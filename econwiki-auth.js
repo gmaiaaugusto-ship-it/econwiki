@@ -43,7 +43,7 @@ window.SUPABASE_URL = SUPABASE_URL;
      URL: https://xiibexibzeaohzkjelbv.supabase.co/functions/v1/lemonsqueezy-webhook
      Eventos: subscription_created, subscription_updated, subscription_cancelled, subscription_expired
    ──────────────────────────────────────────────────────────── */
-const LEMON_CHECKOUT_URL = 'COLA_AQUI_O_TEU_CHECKOUT_URL';
+const LEMON_CHECKOUT_URL = 'https://econwiki.lemonsqueezy.com/checkout/buy/11d7554b-3527-47c1-a3e8-32fafd16c9bb';
 
 /* ════════════════════════════════════════════════════════════
    Não é necessário alterar nada abaixo desta linha.

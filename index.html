@@ -18,14 +18,14 @@
 html{scroll-behavior:smooth}
 body{
   font-family:'Inter',-apple-system,sans-serif;
-  background:#FAF7F0;
-  color:#1C1814;
+  background:var(--bg);
+  color:var(--tx);
   min-height:100vh;
   overflow-x:hidden;
 }
 
 /* ── CSS Variables ── */
-:root{
+:root, :root[data-theme="light"]{
   --ac:#1C5240;
   --act:#0D3324;
   --acl:#E2EDE6;
@@ -41,6 +41,14 @@ body{
   --gol:#FBF1D6;
   --ff-serif:'Source Serif 4',Georgia,serif;
 }
+:root[data-theme="dark"]{
+  --ac:#52B788; --act:#A4D7B6; --acl:#1B2E25; --acl-bor:#2A4035;
+  --ac-bright:#52B788; --side:#0B0A08;
+  --bg:#13110E; --surf:#1B1813; --bor:#2C261F;
+  --tx:#EFE8D8; --tx2:#B8AC95; --tx3:#9C907B;
+  --gol:#2A2210;
+}
+html[data-theme="dark"]{ background:#13110E; color-scheme:dark; }
 
 /* ── Animations ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
@@ -519,7 +527,7 @@ section{padding:clamp(60px,8vw,100px) clamp(20px,5vw,72px)}
 
 /* ── Footer ── */
 footer{
-  background:#FAF7F0;
+  background:var(--bg);
   border-top:1px solid var(--bor);
   padding:28px clamp(20px,5vw,72px);
   display:flex;
@@ -564,6 +572,64 @@ footer{
 .legal-body p{margin:0 0 12px;}
 .legal-body ul{margin:0 0 12px;padding-left:20px;}
 .legal-body li{margin-bottom:6px;}
+
+/* ── Dark mode ── */
+html[data-theme="dark"] .topbar{
+  background:rgba(19,17,14,.92);
+}
+html[data-theme="dark"] .topbar-name{ color:var(--tx); }
+html[data-theme="dark"] .topbar-sub{ color:var(--tx3); }
+html[data-theme="dark"] .topbar-cta{
+  background:var(--ac); color:var(--bg);
+}
+html[data-theme="dark"] .hero-stat strong{ color:var(--ac); }
+html[data-theme="dark"] .hero-stat span{ color:var(--tx2); }
+html[data-theme="dark"] .preview{
+  background:var(--surf); border-color:var(--bor);
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+html[data-theme="dark"] .preview-card{
+  background:var(--surf); border-color:var(--bor);
+}
+html[data-theme="dark"] .preview-card-title{ color:var(--tx); }
+html[data-theme="dark"] .preview-main{ background:var(--bg); }
+html[data-theme="dark"] .preview-h{ color:var(--tx); }
+html[data-theme="dark"] .feature-card{
+  background:var(--surf); border-color:var(--bor);
+}
+html[data-theme="dark"] .feature-card:hover{
+  border-color:var(--ac); box-shadow:0 4px 20px rgba(82,183,136,.15);
+}
+html[data-theme="dark"] .feature-name{ color:var(--tx); }
+html[data-theme="dark"] .feature-desc{ color:var(--tx2); }
+html[data-theme="dark"] .shortcut-card{
+  background:var(--surf); border-color:var(--bor);
+}
+html[data-theme="dark"] .shortcut-desc{ color:var(--tx2); }
+html[data-theme="dark"] .howto-card{
+  background:var(--surf); border-color:var(--bor);
+}
+html[data-theme="dark"] section[id="como-usar"]{
+  background:var(--surf) !important; border-color:var(--bor) !important;
+}
+html[data-theme="dark"] footer{
+  background:var(--bg); border-top-color:var(--bor);
+}
+html[data-theme="dark"] .btn-sec{
+  border-color:var(--bor); color:var(--tx);
+}
+html[data-theme="dark"] .btn-sec:hover{
+  border-color:var(--tx3); background:var(--surf);
+}
+html[data-theme="dark"] .cta-main{
+  background:var(--ac); color:var(--bg);
+}
+html[data-theme="dark"] kbd{
+  background:var(--surf) !important; border-color:var(--bor) !important; color:var(--tx3) !important;
+}
+html[data-theme="dark"] .badge{
+  border-color:var(--bor); color:var(--tx2);
+}
 </style>
 </head>
 <body>
@@ -879,15 +945,10 @@ footer{
   // Marcar visita atual
   try{ localStorage.setItem('ew_visited_v1','1'); }catch(e){}
 
-  // Ler tema do Wiki e aplicar (para não perder o tema se o utilizador voltar)
+  // Ler tema do Wiki e aplicar
   try{
     const theme = localStorage.getItem('ew_theme_v1') || 'light';
-    // Apenas CSS cosmético — a landing não suporta dark mode completo,
-    // mas podemos ajustar levemente
-    if(theme === 'dark'){
-      document.body.style.background = '#13110E';
-      document.body.style.color = '#EFE8D8';
-    }
+    document.documentElement.dataset.theme = theme;
   }catch(e){}
 
   // Smooth fade in ao carregar
