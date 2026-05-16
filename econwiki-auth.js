@@ -90,8 +90,8 @@ function init(){
   _sb.auth.onAuthStateChange(async (event, session) => {
     _user = session?.user ?? null;
     if(event === 'SIGNED_IN'){
-      await syncFromCloud();
-      await loadSubscription();
+      try{ await syncFromCloud(); }catch(e){ console.warn('[EconWiki Auth] syncFromCloud falhou:', e); }
+      try{ await loadSubscription(); }catch(e){ console.warn('[EconWiki Auth] loadSubscription falhou:', e); }
     }
     if(event === 'SIGNED_OUT'){
       _subscription = { plan:'free', status:'inactive', daily_used:0, daily_limit:30 };
@@ -102,8 +102,8 @@ function init(){
   _sb.auth.getSession().then(async ({ data }) => {
     _user = data?.session?.user ?? null;
     if(_user){
-      syncFromCloud();
-      await loadSubscription();
+      try{ await syncFromCloud(); }catch(e){ console.warn('[EconWiki Auth] syncFromCloud falhou:', e); }
+      try{ await loadSubscription(); }catch(e){ console.warn('[EconWiki Auth] loadSubscription falhou:', e); }
     }
     refreshSidebarWidget();
   });
@@ -399,22 +399,29 @@ function openModal(tab){
     clearMsg();
     if(!email || !pass){ showErr('Preenche o email e a palavra-passe.'); return; }
     btn.disabled = true; btn.textContent = '…';
-    if(currentTab === 'login'){
-      const { error } = await signIn(email, pass);
-      if(error){ showErr(ptError(error)); btn.disabled=false; btn.textContent='Entrar'; }
-      else { close(); }
-    } else {
-      const { data, error } = await signUp(email, pass);
-      if(error){ showErr(ptError(error)); btn.disabled=false; btn.textContent='Criar conta'; }
-      else if(data?.user && !data?.session){
-        showOk('✓ Conta criada! Enviámos um email de confirmação para ' + email + '. Clica no link do email para ativar a conta — depois volta aqui e usa "Entrar". Verifica também o spam.');
-        btn.disabled=false; btn.textContent='Criar conta';
-      } else if(data?.session) {
-        close();
+    try{
+      if(currentTab === 'login'){
+        const { error } = await signIn(email, pass);
+        if(error){ showErr(ptError(error)); btn.disabled=false; btn.textContent='Entrar'; }
+        else { close(); }
       } else {
-        showOk('✓ Conta criada. Usa "Entrar" para iniciar sessão.');
-        btn.disabled=false; btn.textContent='Criar conta';
+        const { data, error } = await signUp(email, pass);
+        if(error){ showErr(ptError(error)); btn.disabled=false; btn.textContent='Criar conta'; }
+        else if(data?.user && !data?.session){
+          showOk('✓ Conta criada! Enviámos um email de confirmação para ' + email + '. Clica no link do email para ativar a conta — depois volta aqui e usa "Entrar". Verifica também o spam.');
+          btn.disabled=false; btn.textContent='Criar conta';
+        } else if(data?.session) {
+          close();
+        } else {
+          showOk('✓ Conta criada. Usa "Entrar" para iniciar sessão.');
+          btn.disabled=false; btn.textContent='Criar conta';
+        }
       }
+    }catch(e){
+      console.error('[EconWiki Auth] submit erro:', e);
+      showErr('Erro de ligação ao servidor. Verifica a tua internet e tenta novamente.');
+      btn.disabled = false;
+      btn.textContent = currentTab === 'login' ? 'Entrar' : 'Criar conta';
     }
   }
 
