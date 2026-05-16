@@ -759,6 +759,7 @@
         <div id="b-intro" class="b-page b-intro-page"></div>
         <div id="b-formulas" class="b-page"></div>
         <div id="b-concepts" class="b-page"></div>
+        <div id="b-account" class="b-page"></div>
       </main>
     </div>
   `);
@@ -893,6 +894,10 @@
             <span>${getTheme()==='dark'?'Modo claro':'Modo escuro'}</span>
           </button>
         </div>
+        <div class="b-side-link ${view==='account'?'active':''}" data-view="account" style="cursor:pointer;margin-top:4px;">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>A minha conta</span>
+        </div>
         <div class="ew-auth-widget" id="ew-auth-widget">
           <!-- Preenchido por econwiki-auth.js -->
         </div>
@@ -908,6 +913,7 @@
       if(v==='intro'){ goIntro(); return; }
       if(v==='formulas'){ goFormulas(); return; }
       if(v==='concepts'){ goConcepts(); return; }
+      if(v==='account'){ goAccount(); return; }
       dashFilter = el.dataset.filter;
       goDash();
     }));
@@ -1389,7 +1395,7 @@
   })();
 
   function showPage(id){
-    ['b-dash','b-read','b-fc','b-intro','b-formulas','b-concepts'].forEach(p=> root.querySelector('#'+p).classList.toggle('active', p===id));
+    ['b-dash','b-read','b-fc','b-intro','b-formulas','b-concepts','b-account'].forEach(p=> root.querySelector('#'+p).classList.toggle('active', p===id));
   }
 
   // ── History API ──
@@ -1445,6 +1451,148 @@
     showPage('b-concepts');
     window.scrollTo({top:0, behavior:'instant'});
     renderSide(); renderConcepts();
+  }
+  function goAccount(){
+    view='account';
+    pushNav({v:'account'});
+    showPage('b-account');
+    window.scrollTo({top:0, behavior:'instant'});
+    renderSide(); renderAccount();
+  }
+
+  // ── Página de Conta ──────────────────────────────────────
+  function renderAccount(){
+    const el = root.querySelector('#b-account');
+    const auth = window.EW_AUTH;
+    const user = auth?.getUser?.() || null;
+
+    if(!user){
+      el.innerHTML = `
+        <div style="padding:48px 56px 100px;max-width:720px;">
+          <h1 style="font-family:'Source Serif 4',serif;font-size:42px;font-weight:600;letter-spacing:-.025em;color:var(--tx);margin:0 0 8px;">A minha conta</h1>
+          <p style="font-size:15px;color:var(--tx2);margin:0 0 32px;">Inicia sessão para ver os dados da tua conta.</p>
+          <div style="background:var(--surf);border:1px solid var(--bor);border-radius:12px;padding:48px 24px;text-align:center;">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="var(--tx3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:48px;height:48px;margin:0 auto 16px;display:block"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <p style="color:var(--tx2);font-size:15px;margin:0 0 20px;">Ainda não tens sessão iniciada.</p>
+            <button id="b-acct-login" style="font:inherit;font-size:13px;font-weight:600;background:var(--ac);color:#fff;border:none;border-radius:8px;padding:10px 24px;cursor:pointer;">Iniciar sessão</button>
+          </div>
+        </div>`;
+      el.querySelector('#b-acct-login')?.addEventListener('click', ()=> auth?.openModal?.());
+      return;
+    }
+
+    const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const email = esc(user.email || '');
+    const createdAt = user.created_at ? new Date(user.created_at) : null;
+    const memberSince = createdAt ? createdAt.toLocaleDateString('pt-PT',{month:'long',year:'numeric'}) : '—';
+    const sub = auth?.getSubscription?.() || { plan:'free', status:'inactive', daily_used:0, daily_limit:30 };
+    const isPremium = sub.plan === 'premium' && (sub.status === 'active' || sub.status === 'cancelled');
+    const dailyUsed = sub.daily_used || 0;
+    const dailyLimit = sub.daily_limit || 30;
+    const usagePct = Math.min(100, Math.round((dailyUsed / dailyLimit) * 100));
+    const usageClass = usagePct >= 100 ? 'background:#A33A2A' : usagePct >= 80 ? 'background:#D4A05A' : 'background:var(--ac)';
+    const readCount = T.filter((_,i)=>EW.isRead(i)).length;
+    const favCount = T.filter((_,i)=>EW.isFav(i)).length;
+    const readPct = Math.round((readCount / T.length) * 100);
+
+    const sty = {
+      page: 'padding:48px 56px 100px;max-width:720px;',
+      title: 'font-family:"Source Serif 4",serif;font-size:42px;font-weight:600;letter-spacing:-.025em;color:var(--tx);line-height:1.1;margin:0 0 8px;',
+      sub: 'font-size:15px;color:var(--tx2);margin:0 0 32px;',
+      secTitle: 'font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--rule);',
+      card: 'background:var(--surf);border:1px solid var(--bor);border-radius:12px;padding:20px 24px;margin-bottom:24px;',
+      row: 'display:flex;justify-content:space-between;align-items:center;padding:10px 0;font-size:14px;',
+      rowBor: 'display:flex;justify-content:space-between;align-items:center;padding:10px 0;font-size:14px;border-top:1px solid var(--rule);',
+      label: 'color:var(--tx2);font-weight:500;',
+      val: 'color:var(--tx);font-weight:600;text-align:right;',
+      btnPri: 'font:inherit;font-size:13px;font-weight:600;background:var(--ac);color:#fff;border:none;border-radius:8px;padding:10px 20px;cursor:pointer;',
+      btnDanger: 'font:inherit;font-size:13px;font-weight:600;background:transparent;border:1px solid var(--bor);color:#A33A2A;border-radius:8px;padding:10px 20px;cursor:pointer;',
+      btnSec: 'font:inherit;font-size:13px;font-weight:600;background:transparent;border:1px solid var(--bor);color:var(--tx2);border-radius:8px;padding:10px 20px;cursor:pointer;',
+      stat: 'text-align:center;padding:16px 12px;background:var(--bg);border-radius:10px;',
+      statV: 'font-family:"Source Serif 4",serif;font-size:28px;font-weight:600;color:var(--ac);line-height:1.2;',
+      statL: 'font-size:11.5px;color:var(--tx3);margin-top:4px;',
+    };
+
+    const badgeStyle = isPremium
+      ? 'display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:var(--acl);border:1px solid var(--ac);color:var(--ac);'
+      : 'display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:var(--surf);border:1px solid var(--bor);color:var(--tx3);';
+
+    el.innerHTML = `
+      <div style="${sty.page}">
+        <h1 style="${sty.title}">A minha conta</h1>
+        <p style="${sty.sub}">Informações da tua conta e subscrição.</p>
+
+        <div style="${sty.secTitle}">Perfil</div>
+        <div style="${sty.card}">
+          <div style="${sty.row}">
+            <span style="${sty.label}">Email</span>
+            <span style="${sty.val}">${email}</span>
+          </div>
+          <div style="${sty.rowBor}">
+            <span style="${sty.label}">Membro desde</span>
+            <span style="${sty.val}">${memberSince}</span>
+          </div>
+        </div>
+
+        <div style="${sty.secTitle}">Plano e Assistente IA</div>
+        <div style="${sty.card}">
+          <div style="${sty.row}">
+            <span style="${sty.label}">Plano atual</span>
+            <span style="${badgeStyle}">${isPremium ? '★ Premium' : 'Gratuito'}</span>
+          </div>
+          <div style="${sty.rowBor}">
+            <span style="${sty.label}">Estado</span>
+            <span style="${sty.val}">${isPremium ? (sub.status==='cancelled'?'Cancelado (ativo até ao fim do período)':'Ativo') : 'Não subscrito'}</span>
+          </div>
+          <p style="font-size:13px;color:var(--tx2);margin:12px 0 0;line-height:1.55;">
+            ${isPremium
+              ? 'Tens acesso ao Assistente IA com limite diário de '+dailyLimit+' mensagens.'
+              : 'O plano gratuito inclui todo o conteúdo do wiki. Subscreve o plano Premium para aceder ao Assistente IA.'}
+          </p>
+          ${isPremium ? `
+          <div style="margin-top:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;font-size:13px;">
+              <span style="${sty.label}">Mensagens hoje</span>
+              <span style="${sty.val}">${dailyUsed} / ${dailyLimit}</span>
+            </div>
+            <div style="height:8px;background:var(--bor);border-radius:4px;overflow:hidden;">
+              <div style="height:100%;border-radius:4px;width:${usagePct}%;${usageClass};transition:width .4s ease;"></div>
+            </div>
+            <div style="font-size:12px;color:var(--tx3);margin-top:6px;">O contador volta a zero à meia-noite.</div>
+          </div>` : ''}
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+            ${isPremium
+              ? '<button id="b-acct-manage" style="'+sty.btnSec+'">Gerir subscrição</button>'
+              : '<button id="b-acct-upgrade" style="'+sty.btnPri+'">Subscrever Premium</button>'}
+          </div>
+        </div>
+
+        <div style="${sty.secTitle}">Progresso de leitura</div>
+        <div style="${sty.card}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;">
+            <div style="${sty.stat}"><div style="${sty.statV}">${readCount}/${T.length}</div><div style="${sty.statL}">Tópicos lidos</div></div>
+            <div style="${sty.stat}"><div style="${sty.statV}">${readPct}%</div><div style="${sty.statL}">Concluído</div></div>
+            <div style="${sty.stat}"><div style="${sty.statV}">${favCount}</div><div style="${sty.statL}">Favoritos</div></div>
+            <div style="${sty.stat}"><div style="${sty.statV}">${T.reduce((a,t)=>a+(t.cc||[]).length,0)}</div><div style="${sty.statL}">Conceitos</div></div>
+          </div>
+        </div>
+
+        <div style="${sty.secTitle}">Sessão</div>
+        <div style="${sty.card}">
+          <button id="b-acct-logout" style="${sty.btnDanger}">Terminar sessão</button>
+        </div>
+      </div>`;
+
+    el.querySelector('#b-acct-upgrade')?.addEventListener('click', ()=>{
+      if(auth?.startCheckout) auth.startCheckout();
+    });
+    el.querySelector('#b-acct-manage')?.addEventListener('click', ()=>{
+      if(auth?.openPortal) auth.openPortal();
+    });
+    el.querySelector('#b-acct-logout')?.addEventListener('click', async ()=>{
+      if(auth?.signOut) await auth.signOut();
+      goAccount();
+    });
   }
 
   // ── Página de Fórmulas ─────────────────────────────────
@@ -1647,6 +1795,7 @@
     else if(s.v==='intro'){ goIntro(); }
     else if(s.v==='formulas'){ goFormulas(); }
     else if(s.v==='concepts'){ goConcepts(); }
+    else if(s.v==='account'){ goAccount(); }
     else { dashFilter='all'; goDash(); }
     _fromPop = false;
   });
