@@ -61,6 +61,11 @@ function _esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 let _sb = null;         // Supabase client
 let _user = null;       // utilizador atual (ou null)
 let _syncing = false;   // flag anti-double-sync
+let _subscription = { plan:'free', status:'inactive', daily_used:0, daily_limit:30 };
+
+function _resetSubscription(){
+  _subscription = { plan:'free', status:'inactive', daily_used:0, daily_limit:30 };
+}
 
 /* ── Inicialização ─────────────────────────────────────── */
 function isConfigured(){
@@ -94,7 +99,7 @@ function init(){
       try{ await loadSubscription(); }catch(e){ console.warn('[EconWiki Auth] loadSubscription falhou:', e); }
     }
     if(event === 'SIGNED_OUT'){
-      _subscription = { plan:'free', status:'inactive', daily_used:0, daily_limit:30 };
+      _resetSubscription();
     }
     refreshSidebarWidget();
   });
@@ -108,8 +113,7 @@ function init(){
     refreshSidebarWidget();
   });
 
-  // ── Subscrição ──────────────────────────────────────────
-  let _subscription = { plan:'free', status:'inactive', daily_used:0, daily_limit:30 };
+  // ── Subscrição (estado mantido no escopo do IIFE; ver _subscription no topo) ──
 
   async function loadSubscription(){
     if(!_user) return;
@@ -219,6 +223,7 @@ async function signUp(email, password){
 async function signOut(){
   await _sb.auth.signOut();
   _user = null;
+  _resetSubscription();
   refreshSidebarWidget();
 }
 
@@ -327,9 +332,19 @@ function refreshSidebarWidget(){
 
 /* ── Modal de login/registo ────────────────────────────── */
 let _modalEl = null;
+let _modalLastFocus = null;
+let _modalEscHandler = null;
+let _modalTabHandler = null;
 
 function openModal(tab){
+  // Limpar listeners do modal anterior antes de criar um novo (A.3 — previne acumulação)
+  if(_modalEscHandler){
+    document.removeEventListener('keydown', _modalEscHandler);
+    _modalEscHandler = null;
+  }
+  _modalTabHandler = null;
   if(_modalEl) _modalEl.remove();
+  _modalLastFocus = document.activeElement;
 
   _modalEl = document.createElement('div');
   _modalEl.id = 'ew-auth-modal';
@@ -370,11 +385,35 @@ function openModal(tab){
     </div>`;
   document.body.appendChild(_modalEl);
 
-  // Fechar
-  const close = ()=>{ _modalEl?.remove(); _modalEl = null; };
+  // Fechar — restaurar foco ao elemento que abriu o modal (5.2)
+  const close = ()=>{
+    _modalEl?.remove();
+    _modalEl = null;
+    if(_modalEscHandler){ document.removeEventListener('keydown', _modalEscHandler); _modalEscHandler = null; }
+    _modalTabHandler = null;
+    if(_modalLastFocus && typeof _modalLastFocus.focus === 'function'){
+      try{ _modalLastFocus.focus(); }catch(e){}
+    }
+    _modalLastFocus = null;
+  };
   _modalEl.querySelector('#ew-auth-bd').addEventListener('click', close);
   _modalEl.querySelector('#ew-auth-close').addEventListener('click', close);
-  document.addEventListener('keydown', function esc(e){ if(e.key==='Escape'){ close(); document.removeEventListener('keydown', esc); }});
+  _modalEscHandler = function(e){ if(e.key==='Escape'){ close(); } };
+  document.addEventListener('keydown', _modalEscHandler);
+
+  // Focus trap (5.1) — Tab confinado ao painel do modal
+  const panel = _modalEl.querySelector('.ew-auth-panel');
+  _modalTabHandler = function(e){
+    if(e.key !== 'Tab' || !panel) return;
+    const focusables = Array.from(panel.querySelectorAll(
+      'a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
+    )).filter(el => el.offsetParent !== null);
+    if(!focusables.length) return;
+    const first = focusables[0], last = focusables[focusables.length - 1];
+    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  };
+  panel?.addEventListener('keydown', _modalTabHandler);
 
   // Tabs
   let currentTab = tab;

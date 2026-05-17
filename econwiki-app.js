@@ -24,7 +24,7 @@
   function syncIntroTheme(v){
     try{
       const f = root.querySelector('#b-intro iframe');
-      if(f && f.contentWindow) f.contentWindow.postMessage({type:'ew_theme', theme:v}, '*');
+      if(f && f.contentWindow) f.contentWindow.postMessage({type:'ew_theme', theme:v}, location.origin);
     }catch(e){}
   }
   function updateThemeBtn(){
@@ -38,8 +38,9 @@
   }
   document.documentElement.dataset.theme = getTheme();
 
-  // Listen for theme toggles inside the Introdução iframe
+  // Listen for theme toggles inside the Introdução iframe — apenas mesma origem (1.8)
   window.addEventListener('message', (ev)=>{
+    if(ev.origin !== location.origin) return;
     if(ev && ev.data && ev.data.type==='ew_theme_request'){
       const v = ev.data.theme==='dark' ? 'dark' : 'light';
       if(getTheme()!==v){ setTheme(v); try{ const s=root.querySelector('[data-theme-btn] span'); if(s) s.textContent = v==='dark'?'Modo claro':'Modo escuro'; }catch(e){} }
@@ -61,7 +62,7 @@
   }
   :root[data-theme="dark"] #app{
     --bg:#13110E; --surf:#1B1813; --surf2:#221E18;
-    --side:#0B0A08; --side-tx:#D8CEB9; --side-tx2:#7E7261; --side-bor:#1A1712; --side-active:#221E18;
+    --side:#0B0A08; --side-tx:#D8CEB9; --side-tx2:#A89E89; --side-bor:#1A1712; --side-active:#221E18;
     --bor:var(--side-bor); --bor2:#221E18; --rule:var(--side-bor);
     --tx:#EFE8D8; --tx2:#B8AC95; --tx3:#9C907B;
     --ac:#52B788; --acl:#1B2E25; --act:#A4D7B6;
@@ -77,6 +78,16 @@
     transition:background .3s, color .3s;
   }
   #app *{box-sizing:border-box;}
+
+  /* Acessibilidade: respeitar prefers-reduced-motion (WCAG 2.3.3) */
+  @media (prefers-reduced-motion: reduce){
+    #app, #app *, #app *::before, #app *::after{
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 
   /* ── Acessibilidade: classe utilitária visualmente escondida mas legível por leitores de ecrã ── */
   .b-sr-only{
@@ -311,12 +322,12 @@
   .b-card-tag .ic svg{ width:14px;height:14px; stroke:currentColor; fill:none; stroke-width:2;}
   .b-card-actions{ display:flex; gap:2px; color:var(--tx3); margin-right:-6px;}
   .b-card-act{
-    width:26px;height:26px; display:grid;place-items:center;
+    width:32px;height:32px; display:grid;place-items:center;
     border-radius:6px; cursor:pointer;
     transition:background .12s, color .12s;
   }
   .b-card-act:hover{ background:var(--bor2); color:var(--tx);}
-  .b-card-act svg{ width:13px;height:13px; stroke-width:2;}
+  .b-card-act svg{ width:14px;height:14px; stroke-width:2;}
   .b-card-act.read.on{ color:var(--c-ac);}
   .b-card-act.fav.on{ color:var(--fav);}
   .b-card-act.fav.on svg{ fill:var(--fav);}
@@ -396,6 +407,7 @@
   .b-read-intro{
     font-family:'Source Serif 4',serif; font-size:22px; line-height:1.5; font-weight:400;
     color:var(--tx); text-wrap:pretty;
+    max-width:62ch;
   }
   .b-read-intro strong{ color:var(--c-act); font-weight:600;}
 
@@ -764,7 +776,7 @@
     </div>
   `);
 
-  let view='dash', cur=-1, dashFilter='all';
+  let view='dash', cur=-1, dashFilter='all', _markReadTO=null;
 
   function chapIcon(label){
     const map = {
@@ -1017,19 +1029,35 @@
         el.addEventListener('click', ()=> openTopic(i));
         const readBtn = el.querySelector('.b-card-act.read');
         const favBtn  = el.querySelector('.b-card-act.fav');
+        const flipReadVisual = ()=>{
+          // Feedback visual imediato — o re-render global virá em seguida e confirma
+          const nowOn = !EW.isRead(i);
+          el.classList.toggle('read', nowOn);
+          readBtn?.classList.toggle('on', nowOn);
+          readBtn?.setAttribute('aria-pressed', nowOn?'true':'false');
+        };
+        const flipFavVisual = ()=>{
+          const nowOn = !EW.isFav(i);
+          favBtn?.classList.toggle('on', nowOn);
+          favBtn?.setAttribute('aria-pressed', nowOn?'true':'false');
+          const svg = favBtn?.querySelector('svg');
+          if(svg) svg.setAttribute('fill', nowOn?'currentColor':'none');
+        };
         readBtn?.addEventListener('click', e=>{
           e.stopPropagation();
+          flipReadVisual();
           EW.toggleRead(i);
         });
         readBtn?.addEventListener('keydown', e=>{
-          if(e.key==='Enter' || e.key===' '){ e.preventDefault(); e.stopPropagation(); EW.toggleRead(i); }
+          if(e.key==='Enter' || e.key===' '){ e.preventDefault(); e.stopPropagation(); flipReadVisual(); EW.toggleRead(i); }
         });
         favBtn?.addEventListener('click', e=>{
           e.stopPropagation();
+          flipFavVisual();
           EW.toggleFav(i);
         });
         favBtn?.addEventListener('keydown', e=>{
-          if(e.key==='Enter' || e.key===' '){ e.preventDefault(); e.stopPropagation(); EW.toggleFav(i); }
+          if(e.key==='Enter' || e.key===' '){ e.preventDefault(); e.stopPropagation(); flipFavVisual(); EW.toggleFav(i); }
         });
       });
     }
@@ -1185,8 +1213,8 @@
     read.querySelector('#b-ask').addEventListener('click', ()=> window.openChat && window.openChat(i));
 
     if(!EW.isRead(i)){
-      clearTimeout(window.__bMarkTO);
-      window.__bMarkTO = setTimeout(()=>{
+      clearTimeout(_markReadTO);
+      _markReadTO = setTimeout(()=>{
         // Apenas marca como lido se o utilizador ainda estiver no mesmo tópico
         if(view==='read' && cur===i) EW.markRead(i);
       }, 8000);
@@ -1267,7 +1295,7 @@
           </div>
         </div>
 
-        <div class="b-fc-stage" id="b-fc-stage" tabindex="0" role="button" aria-label="Cartão flashcard. Clique ou prima Espaço para virar." aria-pressed="${fcFlip?'true':'false'}">
+        <div class="b-fc-stage" id="b-fc-stage" tabindex="0" role="button" aria-label="Cartão flashcard. Clique ou prima Espaço para virar." aria-pressed="${fcFlip?'true':'false'}" aria-live="polite">
           <div class="b-fc-pos">${fcPos+1} / ${total}</div>
           <div class="b-fc-tag">${EW.groupShortLabel(g?.label||'')} · Tópico ${card.idx+1}</div>
           ${fcFlip
@@ -1318,11 +1346,13 @@
     function wireFcHead(){
       fc.querySelector('#b-fc-filter')?.addEventListener('change', e=>{
         fcFilter = e.target.value;
-        fcDeck = buildDeck(); fcPos=0; fcFlip=false; fcKnown.clear(); fcLater.clear();
+        // Manter fcKnown/fcLater (são chaves estáveis por cartão, persistem entre filtros)
+        fcDeck = buildDeck(); fcPos=0; fcFlip=false;
         renderFc();
       });
       fc.querySelector('#b-fc-shuffle')?.addEventListener('click', ()=>{
-        fcDeck = buildDeck(); fcPos=0; fcFlip=false; fcKnown.clear(); fcLater.clear();
+        // Baralhar mantém o progresso; apenas regera ordem
+        fcDeck = buildDeck(); fcPos=0; fcFlip=false;
         renderFc();
       });
     }
@@ -1340,8 +1370,8 @@
     if(e.key===' '){ e.preventDefault(); flipCard(); }
     else if(e.key==='ArrowRight'){ e.preventDefault(); nextCard(); }
     else if(e.key==='ArrowLeft'){ e.preventDefault(); prevCard(); }
-    else if(e.key==='j' || e.key==='J'){ const c=fcDeck[fcPos]; if(c) fcKnown.add(c.id); nextCard(); }
-    else if(e.key==='l' || e.key==='L'){ const c=fcDeck[fcPos]; if(c) fcLater.add(c.id); nextCard(); }
+    else if(e.key==='j' || e.key==='J'){ const c=fcDeck[fcPos]; if(c){ fcKnown.add(c.id); fcPersist(); } nextCard(); }
+    else if(e.key==='l' || e.key==='L'){ const c=fcDeck[fcPos]; if(c){ fcLater.add(c.id); fcPersist(); } nextCard(); }
   });
 
   // ── Routing ─────────────────────────────────────────────
@@ -1399,8 +1429,42 @@
   }
 
   // ── History API ──
+  // Hash routing: URLs partilháveis e estado preservado em refresh
+  // Padrões: #/dash, #/dash/fav, #/dash/ch:2, #/topico/5, #/flashcards, #/intro, #/formulas, #/conceitos, #/conta
   let _fromPop = false;
-  function pushNav(state){ if(!_fromPop) history.pushState(state, '', ''); }
+  function pushNav(state){
+    if(_fromPop) return;
+    const h = stateToHash(state);
+    if(h !== location.hash) history.pushState(state, '', h);
+    else history.replaceState(state, '', h);
+  }
+  function stateToHash(s){
+    if(!s) return '#/dash';
+    if(s.v==='dash') return '#/dash' + (s.f && s.f!=='all' ? '/'+encodeURIComponent(s.f) : '');
+    if(s.v==='read' && typeof s.i==='number') return '#/topico/'+(s.i+1);
+    if(s.v==='fc') return '#/flashcards';
+    if(s.v==='intro') return '#/intro';
+    if(s.v==='formulas') return '#/formulas';
+    if(s.v==='concepts') return '#/conceitos';
+    if(s.v==='account') return '#/conta';
+    return '#/dash';
+  }
+  function hashToState(h){
+    if(!h || h==='#' || h==='#/') return {v:'dash', f:'all'};
+    const path = h.replace(/^#\/?/, '').split('/');
+    const [p0, p1] = path;
+    if(p0==='dash')        return {v:'dash', f: p1 ? decodeURIComponent(p1) : 'all'};
+    if(p0==='topico'){
+      const n = parseInt(p1,10);
+      if(!isNaN(n) && n>=1 && n<=T.length) return {v:'read', i:n-1};
+    }
+    if(p0==='flashcards')  return {v:'fc'};
+    if(p0==='intro')       return {v:'intro'};
+    if(p0==='formulas')    return {v:'formulas'};
+    if(p0==='conceitos')   return {v:'concepts'};
+    if(p0==='conta')       return {v:'account'};
+    return {v:'dash', f:'all'};
+  }
 
   function goDash(){
     view='dash';
@@ -1421,7 +1485,8 @@
     pushNav({v:'fc'});
     showPage('b-fc');
     window.scrollTo({top:0, behavior:'instant'});
-    fcDeck = buildDeck(); fcPos = 0; fcFlip = false; fcKnown.clear(); fcLater.clear();
+    // Manter fcKnown/fcLater (persistidos em localStorage) — apenas reiniciar posição/flip
+    fcDeck = buildDeck(); fcPos = 0; fcFlip = false;
     renderSide(); renderFc();
   }
   function goIntro(){
@@ -1671,13 +1736,23 @@
       el.querySelectorAll('[data-ti]').forEach(tag => {
         tag.addEventListener('click', () => openTopic(parseInt(tag.dataset.ti)));
       });
-      // Re-attach search after re-render
-      el.querySelector('#b-form-q')?.addEventListener('input', e => {
-        fQuery = e.target.value;
-        el.innerHTML = buildHtml();
-        el.querySelector('#b-form-q')?.focus();
-        wireFormulas();
-      });
+      // Pesquisa com debounce — evita re-render a cada keystroke
+      const inp = el.querySelector('#b-form-q');
+      if(inp){
+        let _t = null;
+        inp.addEventListener('input', e => {
+          const newQ = e.target.value;
+          clearTimeout(_t);
+          _t = setTimeout(()=>{
+            fQuery = newQ;
+            const pos = inp.selectionStart;
+            el.innerHTML = buildHtml();
+            const ni = el.querySelector('#b-form-q');
+            if(ni){ ni.focus(); try{ ni.setSelectionRange(pos, pos);}catch(e){} }
+            wireFormulas();
+          }, 120);
+        });
+      }
     }
   }
 
@@ -1762,11 +1837,21 @@
     wireConcepts();
 
     function wireConcepts(){
-      el.querySelector('#b-cc-q')?.addEventListener('input', e => {
-        cQuery = e.target.value;
-        el.innerHTML = buildHtml(); wireConcepts();
-        const inp = el.querySelector('#b-cc-q'); if(inp){ inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
-      });
+      const inp = el.querySelector('#b-cc-q');
+      if(inp){
+        let _t = null;
+        inp.addEventListener('input', e => {
+          const newQ = e.target.value;
+          clearTimeout(_t);
+          _t = setTimeout(()=>{
+            cQuery = newQ;
+            const pos = inp.selectionStart;
+            el.innerHTML = buildHtml(); wireConcepts();
+            const ni = el.querySelector('#b-cc-q');
+            if(ni){ ni.focus(); try{ ni.setSelectionRange(pos, pos);}catch(e){} }
+          }, 120);
+        });
+      }
       el.querySelectorAll('[data-gf]').forEach(btn => {
         btn.addEventListener('click', () => {
           cFilter = btn.dataset.gf;
@@ -1784,25 +1869,40 @@
   window.addEventListener('ew:readchange', ()=>{ renderSide(); if(view==='dash') renderDash(); });
   window.addEventListener('ew:favchange', ()=>{ renderSide(); if(view==='dash') renderDash(); });
 
-  // ── History API: popstate ──
-  window.addEventListener('popstate', e=>{
-    const s = e.state;
+  // ── History API: popstate + carregamento inicial via hash ──
+  function navigateFromState(s){
     _fromPop = true;
-    if(!s){ dashFilter='all'; goDash(); }
-    else if(s.v==='dash'){ dashFilter = s.f||'all'; goDash(); }
-    else if(s.v==='read' && typeof s.i==='number'){ openTopic(s.i); }
-    else if(s.v==='fc'){ goFlash(); }
-    else if(s.v==='intro'){ goIntro(); }
-    else if(s.v==='formulas'){ goFormulas(); }
-    else if(s.v==='concepts'){ goConcepts(); }
-    else if(s.v==='account'){ goAccount(); }
-    else { dashFilter='all'; goDash(); }
+    if(!s)                                            { dashFilter='all'; goDash(); }
+    else if(s.v==='dash')                             { dashFilter = s.f||'all'; goDash(); }
+    else if(s.v==='read' && typeof s.i==='number')    { openTopic(s.i); }
+    else if(s.v==='fc')                               { goFlash(); }
+    else if(s.v==='intro')                            { goIntro(); }
+    else if(s.v==='formulas')                         { goFormulas(); }
+    else if(s.v==='concepts')                         { goConcepts(); }
+    else if(s.v==='account')                          { goAccount(); }
+    else                                              { dashFilter='all'; goDash(); }
     _fromPop = false;
-  });
-  history.replaceState({v:'dash', f:'all'}, '', '');
+  }
+  window.addEventListener('popstate', e=> navigateFromState(e.state || hashToState(location.hash)));
+
+  // Estado inicial: ler hash (deep linking suportado em refresh)
+  const _initialState = hashToState(location.hash);
+  history.replaceState(_initialState, '', stateToHash(_initialState));
+
+  // ── Expor API pública (consumida por app.html: pesquisa Cmd+K e openChat) ──
+  window.app = {
+    init(){},
+    open: openTopic,
+    goDash, goFlash, goIntro, goFormulas, goConcepts, goAccount,
+  };
 
   // init
-  renderSide();
-  renderDash();
+  if(_initialState.v && _initialState.v !== 'dash'){
+    navigateFromState(_initialState);
+  } else {
+    dashFilter = _initialState.f || 'all';
+    renderSide();
+    renderDash();
+  }
 
 })();

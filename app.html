@@ -5,10 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EconWiki — Introdução à Economia</title>
 <meta name="description" content="Manual interativo de Introdução à Economia para a Faculdade de Direito da UCP. 21 tópicos, 135 conceitos-chave, flashcards, formulário e assistente IA.">
+<meta name="author" content="EconWiki — projeto académico UCP Direito">
+<meta name="theme-color" content="#1C5240" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#13110E" media="(prefers-color-scheme: dark)">
 <meta property="og:title" content="EconWiki — Introdução à Economia · UCP">
 <meta property="og:description" content="Manual interativo de Introdução à Economia para estudantes de Direito. Conceitos-chave, gráficos, exemplos jurídicos e assistente IA.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_PT">
+<!-- Favicon SVG inline -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231F1B16'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-weight='700' font-size='40' fill='%23FBF8F0'%3EE%3C/text%3E%3C/svg%3E">
+<!--
+  Content Security Policy (6.5)
+  - script-src inclui CDNs estritamente necessários para Supabase, Lemon Squeezy, React (UMD) e Lemon overlay
+  - 'unsafe-inline' em scripts é necessário porque app.html tem <script> inline (chat e bootstrap)
+  - connect-src inclui Supabase Edge Functions e auth
+  - frame-src para o checkout overlay Lemon Squeezy
+-->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://app.lemonsqueezy.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.lemonsqueezy.com; frame-src 'self' https://app.lemonsqueezy.com;">
 
 <template id="__bundler_thumbnail" data-bg-color="#1F1B16">
   <svg aria-hidden="true" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -166,6 +179,16 @@
   .ew-chat-input button:disabled{ background:var(--cmdk-tx2, #6A6256); cursor:not-allowed;}
   .ew-chat-input button svg{ width:16px;height:16px; stroke:currentColor; fill:none; stroke-width:2;}
   .ew-chat-disclaimer{ font-size:11px; color:var(--chat-tx2, #8A8475); text-align:center; padding:6px 16px 10px; line-height:1.4; border-top:1px solid var(--chat-bor,#E6DECC);}
+  /* Fita de aviso de IA — visível no topo (1.11) */
+  .ew-chat-aibanner{
+    background:#FDF3DC; border-bottom:1px solid #E8D9A8;
+    color:#7A5620; padding:8px 16px;
+    font-size:11.5px; line-height:1.4;
+    display:flex; align-items:flex-start; gap:8px;
+  }
+  .ew-chat-aibanner svg{ width:14px;height:14px; flex-shrink:0; margin-top:1px; stroke:currentColor; fill:none; stroke-width:2;}
+  .ew-chat-aibanner strong{ font-weight:600;}
+  html[data-theme="dark"] .ew-chat-aibanner{ background:#2A2010; border-bottom-color:#5C4420; color:#D4A05A;}
   .ew-chat-gate{ padding:24px 20px; text-align:center;}
   .ew-chat-gate strong{ display:block; font-size:16px; margin-bottom:8px; color:inherit;}
   .ew-chat-gate p{ font-size:13.5px; line-height:1.55; color:var(--chat-tx2,#8A8475); margin:0 0 16px;}
@@ -176,9 +199,24 @@
   .ew-chat-ctx{ padding:8px 16px; background:var(--acl, #E2EDE6); color:var(--act, #0D3324); font-size:12px; border-bottom:1px solid var(--acl-bor, #C8DDD0); display:flex; align-items:center; gap:8px;}
   html[data-theme="dark"] .ew-chat-ctx{ background:var(--acl-dark, #1B2E25); color:var(--act-dark, #A4D7B6); border-bottom-color:var(--acl-dark-bor, #264738);}
   .ew-chat-ctx svg{ width:13px;height:13px; stroke:currentColor; fill:none; stroke-width:2;}
+
+  /* ── Acessibilidade: skip-link (5.10) ── */
+  .ew-skip-link{
+    position:absolute; left:-9999px; top:0;
+    background:var(--ac, #1C5240); color:#fff;
+    padding:10px 16px; border-radius:0 0 8px 0;
+    font:600 14px 'Inter',-apple-system,sans-serif; text-decoration:none;
+    border:0; cursor:pointer;
+    z-index:9999;
+  }
+  .ew-skip-link:focus{ left:0; outline:2px solid #fff; outline-offset:-4px; }
+  /* #app recebe foco programaticamente via skip-link sem mostrar outline azul nativo */
+  #app:focus{ outline:none; }
 </style>
 </head>
 <body>
+
+<button class="ew-skip-link" onclick="(function(){var a=document.getElementById('app');if(!a)return;a.setAttribute('tabindex','-1');a.focus({preventScroll:false});a.scrollIntoView({behavior:'instant',block:'start'});})()">Saltar para o conteúdo principal</button>
 
 <div id="app"></div>
 
@@ -200,6 +238,10 @@
       </button>
     </div>
     <div id="ew-chat-ctx-wrap"></div>
+    <div class="ew-chat-aibanner" role="note" aria-label="Aviso sobre o assistente IA">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21.7 16.6-9-15a1.5 1.5 0 0 0-2.6 0l-9 15A1.5 1.5 0 0 0 2.5 19h18a1.5 1.5 0 0 0 1.3-2.4z"/><path d="M12 9v4M12 17h.01"/></svg>
+      <span><strong>Atenção:</strong> as respostas são geradas por IA e podem conter erros, omissões ou desatualizações. Verifica sempre com os slides do Prof. Confraria e a bibliografia da cadeira.</span>
+    </div>
     <div class="ew-chat-body" id="ew-chat-body"></div>
     <div class="ew-chat-sugs" id="ew-chat-sugs"></div>
     <div class="ew-chat-input">
@@ -208,24 +250,25 @@
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
       </button>
     </div>
-    <div class="ew-chat-disclaimer">As respostas são geradas por IA e podem conter erros. Verifica sempre com os materiais oficiais da cadeira.</div>
+    <div class="ew-chat-disclaimer">IA · Claude (Anthropic) · respostas geradas em tempo real</div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
 <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
-<script src="econwiki-data.js"></script>
-<script src="app-shared.js"></script>
-<script src="econwiki-auth.js"></script>
-<script src="econwiki-app.js"></script>
+<script src="econwiki-data.js" defer></script>
+<script src="app-shared.js" defer></script>
+<script src="econwiki-auth.js" defer></script>
+<script src="econwiki-app.js" defer></script>
 
-<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
-<script src="tweaks-panel.js"></script>
-<script src="econwiki-tweaks.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous" defer></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous" defer></script>
+<script src="tweaks-panel.js" defer></script>
+<script src="econwiki-tweaks.js" defer></script>
 
 <script>
-(function(){
+// Aguardar DOMContentLoaded — todos os <script defer> já correram nessa altura
+document.addEventListener('DOMContentLoaded', function(){
   'use strict';
   const T = window.T || [];
   const EW = window.EW;
@@ -282,7 +325,14 @@
     chatBody.scrollTop = chatBody.scrollHeight;
     return el;
   }
-  function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function escapeHtml(s){
+    return String(s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
+  }
   function formatReply(s){
     let h = escapeHtml(s);
     h = h.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
@@ -392,7 +442,7 @@
   });
 
   window.openChat = openChat;
-})();
+});
 </script>
 </body>
 </html>

@@ -1,9 +1,16 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Introdução ao Pensamento Económico — EconWiki</title>
+<!--
+  Content Security Policy (A.8)
+  - script-src: Chart.js (jsdelivr) + Lucide (unpkg); 'unsafe-inline' para os scripts inline
+  - style-src/font-src: Google Fonts
+  - frame-ancestors 'self': permite ser embebido pela própria app (mesma origem)
+-->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self';">
 
 <!-- Fonts: alinhadas com o EconWiki (Source Serif 4 + Inter) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2884,7 +2891,7 @@ body.dark .quiz-feedback.wrong-fb {
             <strong>Qual o efeito mais provável na curva da oferta?</strong>
           </div>
           <div class="quiz-options" data-correct="b">
-            <button class="quiz-opt" data-val="a" onclick="answerQuiz3('b3-3','a')"><span class="quiz-opt-letter">A</span>Movimento ao longo da curva — a Rosinha produz mais porque a sua receita efectiva por pastel aumentou.</button>
+            <button class="quiz-opt" data-val="a" onclick="answerQuiz3('b3-3','a')"><span class="quiz-opt-letter">A</span>Movimento ao longo da curva — a Rosinha produz mais porque a sua receita efetiva por pastel aumentou.</button>
             <button class="quiz-opt" data-val="b" onclick="answerQuiz3('b3-3','b')"><span class="quiz-opt-letter">B</span>A curva da oferta desloca-se para a direita — a cada preço, a Rosinha está disposta a oferecer mais pastéis porque o custo líquido de produzir desceu.</button>
             <button class="quiz-opt" data-val="c" onclick="answerQuiz3('b3-3','c')"><span class="quiz-opt-letter">C</span>A curva da oferta desloca-se para a esquerda — o subsídio distorce o mercado e reduz a eficiência.</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz3('b3-3','d')"><span class="quiz-opt-letter">D</span>A procura aumenta — os clientes percebem que o Estado está a subsidiar e querem mais pastéis.</button>
@@ -3636,7 +3643,7 @@ body.dark .quiz-feedback.wrong-fb {
       <p class="bt">
         Mas a sua disponibilidade máxima a pagar era 3,00 + 2,20 + 1,60 = 6,80 €.
         A diferença — 6,80 € − 3,60 € = <strong>3,20 €</strong> — é o
-        <span class="term" data-tip="Diferença entre a disponibilidade máxima a pagar e o preço efectivamente pago. Representa o ganho líquido do consumidor ao participar no mercado."><strong>excedente do consumidor</strong></span>.
+        <span class="term" data-tip="Diferença entre a disponibilidade máxima a pagar e o preço efetivamente pago. Representa o ganho líquido do consumidor ao participar no mercado."><strong>excedente do consumidor</strong></span>.
         É o valor que o Tiago "ganhou" por existir um mercado a 1,20 € —
         valor que ficou no seu bolso e não foi transferido para a Rosinha.
       </p>
@@ -3842,8 +3849,8 @@ body.dark .quiz-feedback.wrong-fb {
           </div>
           <div class="quiz-options" data-correct="c">
             <button class="quiz-opt" data-val="a" onclick="answerQuiz5('b5-1','a')"><span class="quiz-opt-letter">A</span>6,80 € — a sua disponibilidade máxima a pagar por todos os pastéis que compraria.</button>
-            <button class="quiz-opt" data-val="b" onclick="answerQuiz5('b5-1','b')"><span class="quiz-opt-letter">B</span>3,60 € — o valor que o Tiago efectivamente pagou pelos 3 pastéis.</button>
-            <button class="quiz-opt" data-val="c" onclick="answerQuiz5('b5-1','c')"><span class="quiz-opt-letter">C</span>3,20 € — a diferença entre a sua disponibilidade total a pagar (6,80 €) e o que efectivamente pagou (3,60 €).</button>
+            <button class="quiz-opt" data-val="b" onclick="answerQuiz5('b5-1','b')"><span class="quiz-opt-letter">B</span>3,60 € — o valor que o Tiago efetivamente pagou pelos 3 pastéis.</button>
+            <button class="quiz-opt" data-val="c" onclick="answerQuiz5('b5-1','c')"><span class="quiz-opt-letter">C</span>3,20 € — a diferença entre a sua disponibilidade total a pagar (6,80 €) e o que efetivamente pagou (3,60 €).</button>
             <button class="quiz-opt" data-val="d" onclick="answerQuiz5('b5-1','d')"><span class="quiz-opt-letter">D</span>1,80 € — apenas o excedente do primeiro pastel, que é o mais valioso para ele.</button>
           </div>
           <div class="quiz-feedback" id="b5qfb-1" role="status" aria-live="polite"></div>
@@ -4132,7 +4139,7 @@ body.dark .quiz-feedback.wrong-fb {
           <tr><td class="lh">100</td><td>0,45 €</td><td>1,20 €</td><td style="color:#2D6A4F;font-weight:600;">CMg &lt; RMg</td><td>✓ Produzir mais</td></tr>
           <tr><td class="lh">200</td><td>0,70 €</td><td>1,20 €</td><td style="color:#2D6A4F;font-weight:600;">CMg &lt; RMg</td><td>✓ Produzir mais</td></tr>
           <tr><td class="lh">300</td><td>0,98 €</td><td>1,20 €</td><td style="color:#2D6A4F;font-weight:600;">CMg &lt; RMg</td><td>✓ Produzir mais</td></tr>
-          <tr><td class="lh" style="color:var(--ac);font-weight:700;">380 ⭐</td><td style="color:var(--ac);font-weight:700;">1,20 €</td><td style="color:var(--ac);font-weight:700;">1,20 €</td><td style="color:var(--ac);font-weight:700;">CMg = RMg</td><td style="color:var(--ac);font-weight:700;">Óptimo</td></tr>
+          <tr><td class="lh" style="color:var(--ac);font-weight:700;">380 ⭐</td><td style="color:var(--ac);font-weight:700;">1,20 €</td><td style="color:var(--ac);font-weight:700;">1,20 €</td><td style="color:var(--ac);font-weight:700;">CMg = RMg</td><td style="color:var(--ac);font-weight:700;">Ótimo</td></tr>
           <tr><td class="lh">420</td><td>1,38 €</td><td>1,20 €</td><td style="color:#C62828;font-weight:600;">CMg &gt; RMg</td><td>✗ Produzir menos</td></tr>
           <tr><td class="lh">460</td><td>1,65 €</td><td>1,20 €</td><td style="color:#C62828;font-weight:600;">CMg &gt; RMg</td><td>✗ Produzir menos</td></tr>
         </tbody>
@@ -4426,6 +4433,7 @@ try{
   if(qs.get('theme')==='dark') applyDarkMode(true);
 }catch(e){}
 window.addEventListener('message', (ev)=>{
+  if(ev.origin !== location.origin && ev.origin !== '') return;
   if(ev && ev.data && ev.data.type==='ew_theme'){
     applyDarkMode(ev.data.theme==='dark');
     try { localStorage.setItem('econwiki:darkMode', isDark ? '1' : '0'); } catch(e) {}
@@ -4436,8 +4444,12 @@ darkBtn.addEventListener('click', () => {
   isDark = !isDark;
   document.body.classList.toggle('dark', isDark);
   try { localStorage.setItem('econwiki:darkMode', isDark ? '1' : '0'); } catch(e) {}
-  // notifica o shell (caso esteja embebido)
-  try { window.parent && window.parent.postMessage({type:'ew_theme_request', theme: isDark?'dark':'light'}, '*'); } catch(e){}
+  // notifica o shell (caso esteja embebido) — mesma origem
+  try {
+    if(window.parent && window.parent !== window){
+      window.parent.postMessage({type:'ew_theme_request', theme: isDark?'dark':'light'}, location.origin);
+    }
+  } catch(e){}
   darkBtn.innerHTML = isDark
     ? `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
     : `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
@@ -5047,7 +5059,7 @@ window.__addRetryButton = function(card, fb, ansObj, qKey){
 (function () {
   const FB2 = {
     'b2-1': {
-      a: { type: 'correct', msg: '<strong>Correto! ✓</strong> Quando o preço muda, o ponto desloca-se <em>ao longo</em> da curva existente — a curva não se move. A quantidade procurada subiu de 110 para 320 pastéis porque o preço baixou de 2,50 € para 1,20 €. Isto é a Lei da Procura em acção: a relação inversa entre preço e quantidade.' },
+      a: { type: 'correct', msg: '<strong>Correto! ✓</strong> Quando o preço muda, o ponto desloca-se <em>ao longo</em> da curva existente — a curva não se move. A quantidade procurada subiu de 110 para 320 pastéis porque o preço baixou de 2,50 € para 1,20 €. Isto é a Lei da Procura em ação: a relação inversa entre preço e quantidade.' },
       b: { type: 'wrong',   msg: '<strong>Não.</strong> Uma deslocação da curva para a direita significaria que <em>a cada nível de preço</em> as pessoas querem mais pastéis — o que acontece quando muda um determinante (rendimento, gostos, etc.). Aqui foi o preço que mudou, o que apenas move o ponto ao longo da curva existente.' },
       c: { type: 'wrong',   msg: '<strong>Errado.</strong> Uma descida de preço <em>não desloca</em> a curva — move o ponto ao longo dela. A confusão entre movimento e deslocação é a armadilha mais comum nesta matéria. Quando o preço muda: movimento ao longo. Quando um determinante muda: deslocação da curva.' },
       d: { type: 'wrong',   msg: '<strong>Não.</strong> A oferta é o lado dos produtores. Aqui estamos a analisar o comportamento dos consumidores — estamos no lado da procura. A Rosinha pode ou não estar a produzir mais, mas isso não é o que a pergunta analisa.' }
@@ -5421,8 +5433,8 @@ window.__addRetryButton = function(card, fb, ansObj, qKey){
       d: { type: 'wrong',   msg: '<strong>Errado.</strong> Esta é a mesma confusão que surge na procura: pensar que só o preço afeta a quantidade. Os determinantes (tecnologia, custos, número de produtores, regulação, expectativas) alteram a oferta sem que o preço mude. O forno novo muda a curva inteira.' }
     },
     'b3-3': {
-      a: { type: 'wrong',   msg: '<strong>Quase, mas a classificação está errada.</strong> O subsídio efectivamente aumenta a receita por pastel — mas não é uma mudança no preço de <em>mercado</em>. É uma mudança nos custos líquidos de produção (um determinante). Portanto, o que acontece é uma deslocação da curva da oferta para a direita, não um movimento ao longo dela.' },
-      b: { type: 'correct', msg: '<strong>Correto! ✓</strong> Um subsídio à produção é equivalente a uma redução nos custos líquidos — um determinante da oferta. A Rosinha está disposta a oferecer mais pastéis a cada nível de preço porque cada pastel produzido lhe custa efectivamente menos (o Estado cobre 0,20 €). A curva desloca-se para a direita.' },
+      a: { type: 'wrong',   msg: '<strong>Quase, mas a classificação está errada.</strong> O subsídio efetivamente aumenta a receita por pastel — mas não é uma mudança no preço de <em>mercado</em>. É uma mudança nos custos líquidos de produção (um determinante). Portanto, o que acontece é uma deslocação da curva da oferta para a direita, não um movimento ao longo dela.' },
+      b: { type: 'correct', msg: '<strong>Correto! ✓</strong> Um subsídio à produção é equivalente a uma redução nos custos líquidos — um determinante da oferta. A Rosinha está disposta a oferecer mais pastéis a cada nível de preço porque cada pastel produzido lhe custa efetivamente menos (o Estado cobre 0,20 €). A curva desloca-se para a direita.' },
       c: { type: 'wrong',   msg: '<strong>Não.</strong> Um subsídio reduz os custos efetivos de produção — isso incentiva mais produção, não menos. A curva desloca-se para a direita. A questão da "distorção do mercado" é um debate normativo (de política económica) legítimo, mas em termos positivos o efeito imediato é um aumento da oferta.' },
       d: { type: 'wrong',   msg: '<strong>Não.</strong> O subsídio é pago ao produtor (Rosinha), não ao consumidor. Não há razão direta para os clientes quererem mais pastéis só porque o Estado subsidia a produção. A procura é determinada por rendimento, gostos, preços de outros bens e expectativas — não por subsídios ao produtor.' }
     }
@@ -5885,8 +5897,8 @@ window.__addRetryButton = function(card, fb, ansObj, qKey){
   const FB5 = {
     'b5-1': {
       a: { type: 'wrong',   msg: '<strong>Não — essa é a disponibilidade total a pagar, não o excedente.</strong> 6,80 € é quanto o Tiago estaria disposto a gastar no máximo pelos 3 pastéis. Mas o excedente é a diferença entre esse valor e o que realmente pagou. O mercado a 1,20 € fez com que ele poupasse parte desse valor.' },
-      b: { type: 'wrong',   msg: '<strong>Não — esse é o gasto efectivo, não o excedente.</strong> 3,60 € é o que o Tiago pagou (3 × 1,20 €). O excedente é o que ele ganhou por não ter de pagar o seu preço máximo em cada unidade — é a diferença entre o que estaria disposto a pagar e o que pagou.' },
-      c: { type: 'correct', msg: '<strong>Correto! ✓</strong> O excedente do consumidor é a diferença entre a disponibilidade total a pagar (3,00 + 2,20 + 1,60 = 6,80 €) e o valor efectivamente pago (3 × 1,20 = 3,60 €). Resultado: 6,80 − 3,60 = <strong>3,20 €</strong>. É o valor que ficou no bolso do Tiago — o ganho líquido de participar neste mercado.' },
+      b: { type: 'wrong',   msg: '<strong>Não — esse é o gasto efetivo, não o excedente.</strong> 3,60 € é o que o Tiago pagou (3 × 1,20 €). O excedente é o que ele ganhou por não ter de pagar o seu preço máximo em cada unidade — é a diferença entre o que estaria disposto a pagar e o que pagou.' },
+      c: { type: 'correct', msg: '<strong>Correto! ✓</strong> O excedente do consumidor é a diferença entre a disponibilidade total a pagar (3,00 + 2,20 + 1,60 = 6,80 €) e o valor efetivamente pago (3 × 1,20 = 3,60 €). Resultado: 6,80 − 3,60 = <strong>3,20 €</strong>. É o valor que ficou no bolso do Tiago — o ganho líquido de participar neste mercado.' },
       d: { type: 'wrong',   msg: '<strong>Não — o excedente é a soma de todas as unidades, não só da primeira.</strong> O excedente do 1.º pastel é 1,80 €, mas o 2.º dá 1,00 € e o 3.º dá 0,40 €. Somando os três: 1,80 + 1,00 + 0,40 = 3,20 €. O excedente total acumula-se em todas as unidades compradas.' }
     },
     'b5-2': {
@@ -5959,7 +5971,7 @@ window.__addRetryButton = function(card, fb, ansObj, qKey){
     document.getElementById('quiz5-score-msg').textContent     = msgs[score];
 
     const details = [
-      `<strong>Pergunta 1</strong> — Excedente do consumidor: ${ans5['b5-1'] === 'c' ? '✓ Certa' : '✗ Errada'}. EC = disponibilidade total a pagar − gasto efectivo = 6,80 − 3,60 = 3,20 €.`,
+      `<strong>Pergunta 1</strong> — Excedente do consumidor: ${ans5['b5-1'] === 'c' ? '✓ Certa' : '✗ Errada'}. EC = disponibilidade total a pagar − gasto efetivo = 6,80 − 3,60 = 3,20 €.`,
       `<strong>Pergunta 2</strong> — Otimização com dois bens: ${ans5['b5-2'] === 'b' ? '✓ Certa' : '✗ Errada'}. Comprar mais pastéis pois UMg/P pastel (8,3) > UMg/P galão (6,0).`,
       `<strong>Pergunta 3</strong> — Fundamento da Lei da Procura: ${ans5['b5-3'] === 'a' ? '✓ Certa' : '✗ Errada'}. Preço mais baixo ativa unidades com UMg entre o preço novo e o antigo.`
     ];
