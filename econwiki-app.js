@@ -1226,6 +1226,7 @@
   let fcPos = 0;
   let fcFlip = false;
   let fcFilter = 'all';
+  let fcMode = (function(){ try{ return localStorage.getItem('ew_fc_mode_v1') || 'reasoning'; }catch(e){ return 'reasoning'; } })();
   function _loadFcSet(key){ try{ return new Set(JSON.parse(localStorage.getItem(key)||'[]')); }catch(e){ return new Set(); } }
   function _saveFcSet(key, s){ try{ localStorage.setItem(key, JSON.stringify([...s])); }catch(e){} }
   let fcKnown = _loadFcSet('ew_fc_known_v1');
@@ -1239,15 +1240,35 @@
     else if(fcFilter==='fav') pool = T.map((_,i)=>i).filter(i=>EW.isFav(i));
     else if(fcFilter.startsWith('ch:')) pool = GS[parseInt(fcFilter.slice(3))]?.idx || [];
     else pool = T.map((_,i)=>i);
-    // each card = { id, ti, idx, q, a, label }
+    // each card = { id, idx, q, a, name, label?, hint? }
+    // O id começa com 'c' (conceitos) ou 'r' (raciocínio) para evitar colisão de
+    // chaves "Sabido / Rever depois" entre os dois modos.
     const deck = [];
-    pool.forEach(i=>{
-      const t = T[i];
-      (t.cc||[]).forEach((cc,k)=>{
-        // id estável: índice do tópico + posição do conceito no array
-        deck.push({ id:'t'+i+'#'+k, idx:i, label:cc.l, q:cc.t, a:cc.d, name:t.name });
+    if(fcMode === 'reasoning'){
+      // Modo "Raciocínio": perguntas que exigem aplicar conceitos
+      pool.forEach(i=>{
+        const t = T[i];
+        (t.flash||[]).forEach((card,k)=>{
+          deck.push({
+            id: 'r'+i+'#'+k,
+            idx: i,
+            label: 'Raciocínio',
+            q: card.q,
+            a: card.a,
+            hint: card.hint || '',
+            name: t.name
+          });
+        });
       });
-    });
+    } else {
+      // Modo "Conceitos": cartões a partir dos conceitos-chave (legado)
+      pool.forEach(i=>{
+        const t = T[i];
+        (t.cc||[]).forEach((cc,k)=>{
+          deck.push({ id:'c'+i+'#'+k, idx:i, label:cc.l, q:cc.t, a:cc.d, name:t.name });
+        });
+      });
+    }
     // shuffle stable per session
     for(let i=deck.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [deck[i],deck[j]]=[deck[j],deck[i]]; }
     return deck;
@@ -1265,10 +1286,35 @@
               <h1 class="b-fc-title">Flashcards</h1>
               <div class="b-fc-sub">Sem cartões para esta seleção.</div>
             </div>
+            <div class="b-fc-controls">
+              <label for="b-fc-mode" class="b-sr-only">Tipo de cartão</label>
+              <select class="b-fc-select" id="b-fc-mode" aria-label="Tipo de cartão">
+                <option value="reasoning" ${fcMode==='reasoning'?'selected':''}>🧠 Raciocínio</option>
+                <option value="concepts"  ${fcMode==='concepts'?'selected':''}>📖 Conceitos</option>
+              </select>
+              <label for="b-fc-filter" class="b-sr-only">Filtrar flashcards</label>
+              <select class="b-fc-select" id="b-fc-filter" aria-label="Filtrar flashcards">
+                <option value="all" ${fcFilter==='all'?'selected':''}>Todos os capítulos</option>
+                <option value="unread" ${fcFilter==='unread'?'selected':''}>Só de tópicos não lidos</option>
+                <option value="fav" ${fcFilter==='fav'?'selected':''}>Só de favoritos</option>
+                ${GS.map((g,gi)=>`<option value="ch:${gi}" ${fcFilter==='ch:'+gi?'selected':''}>Capítulo ${gi+1} · ${EW.groupShortLabel(g.label)}</option>`).join('')}
+              </select>
+            </div>
           </div>
-          <div class="b-fc-stage" style="--fc-ac:#7B3FA0;--fc-act:#4F2868"><div class="b-fc-q">Tenta outro filtro.</div></div>
+          <div class="b-fc-stage" style="--fc-ac:#7B3FA0;--fc-act:#4F2868"><div class="b-fc-q">Tenta outro filtro ou outro tipo.</div></div>
         </div>`;
-      wireFcHead();
+      // Religar handlers de modo/filtro deste bloco vazio (não chama wireFcHead aninhado)
+      fc.querySelector('#b-fc-mode')?.addEventListener('change', e=>{
+        fcMode = e.target.value;
+        try{ localStorage.setItem('ew_fc_mode_v1', fcMode); }catch(err){}
+        fcDeck = buildDeck(); fcPos=0; fcFlip=false;
+        renderFc();
+      });
+      fc.querySelector('#b-fc-filter')?.addEventListener('change', e=>{
+        fcFilter = e.target.value;
+        fcDeck = buildDeck(); fcPos=0; fcFlip=false;
+        renderFc();
+      });
       return;
     }
     const g = EW.groupOf(card.idx);
@@ -1281,9 +1327,16 @@
         <div class="b-fc-head">
           <div>
             <h1 class="b-fc-title">Flashcards</h1>
-            <div class="b-fc-sub">Estudo rápido a partir dos conceitos-chave do programa.</div>
+            <div class="b-fc-sub">${fcMode==='reasoning'
+              ? 'Perguntas de raciocínio económico — para aplicar conceitos, não decorar.'
+              : 'Estudo rápido a partir dos conceitos-chave do programa.'}</div>
           </div>
           <div class="b-fc-controls">
+            <label for="b-fc-mode" class="b-sr-only">Tipo de cartão</label>
+            <select class="b-fc-select" id="b-fc-mode" aria-label="Tipo de cartão">
+              <option value="reasoning" ${fcMode==='reasoning'?'selected':''}>🧠 Raciocínio</option>
+              <option value="concepts"  ${fcMode==='concepts'?'selected':''}>📖 Conceitos</option>
+            </select>
             <label for="b-fc-filter" class="b-sr-only">Filtrar flashcards</label>
             <select class="b-fc-select" id="b-fc-filter" aria-label="Filtrar flashcards">
               <option value="all" ${fcFilter==='all'?'selected':''}>Todos os capítulos</option>
@@ -1297,10 +1350,14 @@
 
         <div class="b-fc-stage" id="b-fc-stage" tabindex="0" role="button" aria-label="Cartão flashcard. Clique ou prima Espaço para virar." aria-pressed="${fcFlip?'true':'false'}" aria-live="polite">
           <div class="b-fc-pos">${fcPos+1} / ${total}</div>
-          <div class="b-fc-tag">${EW.groupShortLabel(g?.label||'')} · Tópico ${card.idx+1}</div>
+          <div class="b-fc-tag">${EW.groupShortLabel(g?.label||'')} · Tópico ${card.idx+1}${fcMode==='reasoning'?' · Raciocínio':''}</div>
           ${fcFlip
-            ? `<div class="b-fc-q flip"><strong>${card.q}</strong> — ${card.a}<div style="font-size:13px;color:var(--tx3);margin-top:18px;font-weight:400;">Do tópico: <em>${card.name}</em></div></div>`
-            : `<div class="b-fc-q">${card.q}</div>`}
+            ? (fcMode==='reasoning'
+                ? `<div class="b-fc-q flip">${card.a}<div style="font-size:13px;color:var(--tx3);margin-top:18px;font-weight:400;">Do tópico: <em>${card.name}</em></div></div>`
+                : `<div class="b-fc-q flip"><strong>${card.q}</strong> — ${card.a}<div style="font-size:13px;color:var(--tx3);margin-top:18px;font-weight:400;">Do tópico: <em>${card.name}</em></div></div>`)
+            : (fcMode==='reasoning'
+                ? `<div class="b-fc-q">${card.q}${card.hint ? `<div style="font-size:13px;color:var(--tx3);margin-top:14px;font-style:italic;font-weight:400;border-top:1px dashed var(--bor);padding-top:10px;">Pista: ${card.hint}</div>` : ''}</div>`
+                : `<div class="b-fc-q">${card.q}</div>`)}
           <div class="b-fc-flip-hint">${fcFlip? '↑ Resposta':'Clica para ver a resposta'} <kbd>Espaço</kbd></div>
         </div>
 
@@ -1344,6 +1401,12 @@
     setTimeout(()=>{ const s = fc.querySelector('#b-fc-stage'); if(s && view==='fc') s.focus(); }, 30);
 
     function wireFcHead(){
+      fc.querySelector('#b-fc-mode')?.addEventListener('change', e=>{
+        fcMode = e.target.value;
+        try{ localStorage.setItem('ew_fc_mode_v1', fcMode); }catch(err){}
+        fcDeck = buildDeck(); fcPos=0; fcFlip=false;
+        renderFc();
+      });
       fc.querySelector('#b-fc-filter')?.addEventListener('change', e=>{
         fcFilter = e.target.value;
         // Manter fcKnown/fcLater (são chaves estáveis por cartão, persistem entre filtros)
@@ -1451,7 +1514,11 @@
   }
   function hashToState(h){
     if(!h || h==='#' || h==='#/') return {v:'dash', f:'all'};
-    const path = h.replace(/^#\/?/, '').split('/');
+    // Remover query string (?plan=X) antes de fazer parse de rota
+    let hashPath = h;
+    const qIdx = hashPath.indexOf('?');
+    if(qIdx >= 0) hashPath = hashPath.slice(0, qIdx);
+    const path = hashPath.replace(/^#\/?/, '').split('/');
     const [p0, p1] = path;
     if(p0==='dash')        return {v:'dash', f: p1 ? decodeURIComponent(p1) : 'all'};
     if(p0==='topico'){
@@ -1904,5 +1971,33 @@
     renderSide();
     renderDash();
   }
+
+  // ── Deep link da landing: app.html#/conta?plan=monthly|annual ─────
+  // Quando a landing manda o utilizador subscrever, pode incluir ?plan=X.
+  // Após login, abrimos o modal de pricing já com o plano escolhido.
+  (function handlePlanQuery(){
+    const rawHash = location.hash || '';
+    const qIdx = rawHash.indexOf('?');
+    if(qIdx < 0) return;
+    const params = new URLSearchParams(rawHash.slice(qIdx + 1));
+    const planId = params.get('plan');
+    if(!planId) return;
+    // Esperar um instante para EW_AUTH carregar e o utilizador acabar de aterrar
+    setTimeout(()=>{
+      const auth = window.EW_AUTH;
+      if(!auth) return;
+      if(!auth.getUser || !auth.getUser()){
+        // Sem login → abre modal de login; quando voltar ainda terá ?plan=X
+        if(auth.openModal) auth.openModal();
+        return;
+      }
+      // Já tem login: dispara checkout do plano escolhido
+      if(auth.startCheckout) auth.startCheckout(planId);
+      // Limpar query da URL para não repetir em refresh
+      try{
+        history.replaceState(history.state, '', stateToHash(_initialState));
+      }catch(e){}
+    }, 500);
+  })();
 
 })();

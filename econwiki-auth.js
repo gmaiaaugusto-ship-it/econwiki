@@ -43,7 +43,46 @@ window.SUPABASE_URL = SUPABASE_URL;
      URL: https://xiibexibzeaohzkjelbv.supabase.co/functions/v1/lemonsqueezy-webhook
      Eventos: subscription_created, subscription_updated, subscription_cancelled, subscription_expired
    ──────────────────────────────────────────────────────────── */
-const LEMON_CHECKOUT_URL = 'https://econwiki.lemonsqueezy.com/checkout/buy/11d7554b-3527-47c1-a3e8-32fafd16c9bb';
+
+/* ════════════════════════════════════════════════════════════
+   PLANOS DE SUBSCRIÇÃO
+   ──────────────────────────────────────────────────────────
+   Cada plano corresponde a um "variant" do mesmo produto no Lemon Squeezy.
+   Para criar variantes:
+     1. No painel LS, abre o teu produto.
+     2. Cria uma variante para cada plano (mensal, anual, …).
+     3. Em cada variante, copia o "Variant Checkout URL" e cola em `url`.
+   Se ainda não tiveres variantes, deixa todos os URLs iguais e o modal
+   apresentará apenas uma opção visível.
+
+   ⚠️ Substitui os preços ('priceLabel') e URLs pelos valores reais.
+   ════════════════════════════════════════════════════════════ */
+const LEMON_PLANS = {
+  monthly: {
+    id: 'monthly',
+    name: 'Mensal',
+    priceLabel: '4,99 €',
+    priceSub: 'por mês',
+    description: 'Acesso ao Assistente IA com 100 mensagens por dia. Cancela quando quiseres.',
+    perks: ['Assistente IA · 100 msg/dia', 'Sincronização entre dispositivos', 'Cancelas quando quiseres'],
+    badge: '',
+    url: 'https://econwiki.lemonsqueezy.com/checkout/buy/11d7554b-3527-47c1-a3e8-32fafd16c9bb'
+  },
+  annual: {
+    id: 'annual',
+    name: 'Anual',
+    priceLabel: '39,99 €',
+    priceSub: 'por ano (≈ 3,33 €/mês)',
+    description: 'O mesmo acesso ao Assistente IA, com um desconto equivalente a 2 meses grátis.',
+    perks: ['Assistente IA · 100 msg/dia', 'Sincronização entre dispositivos', '≈ 2 meses grátis vs mensal'],
+    badge: 'Poupa ≈33 %',
+    url: 'https://econwiki.lemonsqueezy.com/checkout/buy/11d7554b-3527-47c1-a3e8-32fafd16c9bb'
+  }
+};
+
+// Compatibilidade retroativa: alguns sítios podem ainda referenciar LEMON_CHECKOUT_URL.
+// É o URL do plano por defeito (mensal). Não remover sem auditar.
+const LEMON_CHECKOUT_URL = LEMON_PLANS.monthly.url;
 
 /* ════════════════════════════════════════════════════════════
    Não é necessário alterar nada abaixo desta linha.
@@ -134,19 +173,151 @@ function init(){
     return data?.session || null;
   }
 
-  function startCheckout(){
+  function startCheckout(planId){
     if(!_user){ openModal('login'); return; }
-    if(LEMON_CHECKOUT_URL.startsWith('COLA')){
-      alert('O checkout URL do Lemon Squeezy ainda não está configurado.\nEdita econwiki-auth.js e cola o URL do teu produto.');
+    // Se não veio plano, abrir modal de seleção
+    if(!planId){ openPricingModal(); return; }
+    const plan = LEMON_PLANS[planId];
+    if(!plan){
+      console.warn('[EconWiki] Plano desconhecido:', planId);
+      openPricingModal();
       return;
     }
-    const sep = LEMON_CHECKOUT_URL.includes('?') ? '&' : '?';
-    const url = LEMON_CHECKOUT_URL
+    if(!plan.url || plan.url.startsWith('COLA')){
+      alert('O URL de checkout deste plano ainda não está configurado.\nEdita econwiki-auth.js e cola o URL do variant Lemon Squeezy.');
+      return;
+    }
+    const sep = plan.url.includes('?') ? '&' : '?';
+    const url = plan.url
       + sep + 'checkout[custom][user_id]=' + encodeURIComponent(_user.id)
+      + '&checkout[custom][plan_id]=' + encodeURIComponent(plan.id)
       + '&checkout[email]=' + encodeURIComponent(_user.email || '');
     if(window.LemonSqueezy && window.LemonSqueezy.Url){
       window.LemonSqueezy.Url.Open(url);
     } else { window.open(url, '_blank'); }
+  }
+
+  // ── Modal de seleção de plano ──────────────────────────
+  let _pricingModalEl = null;
+  let _pricingEscHandler = null;
+  let _pricingLastFocus = null;
+
+  function openPricingModal(){
+    // Limpeza preventiva (mesma lógica do auth modal — evitar acumulação)
+    if(_pricingEscHandler){ document.removeEventListener('keydown', _pricingEscHandler); _pricingEscHandler = null; }
+    if(_pricingModalEl) _pricingModalEl.remove();
+    _pricingLastFocus = document.activeElement;
+
+    const plans = Object.values(LEMON_PLANS);
+    _pricingModalEl = document.createElement('div');
+    _pricingModalEl.id = 'ew-pricing-modal';
+    _pricingModalEl.innerHTML = `
+      <div class="ew-pricing-bd" id="ew-pricing-bd"></div>
+      <div class="ew-pricing-panel" role="dialog" aria-modal="true" aria-labelledby="ew-pricing-title">
+        <div class="ew-pricing-head">
+          <div>
+            <h2 id="ew-pricing-title" class="ew-pricing-title">Escolhe o teu plano</h2>
+            <p class="ew-pricing-sub">Acesso ao Assistente IA. Sem compromisso — cancelas quando quiseres.</p>
+          </div>
+          <button class="ew-pricing-close" id="ew-pricing-close" aria-label="Fechar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 6-12 12M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="ew-pricing-grid">
+          ${plans.map(p => `
+            <div class="ew-pricing-card${p.badge ? ' featured' : ''}">
+              ${p.badge ? '<div class="ew-pricing-badge">' + _esc(p.badge) + '</div>' : ''}
+              <div class="ew-pricing-name">${_esc(p.name)}</div>
+              <div class="ew-pricing-price">${_esc(p.priceLabel)}</div>
+              <div class="ew-pricing-pricesub">${_esc(p.priceSub)}</div>
+              <p class="ew-pricing-desc">${_esc(p.description)}</p>
+              <ul class="ew-pricing-perks">
+                ${p.perks.map(perk => '<li>' + _esc(perk) + '</li>').join('')}
+              </ul>
+              <button class="ew-pricing-select" data-plan="${_esc(p.id)}">Escolher ${_esc(p.name)}</button>
+            </div>
+          `).join('')}
+        </div>
+        <div class="ew-pricing-foot">
+          <p>Os pagamentos são processados pelo <strong>Lemon Squeezy</strong>. Não armazenamos dados de cartão.</p>
+          <p>Ao subscrever aceitas os <a href="#" id="ew-pricing-terms-link">Termos de Utilização</a>. O EconWiki não efetua reembolsos parciais.</p>
+        </div>
+      </div>`;
+    document.body.appendChild(_pricingModalEl);
+
+    const close = ()=>{
+      _pricingModalEl?.remove();
+      _pricingModalEl = null;
+      if(_pricingEscHandler){ document.removeEventListener('keydown', _pricingEscHandler); _pricingEscHandler = null; }
+      if(_pricingLastFocus && typeof _pricingLastFocus.focus === 'function'){
+        try{ _pricingLastFocus.focus(); }catch(e){}
+      }
+      _pricingLastFocus = null;
+    };
+    _pricingModalEl.querySelector('#ew-pricing-bd').addEventListener('click', close);
+    _pricingModalEl.querySelector('#ew-pricing-close').addEventListener('click', close);
+    _pricingEscHandler = function(e){ if(e.key==='Escape'){ close(); } };
+    document.addEventListener('keydown', _pricingEscHandler);
+
+    _pricingModalEl.querySelectorAll('.ew-pricing-select').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.plan;
+        close();
+        startCheckout(id);
+      });
+    });
+    _pricingModalEl.querySelector('#ew-pricing-terms-link')?.addEventListener('click', e => {
+      e.preventDefault();
+      // Sinal genérico que a landing pode interceptar; no app interno é ignorado.
+      window.dispatchEvent(new CustomEvent('ew:open-terms'));
+    });
+
+    // Focus inicial
+    setTimeout(()=>{
+      const first = _pricingModalEl.querySelector('.ew-pricing-select');
+      first?.focus();
+    }, 30);
+  }
+
+  // Estilos do modal de pricing (injetados uma vez)
+  if(!document.getElementById('ew-pricing-style')){
+    const st = document.createElement('style');
+    st.id = 'ew-pricing-style';
+    st.textContent = `
+      #ew-pricing-modal{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;}
+      .ew-pricing-bd{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);}
+      .ew-pricing-panel{position:relative;background:var(--bg,#FAF7F0);color:var(--tx,#1C1814);border-radius:18px;max-width:780px;width:100%;max-height:90vh;overflow:hidden auto;box-shadow:0 24px 80px rgba(0,0,0,.3);display:flex;flex-direction:column;}
+      .ew-pricing-head{display:flex;align-items:flex-start;justify-content:space-between;padding:24px 28px 8px;gap:16px;}
+      .ew-pricing-title{font-family:'Source Serif 4',serif;font-size:24px;font-weight:600;margin:0;letter-spacing:-.02em;}
+      .ew-pricing-sub{font-size:14px;color:var(--tx2,#5A5147);margin:6px 0 0;line-height:1.5;}
+      .ew-pricing-close{background:none;border:none;cursor:pointer;color:var(--tx3,#9C907B);padding:4px;}
+      .ew-pricing-close svg{width:22px;height:22px;}
+      .ew-pricing-close:hover{color:var(--tx,#1C1814);}
+      .ew-pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px 28px 8px;}
+      .ew-pricing-card{position:relative;border:1px solid var(--bor,#E6DECC);border-radius:12px;padding:20px 18px;background:var(--bg,#FAF7F0);display:flex;flex-direction:column;}
+      .ew-pricing-card.featured{border-color:var(--ac,#1C5240);border-width:2px;padding:19px 17px;}
+      .ew-pricing-badge{position:absolute;top:-10px;right:14px;background:var(--ac,#1C5240);color:#fff;font:600 11px 'Inter',-apple-system,sans-serif;padding:3px 10px;border-radius:99px;letter-spacing:.2px;}
+      .ew-pricing-name{font:600 14px 'Inter',-apple-system,sans-serif;color:var(--tx2,#5A5147);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+      .ew-pricing-price{font-family:'Source Serif 4',serif;font-size:34px;font-weight:600;color:var(--tx,#1C1814);line-height:1;}
+      .ew-pricing-pricesub{font-size:13px;color:var(--tx3,#9C907B);margin-top:4px;}
+      .ew-pricing-desc{font-size:13.5px;color:var(--tx2,#5A5147);line-height:1.55;margin:14px 0 12px;}
+      .ew-pricing-perks{list-style:none;padding:0;margin:0 0 18px;}
+      .ew-pricing-perks li{font-size:13px;color:var(--tx,#1C1814);padding:5px 0 5px 24px;position:relative;line-height:1.45;}
+      .ew-pricing-perks li::before{content:'✓';position:absolute;left:0;top:5px;color:var(--ac,#1C5240);font-weight:700;}
+      .ew-pricing-select{margin-top:auto;background:var(--ac,#1C5240);color:#fff;border:none;padding:11px 16px;border-radius:8px;font:600 14px 'Inter',-apple-system,sans-serif;cursor:pointer;transition:background .15s;}
+      .ew-pricing-select:hover{background:var(--act,#0D3324);}
+      .ew-pricing-foot{padding:14px 28px 22px;font-size:12px;color:var(--tx3,#9C907B);border-top:1px solid var(--bor,#E6DECC);margin-top:8px;}
+      .ew-pricing-foot p{margin:4px 0;}
+      .ew-pricing-foot a{color:var(--ac,#1C5240);text-decoration:underline;}
+      html[data-theme="dark"] .ew-pricing-panel{background:var(--surf,#1B1813);}
+      html[data-theme="dark"] .ew-pricing-card{background:var(--surf2,#221E18);}
+      @media (max-width: 640px){
+        .ew-pricing-grid{grid-template-columns:1fr;}
+        .ew-pricing-head{padding:20px 20px 4px;}
+        .ew-pricing-foot{padding:14px 20px 20px;}
+      }
+    `;
+    document.head.appendChild(st);
   }
 
   function openPortal(){
@@ -165,6 +336,8 @@ function init(){
     getSession,
     signIn, signUp, signOut,
     startCheckout, openPortal,
+    openPricingModal,
+    plans        : LEMON_PLANS,
     syncToCloud, syncFromCloud,
     openModal    : ()=> openModal('login'),
     refreshSidebarWidget,
@@ -202,6 +375,8 @@ function buildStub(){
     signOut            : async()=> {},
     startCheckout      : ()=> alert('Supabase não configurado.'),
     openPortal         : ()=> alert('Supabase não configurado.'),
+    openPricingModal   : ()=> alert('Supabase não configurado.'),
+    plans              : LEMON_PLANS,
     syncToCloud        : async()=> {},
     syncFromCloud      : async()=> {},
     openModal          : ()=> alert('Supabase não configurado. Vê as instruções em econwiki-auth.js.'),

@@ -580,6 +580,117 @@ footer{
 .legal-body ul{margin:0 0 12px;padding-left:20px;}
 .legal-body li{margin-bottom:6px;}
 
+/* ── Modal de Contacto ── */
+.contact-form{display:flex;flex-direction:column;gap:14px}
+.contact-form label{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:4px;display:block}
+.contact-form input,
+.contact-form textarea{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid var(--bor);
+  background:var(--bg);
+  color:var(--tx);
+  border-radius:8px;
+  font:14px/1.5 'Inter',-apple-system,sans-serif;
+  resize:vertical;
+}
+.contact-form input:focus,
+.contact-form textarea:focus{
+  outline:2px solid var(--ac);
+  outline-offset:1px;
+  border-color:var(--ac);
+}
+.contact-form textarea{min-height:120px;font-family:'Source Serif 4',serif;font-size:14px;}
+.contact-submit{
+  background:var(--ac);
+  color:#fff;
+  border:none;
+  padding:11px 22px;
+  border-radius:8px;
+  font:600 14px 'Inter',-apple-system,sans-serif;
+  cursor:pointer;
+  align-self:flex-start;
+  transition:background .15s;
+}
+.contact-submit:hover{background:var(--act)}
+.contact-hint{font-size:12px;color:var(--tx3);margin-top:4px;line-height:1.5}
+html[data-theme="dark"] .contact-form input,
+html[data-theme="dark"] .contact-form textarea{background:var(--surf2,#221E18);border-color:var(--bor,#2C261F)}
+
+/* ── Secção Planos ── */
+.pricing-section{
+  padding:clamp(60px,8vw,96px) clamp(20px,5vw,72px);
+  background:var(--bg);
+  border-top:1px solid var(--bor);
+}
+.pricing-wrap{max-width:980px;margin:0 auto;}
+.pricing-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+  margin-top:36px;
+}
+.plan-card{
+  position:relative;
+  background:var(--surf);
+  border:1px solid var(--bor);
+  border-radius:16px;
+  padding:32px 28px;
+  display:flex;
+  flex-direction:column;
+  transition:transform .2s, box-shadow .2s;
+}
+.plan-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.06);}
+.plan-card.featured{border-color:var(--ac);border-width:2px;padding:31px 27px;}
+.plan-badge{
+  position:absolute;top:-12px;right:18px;
+  background:var(--ac);color:#fff;
+  font:600 11px 'Inter',-apple-system,sans-serif;
+  padding:4px 12px;border-radius:99px;
+  letter-spacing:.3px;text-transform:uppercase;
+}
+.plan-name{
+  font:600 13px 'Inter',-apple-system,sans-serif;
+  color:var(--tx2);text-transform:uppercase;letter-spacing:.8px;
+  margin-bottom:14px;
+}
+.plan-price{
+  font-family:'Source Serif 4',serif;
+  font-size:46px;font-weight:600;
+  color:var(--tx);line-height:1;letter-spacing:-.02em;
+}
+.plan-pricesub{font-size:13px;color:var(--tx3);margin-top:8px;}
+.plan-desc{font-size:14px;color:var(--tx2);line-height:1.55;margin:18px 0 16px;}
+.plan-perks{list-style:none;padding:0;margin:0 0 24px;}
+.plan-perks li{
+  font-size:14px;color:var(--tx);
+  padding:7px 0 7px 28px;position:relative;line-height:1.5;
+}
+.plan-perks li::before{
+  content:'✓';position:absolute;left:0;top:7px;
+  color:var(--ac);font-weight:700;font-size:16px;
+}
+.plan-cta{
+  margin-top:auto;
+  background:var(--ac);color:#fff;
+  border:none;padding:13px 20px;border-radius:10px;
+  font:600 14px 'Inter',-apple-system,sans-serif;
+  cursor:pointer;transition:background .15s, transform .15s;
+  width:100%;
+}
+.plan-cta:hover{background:var(--act);transform:translateY(-1px);}
+.plan-cta-sec{
+  background:transparent;color:var(--ac);
+  border:1.5px solid var(--ac);
+}
+.plan-cta-sec:hover{background:var(--acl);}
+.pricing-note{
+  text-align:center;margin-top:28px;
+  font-size:13px;color:var(--tx3);line-height:1.6;
+}
+.pricing-note a{color:var(--ac);text-decoration:underline;}
+html[data-theme="dark"] .plan-card{background:var(--surf2);}
+
 /* ── Dark mode ── */
 html[data-theme="dark"] .topbar{
   background:rgba(19,17,14,.92);
@@ -919,6 +1030,24 @@ html[data-theme="dark"] .badge{
   </div>
 </section>
 
+<!-- ── Planos ── -->
+<section class="pricing-section" id="planos">
+  <div class="pricing-wrap">
+    <div class="section-eyebrow" style="text-align:center;">Planos</div>
+    <h2 class="section-title" style="text-align:center;max-width:640px;margin:0 auto;">O Wiki é gratuito.<br>O Assistente IA é o que paga as contas.</h2>
+    <p class="section-lead" style="text-align:center;max-width:640px;margin:18px auto 0;">Todos os 21 tópicos, 135 conceitos-chave, flashcards, fórmulas e gráficos são <strong>gratuitos para sempre</strong>. Só o chat de IA, que tem custos por mensagem, requer subscrição.</p>
+
+    <div class="pricing-grid" id="pricing-grid">
+      <!-- Cartões inseridos por JS a partir de EW_AUTH.plans (ver script no fim do ficheiro) -->
+    </div>
+
+    <p class="pricing-note">
+      Pagamento processado pelo <strong>Lemon Squeezy</strong>. Cancelamento a qualquer momento, sem complicações.<br>
+      Ao subscrever aceitas os <a href="#" id="link-terms-pricing">Termos de Utilização</a>.
+    </p>
+  </div>
+</section>
+
 <!-- ── CTA final ── -->
 <section class="cta-banner">
   <div class="section-eyebrow">Pronto para começar?</div>
@@ -943,7 +1072,8 @@ html[data-theme="dark"] .badge{
   </a>
   <div class="footer-info" style="text-align:center">
     <a class="footer-link" href="#" id="link-privacy">Política de Privacidade</a> ·
-    <a class="footer-link" href="#" id="link-terms">Termos de Utilização</a>
+    <a class="footer-link" href="#" id="link-terms">Termos de Utilização</a> ·
+    <a class="footer-link" href="#" id="link-contact">Contacto</a>
   </div>
   <div class="footer-info" style="text-align:right">
     Manual de estudo interativo.<br>
@@ -1071,6 +1201,40 @@ html[data-theme="dark"] .badge{
 <h3>8. Lei aplicável</h3>
 <p>Estes termos são regidos pela lei portuguesa. Para resolução de litígios é competente o foro da comarca de Lisboa.</p>
       `
+    },
+    contact: {
+      title: 'Contacto',
+      html: `
+<p style="margin-bottom:18px;color:var(--tx2);">Tens uma dúvida sobre o EconWiki, queres reportar um erro, ou sugerir uma melhoria? Envia-nos uma mensagem:</p>
+
+<form class="contact-form" id="contact-form" novalidate>
+  <div>
+    <label for="contact-name">Nome</label>
+    <input type="text" id="contact-name" name="name" required autocomplete="name" maxlength="100">
+  </div>
+  <div>
+    <label for="contact-email">Email</label>
+    <input type="email" id="contact-email" name="email" required autocomplete="email" maxlength="200" placeholder="o.teu@email.com">
+  </div>
+  <div>
+    <label for="contact-subject">Assunto</label>
+    <select id="contact-subject" name="subject" required style="width:100%;padding:10px 12px;border:1px solid var(--bor);background:var(--bg);color:var(--tx);border-radius:8px;font:14px/1.5 'Inter',-apple-system,sans-serif;">
+      <option value="Dúvida sobre conteúdo">Dúvida sobre conteúdo</option>
+      <option value="Reporte de erro">Reporte de erro</option>
+      <option value="Sugestão de melhoria">Sugestão de melhoria</option>
+      <option value="Problema técnico">Problema técnico</option>
+      <option value="Subscrição / pagamento">Subscrição / pagamento</option>
+      <option value="Outro">Outro</option>
+    </select>
+  </div>
+  <div>
+    <label for="contact-message">Mensagem</label>
+    <textarea id="contact-message" name="message" required maxlength="2000" placeholder="Descreve a tua dúvida ou comentário…"></textarea>
+  </div>
+  <button type="submit" class="contact-submit">Enviar mensagem</button>
+  <div class="contact-hint">Ao clicar em «Enviar mensagem», abre-se a tua aplicação de email com a mensagem pré-preenchida. Os dados que introduzes neste formulário não são guardados pelo EconWiki — são transmitidos diretamente para a aplicação de email.</div>
+</form>
+      `
     }
   };
 
@@ -1086,10 +1250,103 @@ html[data-theme="dark"] .badge{
     function closeLegal(){ overlay.style.display = 'none'; }
     document.getElementById('link-privacy')?.addEventListener('click', e=>{ e.preventDefault(); openLegal('privacy'); });
     document.getElementById('link-terms')?.addEventListener('click', e=>{ e.preventDefault(); openLegal('terms'); });
+    document.getElementById('link-contact')?.addEventListener('click', e=>{
+      e.preventDefault();
+      openLegal('contact');
+      // Após abrir, ligar o submit do formulário (o HTML acabou de ser inserido no DOM)
+      setTimeout(()=>{
+        const form = document.getElementById('contact-form');
+        if(!form) return;
+        form.addEventListener('submit', ev=>{
+          ev.preventDefault();
+          const name    = (form.name.value||'').trim();
+          const email   = (form.email.value||'').trim();
+          const subject = (form.subject.value||'').trim();
+          const message = (form.message.value||'').trim();
+          if(!name || !email || !message){
+            alert('Por favor preenche o nome, email e mensagem.');
+            return;
+          }
+          // Validação básica de email
+          if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+            alert('O email parece inválido. Verifica e tenta novamente.');
+            return;
+          }
+          // ⚠️ TODO: substituir 'econwiki.ucp@gmail.com' pelo email oficial do projeto.
+          const TO = 'econwiki.ucp@gmail.com';
+          const body =
+            'Nome: ' + name + '\n' +
+            'Email: ' + email + '\n' +
+            'Assunto: ' + subject + '\n\n' +
+            'Mensagem:\n' + message + '\n\n' +
+            '— Enviado via formulário EconWiki';
+          const mailto = 'mailto:' + TO +
+            '?subject=' + encodeURIComponent('[EconWiki] ' + subject) +
+            '&body=' + encodeURIComponent(body);
+          window.location.href = mailto;
+        });
+      }, 30);
+    });
     legalBd?.addEventListener('click', closeLegal);
     legalClose?.addEventListener('click', closeLegal);
     document.addEventListener('keydown', e=>{ if(e.key==='Escape' && overlay.style.display==='flex') closeLegal(); });
   }
+
+  // ── Renderizar cartões de planos ──────────────────
+  //
+  // ⚠️ Esta lista é o reflexo da configuração em `econwiki-auth.js > LEMON_PLANS`.
+  // Se mudares preços ou URLs, atualiza nos DOIS sítios para manterem consistência.
+  // Os cartões da landing levam o utilizador a `app.html`, onde — após login — o
+  // modal de seleção de plano em `econwiki-auth.js` toma o controlo do checkout.
+  const PLANS_LANDING = [
+    {
+      id: 'monthly',
+      name: 'Mensal',
+      priceLabel: '4,99 €',
+      priceSub: 'por mês',
+      description: 'Acesso ao Assistente IA com 100 mensagens por dia. Cancela quando quiseres.',
+      perks: ['Assistente IA · 100 msg/dia', 'Sincronização entre dispositivos', 'Cancelas quando quiseres'],
+      badge: '',
+      featured: false
+    },
+    {
+      id: 'annual',
+      name: 'Anual',
+      priceLabel: '39,99 €',
+      priceSub: 'por ano (≈ 3,33 €/mês)',
+      description: 'O mesmo acesso ao Assistente IA, com um desconto equivalente a 2 meses grátis.',
+      perks: ['Assistente IA · 100 msg/dia', 'Sincronização entre dispositivos', '≈ 2 meses grátis vs mensal'],
+      badge: 'Poupa ≈33 %',
+      featured: true
+    }
+  ];
+
+  const pricingGrid = document.getElementById('pricing-grid');
+  if(pricingGrid){
+    const esc = (s)=> String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    pricingGrid.innerHTML = PLANS_LANDING.map(p => `
+      <div class="plan-card${p.featured ? ' featured' : ''}">
+        ${p.badge ? '<div class="plan-badge">' + esc(p.badge) + '</div>' : ''}
+        <div class="plan-name">${esc(p.name)}</div>
+        <div class="plan-price">${esc(p.priceLabel)}</div>
+        <div class="plan-pricesub">${esc(p.priceSub)}</div>
+        <p class="plan-desc">${esc(p.description)}</p>
+        <ul class="plan-perks">
+          ${p.perks.map(perk => '<li>' + esc(perk) + '</li>').join('')}
+        </ul>
+        <a class="plan-cta" href="app.html#/conta?plan=${esc(p.id)}" data-plan="${esc(p.id)}">Subscrever ${esc(p.name)}</a>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('link-terms-pricing')?.addEventListener('click', e=>{
+    e.preventDefault();
+    const ov = document.getElementById('legal-overlay');
+    if(!ov) return;
+    document.getElementById('legal-title').textContent = LEGAL.terms.title;
+    document.getElementById('legal-body').innerHTML = LEGAL.terms.html;
+    ov.style.display = 'flex';
+  });
 
 })();
 </script>
