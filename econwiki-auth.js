@@ -385,14 +385,42 @@ function buildStub(){
 }
 
 /* ── Autenticação ──────────────────────────────────────── */
+// Promise utilitária — falha se o pedido demorar mais do que `ms` milissegundos.
+// Sem isto, se o servidor não responder, o submit fica em "..." para sempre.
+function _withTimeout(promise, ms, label){
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(
+      () => reject(new Error('timeout — ' + (label || 'request') + ' demorou mais de ' + (ms/1000) + 's')),
+      ms
+    ))
+  ]);
+}
+
 async function signIn(email, password){
-  const { data, error } = await _sb.auth.signInWithPassword({ email, password });
-  return { data, error };
+  try{
+    const { data, error } = await _withTimeout(
+      _sb.auth.signInWithPassword({ email, password }),
+      15000,
+      'signIn'
+    );
+    return { data, error };
+  }catch(e){
+    return { data: null, error: e };
+  }
 }
 
 async function signUp(email, password){
-  const { data, error } = await _sb.auth.signUp({ email, password });
-  return { data, error };
+  try{
+    const { data, error } = await _withTimeout(
+      _sb.auth.signUp({ email, password }),
+      15000,
+      'signUp'
+    );
+    return { data, error };
+  }catch(e){
+    return { data: null, error: e };
+  }
 }
 
 async function signOut(){
@@ -612,14 +640,18 @@ function openModal(tab){
     const btn   = _modalEl.querySelector('#ew-auth-submit');
     clearMsg();
     if(!email || !pass){ showErr('Preenche o email e a palavra-passe.'); return; }
+    if(pass.length < 6){ showErr('A palavra-passe deve ter pelo menos 6 caracteres.'); return; }
     btn.disabled = true; btn.textContent = '…';
+    console.log('[EconWiki Auth] submit:', currentTab, 'email:', email);
     try{
       if(currentTab === 'login'){
         const { error } = await signIn(email, pass);
+        console.log('[EconWiki Auth] signIn resolveu — error:', error);
         if(error){ showErr(ptError(error)); btn.disabled=false; btn.textContent='Entrar'; }
         else { close(); }
       } else {
         const { data, error } = await signUp(email, pass);
+        console.log('[EconWiki Auth] signUp resolveu — error:', error, 'session?', !!data?.session);
         if(error){ showErr(ptError(error)); btn.disabled=false; btn.textContent='Criar conta'; }
         else if(data?.user && !data?.session){
           showOk('✓ Conta criada! Enviámos um email de confirmação para ' + email + '. Clica no link do email para ativar a conta — depois volta aqui e usa "Entrar". Verifica também o spam.');
@@ -632,8 +664,9 @@ function openModal(tab){
         }
       }
     }catch(e){
-      console.error('[EconWiki Auth] submit erro:', e);
-      showErr('Erro de ligação ao servidor. Verifica a tua internet e tenta novamente.');
+      // Os timeouts agora vêm como { error } via signIn/signUp; este catch só apanha bugs inesperados.
+      console.error('[EconWiki Auth] submit erro inesperado:', e);
+      showErr('Erro inesperado: ' + (e?.message || 'desconhecido') + '. Tenta novamente.');
       btn.disabled = false;
       btn.textContent = currentTab === 'login' ? 'Entrar' : 'Criar conta';
     }
@@ -648,6 +681,10 @@ function openModal(tab){
 
 function ptError(error){
   const msg = (error?.message || '').toLowerCase();
+  if(msg.includes('timeout'))
+    return 'O servidor demorou demasiado a responder. Verifica a tua ligação à internet — se o problema persistir, o projeto Supabase pode estar pausado.';
+  if(msg.includes('failed to fetch') || msg.includes('networkerror'))
+    return 'Não foi possível ligar ao servidor. Verifica a tua ligação à internet e tenta novamente.';
   if(msg.includes('invalid login') || msg.includes('invalid credentials'))
     return 'Email ou palavra-passe incorretos. Se criaste conta recentemente, confirma primeiro o email que recebeste (verifica também o spam).';
   if(msg.includes('email not confirmed'))

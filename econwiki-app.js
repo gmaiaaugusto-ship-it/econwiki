@@ -518,11 +518,43 @@
   .b-fc-head{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:32px; flex-wrap:wrap; gap:18px;}
   .b-fc-title{ font-family:'Source Serif 4',serif; font-size:36px; font-weight:600; letter-spacing:-.015em; color:var(--tx); margin:0;}
   .b-fc-sub{ font-size:14px; color:var(--tx3); margin-top:6px;}
-  .b-fc-controls{ display:flex; align-items:center; gap:10px;}
+  .b-fc-controls{ display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
   .b-fc-select{
-    background:var(--surf); border:1px solid var(--bor); border-radius:10px;
-    padding:9px 12px; font:inherit; font-size:13px; color:var(--tx); cursor:pointer;
+    background:var(--bg);
+    border:1px solid var(--bor);
+    border-radius:10px;
+    padding:9px 36px 9px 14px;
+    font:500 13px/1.4 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    color:var(--tx);
+    cursor:pointer;
+    transition:border-color .15s, box-shadow .15s, background .15s;
+    /* Remover aspeto nativo do select e desenhar caret próprio */
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235A5147' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 12px center;
+    background-size:12px;
   }
+  /* Para o botão "Baralhar" — mesma classe, sem caret nativo nem custom */
+  button.b-fc-select{
+    background-image:none;
+    padding:9px 14px;
+  }
+  .b-fc-select:hover{ border-color:var(--tx3); background-color:var(--surf);}
+  .b-fc-select:focus,
+  .b-fc-select:focus-visible{
+    outline:2px solid var(--ac);
+    outline-offset:2px;
+    border-color:var(--ac);
+  }
+  html[data-theme="dark"] .b-fc-select{
+    background-color:var(--bg);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A89E89' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  }
+  html[data-theme="dark"] button.b-fc-select{ background-image:none;}
+  html[data-theme="dark"] .b-fc-select:hover{ background-color:var(--surf);}
 
   .b-fc-stage{
     background:var(--surf); border:1px solid var(--bor); border-radius:24px;
@@ -1226,7 +1258,6 @@
   let fcPos = 0;
   let fcFlip = false;
   let fcFilter = 'all';
-  let fcMode = (function(){ try{ return localStorage.getItem('ew_fc_mode_v1') || 'reasoning'; }catch(e){ return 'reasoning'; } })();
   function _loadFcSet(key){ try{ return new Set(JSON.parse(localStorage.getItem(key)||'[]')); }catch(e){ return new Set(); } }
   function _saveFcSet(key, s){ try{ localStorage.setItem(key, JSON.stringify([...s])); }catch(e){} }
   let fcKnown = _loadFcSet('ew_fc_known_v1');
@@ -1240,35 +1271,22 @@
     else if(fcFilter==='fav') pool = T.map((_,i)=>i).filter(i=>EW.isFav(i));
     else if(fcFilter.startsWith('ch:')) pool = GS[parseInt(fcFilter.slice(3))]?.idx || [];
     else pool = T.map((_,i)=>i);
-    // each card = { id, idx, q, a, name, label?, hint? }
-    // O id começa com 'c' (conceitos) ou 'r' (raciocínio) para evitar colisão de
-    // chaves "Sabido / Rever depois" entre os dois modos.
+    // Cartões de raciocínio: cada um exige aplicar conceitos do tópico.
+    // O id começa com 'r' (prefixo histórico — antes existia também modo 'c' para conceitos).
     const deck = [];
-    if(fcMode === 'reasoning'){
-      // Modo "Raciocínio": perguntas que exigem aplicar conceitos
-      pool.forEach(i=>{
-        const t = T[i];
-        (t.flash||[]).forEach((card,k)=>{
-          deck.push({
-            id: 'r'+i+'#'+k,
-            idx: i,
-            label: 'Raciocínio',
-            q: card.q,
-            a: card.a,
-            hint: card.hint || '',
-            name: t.name
-          });
+    pool.forEach(i=>{
+      const t = T[i];
+      (t.flash||[]).forEach((card,k)=>{
+        deck.push({
+          id: 'r'+i+'#'+k,
+          idx: i,
+          q: card.q,
+          a: card.a,
+          hint: card.hint || '',
+          name: t.name
         });
       });
-    } else {
-      // Modo "Conceitos": cartões a partir dos conceitos-chave (legado)
-      pool.forEach(i=>{
-        const t = T[i];
-        (t.cc||[]).forEach((cc,k)=>{
-          deck.push({ id:'c'+i+'#'+k, idx:i, label:cc.l, q:cc.t, a:cc.d, name:t.name });
-        });
-      });
-    }
+    });
     // shuffle stable per session
     for(let i=deck.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [deck[i],deck[j]]=[deck[j],deck[i]]; }
     return deck;
@@ -1287,11 +1305,6 @@
               <div class="b-fc-sub">Sem cartões para esta seleção.</div>
             </div>
             <div class="b-fc-controls">
-              <label for="b-fc-mode" class="b-sr-only">Tipo de cartão</label>
-              <select class="b-fc-select" id="b-fc-mode" aria-label="Tipo de cartão">
-                <option value="reasoning" ${fcMode==='reasoning'?'selected':''}>🧠 Raciocínio</option>
-                <option value="concepts"  ${fcMode==='concepts'?'selected':''}>📖 Conceitos</option>
-              </select>
               <label for="b-fc-filter" class="b-sr-only">Filtrar flashcards</label>
               <select class="b-fc-select" id="b-fc-filter" aria-label="Filtrar flashcards">
                 <option value="all" ${fcFilter==='all'?'selected':''}>Todos os capítulos</option>
@@ -1301,15 +1314,9 @@
               </select>
             </div>
           </div>
-          <div class="b-fc-stage" style="--fc-ac:#7B3FA0;--fc-act:#4F2868"><div class="b-fc-q">Tenta outro filtro ou outro tipo.</div></div>
+          <div class="b-fc-stage" style="--fc-ac:#7B3FA0;--fc-act:#4F2868"><div class="b-fc-q">Tenta outro filtro.</div></div>
         </div>`;
-      // Religar handlers de modo/filtro deste bloco vazio (não chama wireFcHead aninhado)
-      fc.querySelector('#b-fc-mode')?.addEventListener('change', e=>{
-        fcMode = e.target.value;
-        try{ localStorage.setItem('ew_fc_mode_v1', fcMode); }catch(err){}
-        fcDeck = buildDeck(); fcPos=0; fcFlip=false;
-        renderFc();
-      });
+      // Religar handler de filtro deste bloco vazio
       fc.querySelector('#b-fc-filter')?.addEventListener('change', e=>{
         fcFilter = e.target.value;
         fcDeck = buildDeck(); fcPos=0; fcFlip=false;
@@ -1327,16 +1334,9 @@
         <div class="b-fc-head">
           <div>
             <h1 class="b-fc-title">Flashcards</h1>
-            <div class="b-fc-sub">${fcMode==='reasoning'
-              ? 'Perguntas de raciocínio económico — para aplicar conceitos, não decorar.'
-              : 'Estudo rápido a partir dos conceitos-chave do programa.'}</div>
+            <div class="b-fc-sub">Perguntas de raciocínio económico — para aplicar conceitos, não decorar.</div>
           </div>
           <div class="b-fc-controls">
-            <label for="b-fc-mode" class="b-sr-only">Tipo de cartão</label>
-            <select class="b-fc-select" id="b-fc-mode" aria-label="Tipo de cartão">
-              <option value="reasoning" ${fcMode==='reasoning'?'selected':''}>🧠 Raciocínio</option>
-              <option value="concepts"  ${fcMode==='concepts'?'selected':''}>📖 Conceitos</option>
-            </select>
             <label for="b-fc-filter" class="b-sr-only">Filtrar flashcards</label>
             <select class="b-fc-select" id="b-fc-filter" aria-label="Filtrar flashcards">
               <option value="all" ${fcFilter==='all'?'selected':''}>Todos os capítulos</option>
@@ -1350,14 +1350,10 @@
 
         <div class="b-fc-stage" id="b-fc-stage" tabindex="0" role="button" aria-label="Cartão flashcard. Clique ou prima Espaço para virar." aria-pressed="${fcFlip?'true':'false'}" aria-live="polite">
           <div class="b-fc-pos">${fcPos+1} / ${total}</div>
-          <div class="b-fc-tag">${EW.groupShortLabel(g?.label||'')} · Tópico ${card.idx+1}${fcMode==='reasoning'?' · Raciocínio':''}</div>
+          <div class="b-fc-tag">${EW.groupShortLabel(g?.label||'')} · Tópico ${card.idx+1}</div>
           ${fcFlip
-            ? (fcMode==='reasoning'
-                ? `<div class="b-fc-q flip">${card.a}<div style="font-size:13px;color:var(--tx3);margin-top:18px;font-weight:400;">Do tópico: <em>${card.name}</em></div></div>`
-                : `<div class="b-fc-q flip"><strong>${card.q}</strong> — ${card.a}<div style="font-size:13px;color:var(--tx3);margin-top:18px;font-weight:400;">Do tópico: <em>${card.name}</em></div></div>`)
-            : (fcMode==='reasoning'
-                ? `<div class="b-fc-q">${card.q}${card.hint ? `<div style="font-size:13px;color:var(--tx3);margin-top:14px;font-style:italic;font-weight:400;border-top:1px dashed var(--bor);padding-top:10px;">Pista: ${card.hint}</div>` : ''}</div>`
-                : `<div class="b-fc-q">${card.q}</div>`)}
+            ? `<div class="b-fc-q flip">${card.a}<div style="font-size:13px;color:var(--tx3);margin-top:18px;font-weight:400;">Do tópico: <em>${card.name}</em></div></div>`
+            : `<div class="b-fc-q">${card.q}${card.hint ? `<div style="font-size:13px;color:var(--tx3);margin-top:14px;font-style:italic;font-weight:400;border-top:1px dashed var(--bor);padding-top:10px;">Pista: ${card.hint}</div>` : ''}</div>`}
           <div class="b-fc-flip-hint">${fcFlip? '↑ Resposta':'Clica para ver a resposta'} <kbd>Espaço</kbd></div>
         </div>
 
@@ -1388,12 +1384,8 @@
     `;
     wireFcHead();
     fc.querySelector('#b-fc-stage').addEventListener('click', flipCard);
-    fc.querySelector('#b-fc-stage').addEventListener('keydown', e=>{
-      if(e.key==='Enter' || e.key===' '){
-        // Apenas virar quando o foco está no próprio palco — evitar conflito com teclas globais
-        if(e.target.id==='b-fc-stage'){ e.preventDefault(); flipCard(); }
-      }
-    });
+    // NOTA: o keydown do espaço/enter é tratado pelo handler global mais abaixo
+    // (document.addEventListener). Não duplicar aqui — fazia o cartão virar duas vezes.
     fc.querySelector('#b-fc-prev').addEventListener('click', prevCard);
     fc.querySelector('#b-fc-next').addEventListener('click', nextCard);
     fc.querySelector('#b-fc-know').addEventListener('click', ()=>{ const c=fcDeck[fcPos]; if(c) fcKnown.add(c.id); fcPersist(); nextCard(); });
@@ -1401,12 +1393,6 @@
     setTimeout(()=>{ const s = fc.querySelector('#b-fc-stage'); if(s && view==='fc') s.focus(); }, 30);
 
     function wireFcHead(){
-      fc.querySelector('#b-fc-mode')?.addEventListener('change', e=>{
-        fcMode = e.target.value;
-        try{ localStorage.setItem('ew_fc_mode_v1', fcMode); }catch(err){}
-        fcDeck = buildDeck(); fcPos=0; fcFlip=false;
-        renderFc();
-      });
       fc.querySelector('#b-fc-filter')?.addEventListener('change', e=>{
         fcFilter = e.target.value;
         // Manter fcKnown/fcLater (são chaves estáveis por cartão, persistem entre filtros)
@@ -1425,13 +1411,20 @@
   function prevCard(){ if(fcPos > 0){ fcPos--; fcFlip=false; renderFc(); } }
 
   // Keyboard for flashcards
+  // NOTA sobre o espaço:
+  //   O #b-fc-stage tem role="button" + tabindex="0". Quando está focado e o utilizador
+  //   prime espaço, o browser dispara automaticamente um click sintético no elemento — esse
+  //   click é apanhado pelo listener `addEventListener('click', flipCard)` e o cartão vira.
+  //   Se tratássemos o espaço aqui também, o cartão virava DUAS vezes (flip + flip = sem
+  //   efeito visível). Por isso só tratamos setas e J/L globalmente; o espaço fica delegado
+  //   ao stage focado.
   document.addEventListener('keydown', e=>{
     if(view!=='fc') return;
-    if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)) return;
-    // Ignorar modificadores em teclas simples (evita conflito com atalhos do navegador)
+    // Ignorar quando o foco está em campos editáveis ou em botões/links
+    const tag = document.activeElement?.tagName;
+    if(['INPUT','TEXTAREA','SELECT','BUTTON','A'].includes(tag)) return;
     if(e.ctrlKey || e.metaKey || e.altKey) return;
-    if(e.key===' '){ e.preventDefault(); flipCard(); }
-    else if(e.key==='ArrowRight'){ e.preventDefault(); nextCard(); }
+    if(e.key==='ArrowRight'){ e.preventDefault(); nextCard(); }
     else if(e.key==='ArrowLeft'){ e.preventDefault(); prevCard(); }
     else if(e.key==='j' || e.key==='J'){ const c=fcDeck[fcPos]; if(c){ fcKnown.add(c.id); fcPersist(); } nextCard(); }
     else if(e.key==='l' || e.key==='L'){ const c=fcDeck[fcPos]; if(c){ fcLater.add(c.id); fcPersist(); } nextCard(); }
