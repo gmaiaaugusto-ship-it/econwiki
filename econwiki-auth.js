@@ -58,31 +58,31 @@ window.SUPABASE_URL = SUPABASE_URL;
    ⚠️ Substitui os preços ('priceLabel') e URLs pelos valores reais.
    ════════════════════════════════════════════════════════════ */
 const LEMON_PLANS = {
-  monthly: {
-    id: 'monthly',
-    name: 'Mensal',
-    priceLabel: '4,99 €',
-    priceSub: 'por mês',
+  weekly: {
+    id: 'weekly',
+    name: 'Semanal',
+    priceLabel: '1,99 €',
+    priceSub: 'por semana',
     description: 'Acesso ao Assistente IA com 100 mensagens por dia. Cancela quando quiseres.',
     perks: ['Assistente IA · 100 msg/dia', 'Sincronização entre dispositivos', 'Cancelas quando quiseres'],
     badge: '',
     url: 'https://econwiki.lemonsqueezy.com/checkout/buy/11d7554b-3527-47c1-a3e8-32fafd16c9bb'
   },
-  annual: {
-    id: 'annual',
-    name: 'Anual',
-    priceLabel: '39,99 €',
-    priceSub: 'por ano (≈ 3,33 €/mês)',
-    description: 'O mesmo acesso ao Assistente IA, com um desconto equivalente a 2 meses grátis.',
-    perks: ['Assistente IA · 100 msg/dia', 'Sincronização entre dispositivos', '≈ 2 meses grátis vs mensal'],
-    badge: 'Poupa ≈33 %',
-    url: 'https://econwiki.lemonsqueezy.com/checkout/buy/11d7554b-3527-47c1-a3e8-32fafd16c9bb'
+  monthly: {
+    id: 'monthly',
+    name: 'Mensal',
+    priceLabel: '4,99 €',
+    priceSub: 'por mês (poupa ≈42 % vs semanal)',
+    description: 'O mesmo acesso ao Assistente IA, com desconto face ao plano semanal.',
+    perks: ['Assistente IA · 100 msg/dia', 'Sincronização entre dispositivos', 'Poupa ≈42 % vs semanal'],
+    badge: 'Melhor valor',
+    url: 'https://econwiki.lemonsqueezy.com/checkout/buy/f172c9af-065f-4753-90b1-994e88cec173'
   }
 };
 
 // Compatibilidade retroativa: alguns sítios podem ainda referenciar LEMON_CHECKOUT_URL.
-// É o URL do plano por defeito (mensal). Não remover sem auditar.
-const LEMON_CHECKOUT_URL = LEMON_PLANS.monthly.url;
+// É o URL do plano por defeito (semanal). Não remover sem auditar.
+const LEMON_CHECKOUT_URL = LEMON_PLANS.weekly.url;
 
 /* ════════════════════════════════════════════════════════════
    Não é necessário alterar nada abaixo desta linha.
@@ -401,7 +401,7 @@ async function signIn(email, password){
   try{
     const { data, error } = await _withTimeout(
       _sb.auth.signInWithPassword({ email, password }),
-      15000,
+      40000,
       'signIn'
     );
     return { data, error };
@@ -414,7 +414,7 @@ async function signUp(email, password){
   try{
     const { data, error } = await _withTimeout(
       _sb.auth.signUp({ email, password }),
-      15000,
+      40000,
       'signUp'
     );
     return { data, error };
@@ -682,7 +682,7 @@ function openModal(tab){
 function ptError(error){
   const msg = (error?.message || '').toLowerCase();
   if(msg.includes('timeout'))
-    return 'O servidor demorou demasiado a responder. Verifica a tua ligação à internet — se o problema persistir, o projeto Supabase pode estar pausado.';
+    return 'O servidor demorou a responder (pode estar a arrancar após inatividade). Espera 30 segundos e tenta novamente — se o problema persistir, verifica a tua ligação à internet.';
   if(msg.includes('failed to fetch') || msg.includes('networkerror'))
     return 'Não foi possível ligar ao servidor. Verifica a tua ligação à internet e tenta novamente.';
   if(msg.includes('invalid login') || msg.includes('invalid credentials'))
