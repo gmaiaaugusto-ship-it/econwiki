@@ -1171,6 +1171,28 @@ body.dark .quiz-feedback.wrong-fb {
   .progress-step { font-size: 10.5px; padding: 8px 8px 8px 0; }
   .page-wrap { padding: 0 12px 48px; }
 }
+
+/* ── Footer global ─────────────────────────────────────── */
+.ew-footer{
+  background:var(--bg,#FAF7F0);
+  border-top:1px solid var(--bor,#E8E2D8);
+  padding:28px clamp(20px,5vw,72px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.ew-footer-brand{
+  display:flex;align-items:center;gap:8px;
+  text-decoration:none;
+}
+.ew-footer-info{font-size:12px;color:var(--tx3,#9A9086);line-height:1.5}
+.ew-footer-link{color:var(--tx3,#9A9086);text-decoration:none;font-size:12px}
+.ew-footer-link:hover{color:var(--ac,#1C5240)}
+@media(max-width:600px){
+  .ew-footer{flex-direction:column;text-align:center}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -6304,6 +6326,25 @@ window.__addRetryButton = function(card, fb, ansObj, qKey){
 
 
 </script>
+
+<footer class="ew-footer">
+  <a class="ew-footer-brand" href="index.html">
+    <div style="width:26px;height:26px;border-radius:6px;background:var(--ac,#1C5240);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;">E</div>
+    <div class="ew-footer-info">
+      <strong style="color:var(--tx,#1C1A17)">EconWiki</strong><br>
+      UCP Direito · Introdução à Economia
+    </div>
+  </a>
+  <div class="ew-footer-info" style="text-align:center">
+    <a class="ew-footer-link" href="index.html#planos">Planos</a> ·
+    <a class="ew-footer-link" href="index.html">Página inicial</a> ·
+    <a class="ew-footer-link" href="app.html">Entrar no Wiki →</a>
+  </div>
+  <div class="ew-footer-info" style="text-align:right">
+    Manual de estudo interativo.<br>
+    <a class="ew-footer-link" href="index.html">← Voltar à página principal</a>
+  </div>
+</footer>
 
 </body>
 </html>

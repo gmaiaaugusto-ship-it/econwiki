@@ -212,6 +212,32 @@
   .ew-skip-link:focus{ left:0; outline:2px solid #fff; outline-offset:-4px; }
   /* #app recebe foco programaticamente via skip-link sem mostrar outline azul nativo */
   #app:focus{ outline:none; }
+
+  /* ── Footer global ─────────────────────────────────────── */
+  .ew-footer{
+    background:var(--bg,#FAF7F0);
+    border-top:1px solid var(--bor,#E8E2D8);
+    padding:28px clamp(20px,5vw,72px);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-left:280px;
+  }
+  .ew-footer-brand{
+    display:flex;align-items:center;gap:8px;
+    text-decoration:none;
+  }
+  .ew-footer-info{font-size:12px;color:var(--tx3,#9A9086);line-height:1.5}
+  .ew-footer-link{color:var(--tx3,#9A9086);text-decoration:none;font-size:12px}
+  .ew-footer-link:hover{color:var(--ac,#1C5240)}
+  :root[data-theme="dark"] .ew-footer{
+    background:var(--bg,#151310); border-top-color:var(--bor,#2A261F);
+  }
+  @media(max-width:767px){
+    .ew-footer{margin-left:0;flex-direction:column;text-align:center}
+  }
 </style>
 </head>
 <body>
@@ -253,6 +279,25 @@
     <div class="ew-chat-disclaimer">IA · Claude (Anthropic) · respostas geradas em tempo real</div>
   </div>
 </div>
+
+<footer class="ew-footer">
+  <a class="ew-footer-brand" href="index.html">
+    <div style="width:26px;height:26px;border-radius:6px;background:var(--ac,#1C5240);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;">E</div>
+    <div class="ew-footer-info">
+      <strong style="color:var(--tx,#1C1A17)">EconWiki</strong><br>
+      UCP Direito · Introdução à Economia
+    </div>
+  </a>
+  <div class="ew-footer-info" style="text-align:center">
+    <a class="ew-footer-link" href="index.html#planos">Planos</a> ·
+    <a class="ew-footer-link" href="index.html">Página inicial</a> ·
+    <a class="ew-footer-link" href="introducao.html">Introdução à Economia</a>
+  </div>
+  <div class="ew-footer-info" style="text-align:right">
+    Manual de estudo interativo.<br>
+    <a class="ew-footer-link" href="index.html">← Voltar à página principal</a>
+  </div>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
 <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
