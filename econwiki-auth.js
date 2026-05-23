@@ -102,6 +102,9 @@ let _user = null;       // utilizador atual (ou null)
 let _syncing = false;   // flag anti-double-sync
 let _subscription = { plan:'free', status:'inactive', daily_used:0, daily_limit:30 };
 
+// Detectar Safari — necessário para ajustar mensagens de erro e configuração do cliente
+const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
 function _resetSubscription(){
   _subscription = { plan:'free', status:'inactive', daily_used:0, daily_limit:30 };
 }
@@ -125,7 +128,52 @@ function init(){
     return;
   }
 
-  _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  // O Safari bloqueia cookies de terceiros (ITP) e trata pedidos a domínios externos
+  // de forma mais restritiva — forçamos localStorage e desativamos cookies de sessão.
+
+  _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: {
+      // Guardar sessão em localStorage em vez de cookies — compatível com Safari ITP
+      storage: window.localStorage,
+      storageKey: 'ew_supabase_session',
+      // Renovar token automaticamente para manter sessão activa
+      autoRefreshToken: true,
+      // Persistir sessão entre páginas
+      persistSession: true,
+      // Não usar cookies — evita bloqueio do Safari ITP
+      detectSessionInUrl: true,
+      // Fluxo PKCE é mais robusto em browsers com restrições de terceiros
+      flowType: 'pkce',
+    },
+    global: {
+      headers: {
+        // Header que identifica o cliente — ajuda o Supabase a não tratar como rastreio
+        'X-Client-Info': 'econwiki/1.0',
+      },
+      // Fetch personalizado com retry automático em caso de falha de rede
+      fetch: async (url, options = {}) => {
+        const MAX_RETRIES = 3;
+        let lastError;
+        for(let attempt = 1; attempt <= MAX_RETRIES; attempt++){
+          try{
+            const controller = new AbortController();
+            const tid = setTimeout(() => controller.abort(), 35000);
+            const res = await fetch(url, { ...options, signal: controller.signal });
+            clearTimeout(tid);
+            return res;
+          }catch(err){
+            lastError = err;
+            if(err.name === 'AbortError') break; // timeout — não tentar novamente
+            if(attempt < MAX_RETRIES){
+              // Esperar antes de tentar novamente (backoff exponencial: 1s, 2s)
+              await new Promise(r => setTimeout(r, attempt * 1000));
+            }
+          }
+        }
+        throw lastError;
+      },
+    },
+  });
 
   // Injetar CSS do modal
   injectCSS();
@@ -681,10 +729,10 @@ function openModal(tab){
 
 function ptError(error){
   const msg = (error?.message || '').toLowerCase();
-  if(msg.includes('timeout'))
-    return 'O servidor demorou a responder (pode estar a arrancar após inatividade). Espera 30 segundos e tenta novamente — se o problema persistir, verifica a tua ligação à internet.';
-  if(msg.includes('failed to fetch') || msg.includes('networkerror'))
-    return 'Não foi possível ligar ao servidor. Verifica a tua ligação à internet e tenta novamente.';
+  if(msg.includes('timeout') || msg.includes('aborted') || msg.includes('abort'))
+    return 'O servidor demorou a responder. ' + (_isSafari ? 'No Safari, tenta desativar "Prevenir rastreio entre sites" em Definições → Privacidade, ou usa o Chrome para iniciar sessão.' : 'Espera 30 segundos e tenta novamente — se o problema persistir, verifica a tua ligação à internet.');
+  if(msg.includes('failed to fetch') || msg.includes('networkerror') || msg.includes('network') || msg.includes('load failed'))
+    return 'Não foi possível ligar ao servidor. ' + (_isSafari ? 'O Safari pode estar a bloquear a ligação — tenta desativar "Prevenir rastreio entre sites" em Definições → Privacidade, ou usa o Chrome.' : 'Verifica a tua ligação à internet e tenta novamente.');
   if(msg.includes('invalid login') || msg.includes('invalid credentials'))
     return 'Email ou palavra-passe incorretos. Se criaste conta recentemente, confirma primeiro o email que recebeste (verifica também o spam).';
   if(msg.includes('email not confirmed'))
