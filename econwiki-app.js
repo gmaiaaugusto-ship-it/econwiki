@@ -746,6 +746,97 @@
     .b-concepts-grid{ grid-template-columns:1fr;}
   }
 
+  /* ── Página Guia de Exame ────────────────────────────── */
+  #app{ --heat-rgb:198,90,63; }
+  /* CTA do guia no dashboard */
+  .b-dash-guide{ display:flex; align-items:center; gap:20px; background:linear-gradient(135deg, var(--acl), var(--surf)); border:1px solid var(--bor); border-radius:16px; padding:22px 26px; margin-top:36px; cursor:pointer; transition:border-color .15s, box-shadow .15s; }
+  .b-dash-guide:hover{ border-color:var(--ac); box-shadow:0 4px 18px rgba(0,0,0,.06); }
+  .b-dash-guide-ic{ flex-shrink:0; width:48px; height:48px; border-radius:12px; background:var(--ac); color:#fff; display:grid; place-items:center; }
+  html[data-theme="dark"] .b-dash-guide-ic{ color:var(--bg); }
+  .b-dash-guide-ic svg{ width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2; }
+  .b-dash-guide-body{ flex:1; min-width:0; }
+  .b-dash-guide-t{ font-family:'Source Serif 4',serif; font-size:19px; font-weight:600; color:var(--tx); line-height:1.25; margin:0 0 4px; }
+  .b-dash-guide-d{ font-size:13.5px; line-height:1.5; color:var(--tx2); margin:0; }
+  .b-dash-guide-arrow{ flex-shrink:0; font-size:20px; color:var(--ac); }
+  @media(max-width:600px){ .b-dash-guide{ flex-direction:column; align-items:flex-start; text-align:left; } .b-dash-guide-arrow{ display:none; } }
+  .b-guide-page{ padding:48px 56px 100px; max-width:980px; }
+  .b-guide-head{ margin-bottom:8px; }
+  .b-guide-eyebrow{ font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--fav); margin-bottom:10px; }
+  .b-guide-title{ font-family:'Source Serif 4',serif; font-size:42px; font-weight:600; letter-spacing:-.025em; color:var(--tx); line-height:1.1; margin:0 0 14px; }
+  .b-guide-sub{ font-size:15.5px; line-height:1.6; color:var(--tx2); margin:0; max-width:680px; }
+  .b-guide-section{ margin-top:52px; }
+  .b-guide-section-head{ margin-bottom:18px; }
+  .b-guide-section-title{ font-family:'Source Serif 4',serif; font-size:24px; font-weight:600; letter-spacing:-.02em; color:var(--tx); margin:0; }
+  .b-guide-section-sub{ font-size:13.5px; line-height:1.55; color:var(--tx3); margin:6px 0 0; max-width:640px; }
+
+  /* Heatmap */
+  .b-heat-wrap{ overflow-x:auto; border:1px solid var(--bor); border-radius:14px; background:var(--surf); -webkit-overflow-scrolling:touch; }
+  .b-heat{ border-collapse:collapse; width:100%; min-width:660px; }
+  .b-heat caption{ position:absolute; width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0); }
+  .b-heat th, .b-heat td{ padding:0; }
+  .b-heat thead th{ font-size:10.5px; font-weight:600; color:var(--tx3); text-align:center; padding:14px 6px 12px; vertical-align:bottom; line-height:1.25; border-bottom:1px solid var(--rule); }
+  .b-heat thead th.b-heat-corner{ text-align:left; padding-left:18px; font-size:11px; letter-spacing:.08em; text-transform:uppercase; }
+  .b-heat thead th.b-heat-freqcol{ padding-left:10px; padding-right:14px; }
+  .b-heat tbody tr{ border-bottom:1px solid var(--bor2); cursor:pointer; transition:background .12s; }
+  .b-heat tbody tr:last-child{ border-bottom:none; }
+  .b-heat tbody tr:hover{ background:var(--surf2); }
+  .b-heat-topic{ text-align:left; padding:10px 12px 10px 18px; font-size:13px; color:var(--tx); line-height:1.3; white-space:nowrap; }
+  .b-heat-topic .num{ color:var(--tx3); font-variant-numeric:tabular-nums; font-weight:600; margin-right:8px; font-size:11.5px; }
+  .b-heat-topic .nm{ font-weight:500; }
+  .b-heat-cell{ text-align:center; width:64px; }
+  .b-heat-dot{ width:30px; height:30px; border-radius:8px; margin:0 auto; display:grid; place-items:center; font-size:11px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .b-heat-dot.off{ width:6px;height:6px;border-radius:50%; background:var(--rule); }
+  .b-heat-dot.on{ color:#fff; }
+  html[data-theme="dark"] .b-heat-dot.on{ color:#1B120D; }
+  .b-heat-freq{ padding:10px 14px 10px 10px; white-space:nowrap; }
+  .b-heat-meter{ display:inline-flex; gap:3px; vertical-align:middle; margin-right:9px; }
+  .b-heat-seg{ width:7px; height:18px; border-radius:2px; background:var(--rule); }
+  .b-heat-seg.fill{ background:rgba(var(--heat-rgb),.92); }
+  .b-heat-freq .n{ font-size:12.5px; font-weight:700; color:var(--tx2); font-variant-numeric:tabular-nums; }
+  .b-heat-legend{ display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin-top:14px; font-size:12px; color:var(--tx3); }
+  .b-heat-legend .item{ display:inline-flex; align-items:center; gap:7px; }
+  .b-heat-legend .sw{ width:16px;height:16px;border-radius:5px; }
+
+  /* Bandas de prioridade */
+  .b-prio-band{ margin-bottom:22px; }
+  .b-prio-band-head{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .b-prio-tag{ font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:4px 10px; border-radius:20px; }
+  .b-prio-band-label{ font-size:13px; color:var(--tx3); }
+  .b-prio-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .b-prio-chip{ display:inline-flex; align-items:center; gap:8px; background:var(--surf); border:1px solid var(--bor); border-radius:10px; padding:8px 13px; font-size:13px; color:var(--tx); cursor:pointer; transition:border-color .12s, box-shadow .12s; }
+  .b-prio-chip:hover{ border-color:var(--ac); box-shadow:0 2px 10px rgba(0,0,0,.05); }
+  .b-prio-chip .cnum{ font-size:11px; font-weight:700; color:var(--tx3); font-variant-numeric:tabular-nums; }
+  .b-prio-chip .cf{ font-size:10.5px; font-weight:700; color:var(--fav); }
+
+  /* Cartões de guia (formato, estratégia, erros) */
+  .b-guide-cards{ display:grid; gap:14px; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); }
+  .b-guide-card{ background:var(--surf); border:1px solid var(--bor); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column; gap:7px; }
+  .b-guide-card .ct{ font-size:14.5px; font-weight:600; color:var(--tx); line-height:1.3; }
+  .b-guide-card .cd{ font-size:13px; line-height:1.55; color:var(--tx2); }
+  .b-guide-card .cd em{ color:var(--tx); font-style:italic; }
+  .b-guide-steps{ counter-reset:gstep; display:flex; flex-direction:column; gap:12px; }
+  .b-guide-step{ display:flex; gap:14px; background:var(--surf); border:1px solid var(--bor); border-radius:12px; padding:16px 18px; }
+  .b-guide-step::before{ counter-increment:gstep; content:counter(gstep); flex-shrink:0; width:28px;height:28px; border-radius:8px; background:var(--acl); color:var(--act); font-size:13px; font-weight:700; display:grid; place-items:center; }
+  .b-guide-step .st{ font-size:14px; font-weight:600; color:var(--tx); margin-bottom:3px; }
+  .b-guide-step .sd{ font-size:13px; line-height:1.55; color:var(--tx2); }
+  .b-guide-step .sd em{ font-style:italic; color:var(--tx); }
+  .b-format-list{ display:flex; flex-direction:column; gap:12px; }
+  .b-format-item{ background:var(--surf); border:1px solid var(--bor); border-radius:12px; padding:16px 18px; }
+  .b-format-item .ft{ font-size:14.5px; font-weight:600; color:var(--tx); margin-bottom:5px; display:flex; align-items:center; gap:9px; flex-wrap:wrap; }
+  .b-format-item .fd{ font-size:13px; line-height:1.55; color:var(--tx2); }
+  .b-format-item .fd em, .b-format-item .fd strong{ color:var(--tx); }
+  .b-guide-meta{ display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 0; }
+  .b-guide-pill{ display:inline-flex; align-items:center; gap:7px; background:var(--acl); color:var(--act); border-radius:20px; padding:7px 14px; font-size:12.5px; font-weight:600; }
+  .b-guide-pill svg{ width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2; }
+
+  @media(max-width:768px){
+    .b-guide-page{ padding:24px 20px 64px; }
+    .b-guide-title{ font-size:28px; }
+    .b-guide-section{ margin-top:40px; }
+    .b-guide-section-title{ font-size:20px; }
+    .b-guide-cards{ grid-template-columns:1fr; }
+  }
+
   /* ── Widget de conta (sidebar) ───────────────────────── */
   .ew-auth-widget{
     padding:10px 0 0;
@@ -803,6 +894,7 @@
         <div id="b-intro" class="b-page b-intro-page"></div>
         <div id="b-formulas" class="b-page"></div>
         <div id="b-concepts" class="b-page"></div>
+        <div id="b-guide" class="b-page"></div>
         <div id="b-account" class="b-page"></div>
       </main>
     </div>
@@ -897,6 +989,10 @@
           <span>Conceitos-Chave</span>
           <span class="count">${(window.T||[]).reduce((a,t)=>a+(t.cc||[]).length,0)}</span>
         </div>
+        <div class="b-side-link ${view==='guide'?'active':''}" data-view="guide" style="--ch-color:#B8763F">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2.7 2.5 6 2.5s6-1.5 6-2.5v-5"/><path d="M22 10v6"/></svg>
+          <span>Preparação Exame</span>
+        </div>
       </div>
 
       <div class="b-side-section">
@@ -957,6 +1053,7 @@
       if(v==='intro'){ goIntro(); return; }
       if(v==='formulas'){ goFormulas(); return; }
       if(v==='concepts'){ goConcepts(); return; }
+      if(v==='guide'){ goGuide(); return; }
       if(v==='account'){ goAccount(); return; }
       dashFilter = el.dataset.filter;
       goDash();
@@ -1025,6 +1122,18 @@
           </div>
         </section>
 
+        ${isAll ? `
+        <div class="b-dash-guide" id="b-dash-guide" role="button" tabindex="0" aria-label="Abrir o guia de preparação para o exame">
+          <div class="b-dash-guide-ic">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2.7 2.5 6 2.5s6-1.5 6-2.5v-5"/><path d="M22 10v6"/></svg>
+          </div>
+          <div class="b-dash-guide-body">
+            <p class="b-dash-guide-t">Não sabes por onde começar?</p>
+            <p class="b-dash-guide-d">O guia de exame analisa exames anteriores e mostra-te o que sai mais, como responder e por onde estudar primeiro.</p>
+          </div>
+          <span class="b-dash-guide-arrow">→</span>
+        </div>` : ''}
+
         <section class="b-section">
           <div class="b-section-head">
             <div class="b-section-title">${isAll? 'Explorar por capítulo' : (ts.length+' tópico'+(ts.length===1?'':'s'))}</div>
@@ -1042,6 +1151,11 @@
 
     dash.querySelectorAll('[data-go]').forEach(el=> el.addEventListener('click', ()=> openTopic(parseInt(el.dataset.go))));
     dash.querySelector('#b-cta-search')?.addEventListener('click', ()=> window.__ewOpenCmdK && window.__ewOpenCmdK());
+    const dg = dash.querySelector('#b-dash-guide');
+    if(dg){
+      dg.addEventListener('click', ()=> goGuide());
+      dg.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); goGuide(); } });
+    }
 
     dash.querySelectorAll('.b-tab').forEach(el=>{
       el.addEventListener('click', ()=>{
@@ -1481,7 +1595,7 @@
   })();
 
   function showPage(id){
-    ['b-dash','b-read','b-fc','b-intro','b-formulas','b-concepts','b-account'].forEach(p=> root.querySelector('#'+p).classList.toggle('active', p===id));
+    ['b-dash','b-read','b-fc','b-intro','b-formulas','b-concepts','b-guide','b-account'].forEach(p=> root.querySelector('#'+p).classList.toggle('active', p===id));
   }
 
   // ── History API ──
@@ -1502,6 +1616,7 @@
     if(s.v==='intro') return '#/intro';
     if(s.v==='formulas') return '#/formulas';
     if(s.v==='concepts') return '#/conceitos';
+    if(s.v==='guide') return '#/guia';
     if(s.v==='account') return '#/conta';
     return '#/dash';
   }
@@ -1522,6 +1637,7 @@
     if(p0==='intro')       return {v:'intro'};
     if(p0==='formulas')    return {v:'formulas'};
     if(p0==='conceitos')   return {v:'concepts'};
+    if(p0==='guia')        return {v:'guide'};
     if(p0==='conta')       return {v:'account'};
     return {v:'dash', f:'all'};
   }
@@ -1576,6 +1692,13 @@
     showPage('b-concepts');
     window.scrollTo({top:0, behavior:'instant'});
     renderSide(); renderConcepts();
+  }
+  function goGuide(){
+    view='guide';
+    pushNav({v:'guide'});
+    showPage('b-guide');
+    window.scrollTo({top:0, behavior:'instant'});
+    renderSide(); renderGuide();
   }
   function goAccount(){
     view='account';
@@ -1924,6 +2047,170 @@
     }
   }
 
+  // ── Página Guia de Exame ─────────────────────────────────
+  function renderGuide(){
+    const el = root.querySelector('#b-guide');
+    const exams = window.EXAMS || [];
+    const guide = window.EXAM_GUIDE || {format:{parts:[]}, strategy:[], mistakes:[]};
+
+    // Análise: para cada tópico, em que exames saiu e que perguntas o testaram
+    const analysis = T.map((t,ti)=>({ ti, name:t.name, examQs:{}, freq:0, totalQs:0 }));
+    exams.forEach(ex=>{
+      ex.q.forEach(q=>{
+        (q.topics||[]).forEach(ti=>{
+          const a = analysis[ti]; if(!a) return;
+          (a.examQs[ex.id] = a.examQs[ex.id] || []).push(q);
+        });
+      });
+    });
+    analysis.forEach(a=>{
+      a.freq = Object.keys(a.examQs).length;
+      a.totalQs = Object.values(a.examQs).reduce((s,arr)=>s+arr.length,0);
+    });
+
+    const dotOpacity = f => (0.45 + f*0.10).toFixed(2);
+
+    // ── Heatmap (ordem do programa) ──
+    const heatRows = analysis.map(a=>{
+      const cells = exams.map(ex=>{
+        const qs = a.examQs[ex.id] || [];
+        if(!qs.length) return `<td class="b-heat-cell"><span class="b-heat-dot off" aria-label="não testado"></span></td>`;
+        const tip = qs.map(q=>`${q.ref} (${q.val}v) — ${EW.plain(q.desc)}`).join(' • ');
+        const op = dotOpacity(a.freq);
+        return `<td class="b-heat-cell"><span class="b-heat-dot on" style="background:rgba(var(--heat-rgb),${op})" title="${ex.label}\n${tip.replace(/"/g,'&quot;')}">${qs.length}</span></td>`;
+      }).join('');
+      const meter = Array.from({length:5},(_,k)=>`<span class="b-heat-seg ${k<a.freq?'fill':''}"></span>`).join('');
+      return `<tr data-go="${a.ti}">
+        <td class="b-heat-topic"><span class="num">${String(a.ti+1).padStart(2,'0')}</span><span class="nm">${a.name}</span></td>
+        ${cells}
+        <td class="b-heat-freq"><span class="b-heat-meter" aria-hidden="true">${meter}</span><span class="n">${a.freq}/5</span></td>
+      </tr>`;
+    }).join('');
+
+    const heatHead = `
+      <thead><tr>
+        <th class="b-heat-corner" scope="col">Tópico</th>
+        ${exams.map(ex=>`<th scope="col">${ex.short.replace(' · ','<br>')}</th>`).join('')}
+        <th class="b-heat-freqcol" scope="col">Frequência</th>
+      </tr></thead>`;
+
+    // ── Bandas de prioridade ──
+    const band = (lo,hi)=> analysis.filter(a=>a.freq>=lo && a.freq<=hi).sort((x,y)=> y.freq-x.freq || x.ti-y.ti);
+    const bands = [
+      {lab:'Quase garantido', sub:'saiu em 4 ou 5 dos 5 exames', tagBg:'rgba(var(--heat-rgb),.92)', tagTx:'#fff', items:band(4,5)},
+      {lab:'Provável', sub:'saiu em 2 ou 3 exames', tagBg:'var(--fav-bg-alt)', tagTx:'var(--fav-tx-strong)', items:band(2,3)},
+      {lab:'Pouco frequente', sub:'saiu apenas 1 vez', tagBg:'var(--surf2)', tagTx:'var(--tx2)', items:band(1,1)},
+      {lab:'Não saiu (2021–2025)', sub:'ausente nestes 5 exames — não significa que nunca saia', tagBg:'var(--surf2)', tagTx:'var(--tx3)', items:band(0,0)}
+    ];
+    const prioHTML = bands.filter(b=>b.items.length).map(b=>`
+      <div class="b-prio-band">
+        <div class="b-prio-band-head">
+          <span class="b-prio-tag" style="background:${b.tagBg};color:${b.tagTx}">${b.lab}</span>
+          <span class="b-prio-band-label">${b.sub}</span>
+        </div>
+        <div class="b-prio-chips">
+          ${b.items.map(a=>`<span class="b-prio-chip" data-go="${a.ti}"><span class="cnum">${String(a.ti+1).padStart(2,'0')}</span>${a.name}${a.freq?` <span class="cf">${a.freq}×</span>`:''}</span>`).join('')}
+        </div>
+      </div>`).join('');
+
+    // ── Conteúdo do guia ──
+    const fmt = guide.format || {parts:[]};
+    const formatHTML = (fmt.parts||[]).map(p=>`
+      <div class="b-format-item">
+        <div class="ft">${p.t}</div>
+        <div class="fd">${p.d}</div>
+      </div>`).join('');
+
+    const strategyHTML = (guide.strategy||[]).map(s=>`
+      <div class="b-guide-card">
+        <div class="ct">${s.t}</div>
+        <div class="cd">${s.d}</div>
+      </div>`).join('');
+
+    const mistakesHTML = (guide.mistakes||[]).map(m=>`
+      <div class="b-guide-card">
+        <div class="ct">${m.t}</div>
+        <div class="cd">${m.d}</div>
+      </div>`).join('');
+
+    el.innerHTML = `
+      <div class="b-guide-page">
+        <div class="b-guide-head">
+          <div class="b-guide-eyebrow">Preparação para o exame</div>
+          <h1 class="b-guide-title">Não sabes por onde começar?</h1>
+          <p class="b-guide-sub">Este guia analisa ${exams.length} exames recentes do Prof. João Confraria para mostrar o que sai com mais frequência, como está estruturado o teste e que estratégia usar. Começa pelos temas em destaque e usa o mapa para orientar o estudo.</p>
+          <div class="b-guide-meta">
+            <span class="b-guide-pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${fmt.duration||'2h30'}</span>
+            <span class="b-guide-pill"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>${fmt.grade||'20 valores'}</span>
+            <span class="b-guide-pill"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-5"/></svg>${exams.length} exames analisados</span>
+          </div>
+        </div>
+
+        <section class="b-guide-section">
+          <div class="b-guide-section-head">
+            <h2 class="b-guide-section-title">Por onde começar</h2>
+          </div>
+          <div class="b-guide-steps">
+            <div class="b-guide-step"><div><div class="st">Ataca primeiro os temas «quase garantidos»</div><div class="sd">Os tópicos da banda vermelha abaixo saíram em quase todos os exames. Se o tempo for curto, são o melhor retorno por hora de estudo.</div></div></div>
+            <div class="b-guide-step"><div><div class="st">Para cada tema: lê o tópico e treina os flashcards</div><div class="sd">Abre o tópico no EconWiki, lê a matéria e os conceitos-chave, e usa os <em>flashcards</em> para fixar o raciocínio.</div></div></div>
+            <div class="b-guide-step"><div><div class="st">Testa-te com perguntas tipo-exame</div><div class="sd">Pratica afirmações verdadeiro/falso e comentários. O que conta é saber justificar — vê a secção de estratégia mais abaixo.</div></div></div>
+          </div>
+        </section>
+
+        <section class="b-guide-section">
+          <div class="b-guide-section-head">
+            <h2 class="b-guide-section-title">Mapa de exame</h2>
+            <p class="b-guide-section-sub">Cada tópico do programa e os exames em que foi testado. O número na célula indica quantas perguntas tocaram nesse tópico; passa o rato por cima para ver quais. Clica numa linha para abrir o tópico.</p>
+          </div>
+          <div class="b-heat-wrap">
+            <table class="b-heat">
+              <caption>Frequência dos tópicos do EconWiki em ${exams.length} exames (${exams.map(e=>e.label).join(', ')}).</caption>
+              ${heatHead}
+              <tbody>${heatRows}</tbody>
+            </table>
+          </div>
+          <div class="b-heat-legend">
+            <span class="item"><span class="sw" style="background:rgba(var(--heat-rgb),.95)"></span>testado (mais escuro = mais frequente)</span>
+            <span class="item"><span class="b-heat-dot off"></span>não saiu neste exame</span>
+            <span class="item">o número = perguntas que tocaram no tópico</span>
+          </div>
+        </section>
+
+        <section class="b-guide-section">
+          <div class="b-guide-section-head">
+            <h2 class="b-guide-section-title">Prioridades de estudo</h2>
+            <p class="b-guide-section-sub">Os mesmos dados, agrupados por frequência. Clica num tópico para o abrir.</p>
+          </div>
+          ${prioHTML}
+        </section>
+
+        <section class="b-guide-section">
+          <div class="b-guide-section-head">
+            <h2 class="b-guide-section-title">Como está estruturado o exame</h2>
+          </div>
+          <div class="b-format-list">${formatHTML}</div>
+        </section>
+
+        <section class="b-guide-section">
+          <div class="b-guide-section-head">
+            <h2 class="b-guide-section-title">Estratégia de resposta</h2>
+          </div>
+          <div class="b-guide-cards">${strategyHTML}</div>
+        </section>
+
+        <section class="b-guide-section">
+          <div class="b-guide-section-head">
+            <h2 class="b-guide-section-title">Erros que mais custam pontos</h2>
+            <p class="b-guide-section-sub">Confusões recorrentes nas correções — vale a pena ter estas presentes.</p>
+          </div>
+          <div class="b-guide-cards">${mistakesHTML}</div>
+        </section>
+      </div>`;
+
+    el.querySelectorAll('[data-go]').forEach(row=>{
+      row.addEventListener('click', ()=> openTopic(parseInt(row.dataset.go)));
+    });
+  }
 
 
   window.addEventListener('ew:readchange', ()=>{ renderSide(); if(view==='dash') renderDash(); });
@@ -1939,6 +2226,7 @@
     else if(s.v==='intro')                            { goIntro(); }
     else if(s.v==='formulas')                         { goFormulas(); }
     else if(s.v==='concepts')                         { goConcepts(); }
+    else if(s.v==='guide')                            { goGuide(); }
     else if(s.v==='account')                          { goAccount(); }
     else                                              { dashFilter='all'; goDash(); }
     _fromPop = false;
