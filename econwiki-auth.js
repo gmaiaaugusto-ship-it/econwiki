@@ -66,7 +66,7 @@ const LEMON_PLANS = {
     description: 'Acesso ao Assistente IA com 100 mensagens por dia. Cancela quando quiseres.',
     perks: ['Assistente IA · 100 msg/dia', 'Sincronização entre dispositivos', 'Cancelas quando quiseres'],
     badge: '',
-    url: 'https://econwiki.lemonsqueezy.com/checkout/buy/11d7554b-3527-47c1-a3e8-32fafd16c9bb'
+    url: 'https://econwiki.lemonsqueezy.com/checkout/buy/408d0ad9-929d-40cc-84f3-28ab96087452'
   },
   monthly: {
     id: 'monthly',
@@ -739,8 +739,19 @@ function ptError(error){
     return 'Confirma o teu email antes de entrar. Verifica a tua caixa de entrada (e a pasta de spam).';
   if(msg.includes('already registered'))
     return 'Este email já tem conta. Usa "Entrar" — ou confirma o email de verificação se ainda não o fizeste.';
-  if(msg.includes('password'))
-    return 'A palavra-passe deve ter pelo menos 6 caracteres.';
+  if(msg.includes('password')){
+    // Comprimento mínimo — extrai o número real exigido pelo Supabase (pode ser > 6)
+    const lenMatch = msg.match(/at least (\d+) characters?/);
+    if(lenMatch) return 'A palavra-passe é demasiado curta: deve ter pelo menos ' + lenMatch[1] + ' caracteres.';
+    // Palavra-passe demasiado comum ou exposta numa fuga de dados (proteção de palavras-passe vazadas)
+    if(msg.includes('weak') || msg.includes('pwned') || msg.includes('leaked') || msg.includes('compromised') || msg.includes('easy to guess'))
+      return 'Esta palavra-passe é demasiado comum ou já foi exposta numa fuga de dados conhecida. Escolhe outra mais original (evita sequências como «123456» ou «password»).';
+    // Requisitos de robustez (combinação de tipos de caracteres)
+    if(msg.includes('should contain') || msg.includes('character of each') || msg.includes('strength') || msg.includes('requirements'))
+      return 'A palavra-passe não cumpre os requisitos: combina letras maiúsculas e minúsculas, números e pelo menos um símbolo.';
+    // Outro problema com a palavra-passe — mostra o motivo real em vez de inventar um
+    return 'Problema com a palavra-passe: ' + (error?.message || 'tenta uma palavra-passe diferente.');
+  }
   if(msg.includes('rate limit'))
     return 'Muitas tentativas. Aguarda uns minutos.';
   if(msg.includes('unable to validate') || msg.includes('invalid api'))
