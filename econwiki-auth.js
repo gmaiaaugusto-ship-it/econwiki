@@ -66,7 +66,7 @@ const LEMON_PLANS = {
     description: 'Acesso ao Assistente IA com 100 mensagens por dia. Cancela quando quiseres.',
     perks: ['Assistente IA · 100 msg/dia', 'Sincronização entre dispositivos', 'Cancelas quando quiseres'],
     badge: '',
-    url: 'https://econwiki.lemonsqueezy.com/checkout/buy/408d0ad9-929d-40cc-84f3-28ab96087452'
+    url: 'https://econwiki.lemonsqueezy.com/checkout/buy/11d7554b-3527-47c1-a3e8-32fafd16c9bb'
   },
   monthly: {
     id: 'monthly',
@@ -210,7 +210,13 @@ function init(){
         plan: data.plan || 'free',
         status: data.status || 'inactive',
         daily_used: data.daily_messages_used || 0,
-        daily_limit: 30,
+        // Ler o limite real do servidor (a coluna daily_limit é a fonte de
+        // verdade, definida pelo webhook: 100 premium / 30 free). Fallback por
+        // plano caso a coluna venha vazia, para a UI nunca mostrar um limite
+        // que não corresponde ao que o chat-proxy aplica.
+        daily_limit: (typeof data.daily_limit === 'number')
+          ? data.daily_limit
+          : ((data.plan === 'premium') ? 100 : 30),
         update_payment_url: data.update_payment_url || null,
       };
     }catch(e){ /* tabela ainda não existe */ }
