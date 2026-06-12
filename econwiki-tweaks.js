@@ -271,20 +271,27 @@ function applyTweaks(t) {
   html #app .b-card-num{ font-style:italic !important;}
   html #app .b-read-intro{ font-style:normal !important; font-weight:400 !important;}
 
-  /* Density — scale + padding + rhythm */
-  html #app .b-dash{ padding:${Math.round(56 * den.pad)}px ${Math.round(56 * den.pad)}px ${Math.round(80 * den.pad)}px !important;}
-  html #app .b-read{ padding:${Math.round(48 * den.pad)}px ${Math.round(56 * den.pad)}px ${Math.round(100 * den.pad)}px !important;}
-  html #app .b-fc  { padding:${Math.round(48 * den.pad)}px ${Math.round(56 * den.pad)}px ${Math.round(80 * den.pad)}px !important;}
-  html #app .b-dash-hero{ padding:${Math.round(48 * den.pad)}px ${Math.round(48 * den.pad)}px ${Math.round(56 * den.pad)}px !important;}
-  html #app .b-dash-title{ font-size:${(44 * den.scale).toFixed(1)}px !important;}
-  html #app .b-read-title{ font-size:${(54 * den.scale).toFixed(1)}px !important;}
-  html #app .b-section-title{ font-size:${(24 * den.scale).toFixed(1)}px !important;}
-  html #app .b-card-name{ font-size:${(18.5 * den.scale).toFixed(2)}px !important;}
-  html #app .b-read-intro{ font-size:${(22 * den.scale).toFixed(1)}px !important; line-height:${den.lh} !important;}
-  html #app .b-dash-blurb{ line-height:${den.lh} !important;}
+  /* Density — scale + padding + rhythm
+     ⚠️ Apenas em desktop (≥981px). Em mobile, estas regras com px fixos e
+     !important sobrepunham-se às media queries responsivas do econwiki-app.js
+     (ex.: padding 56px num ecrã de 360px = 31% do ecrã em margens, título 54px).
+     A media query devolve o controlo do layout mobile ao app.
+     O line-height (sem unidades) é seguro em qualquer largura e fica global. */
   html #app{ line-height:${den.lh} !important;}
-  html #app .b-section{ margin-top:${Math.round(48 * den.gap)}px !important;}
-  html #app .b-grid{ gap:${Math.round(18 * den.gap)}px !important;}
+  html #app .b-dash-blurb{ line-height:${den.lh} !important;}
+  @media (min-width: 981px){
+    html #app .b-dash{ padding:${Math.round(56 * den.pad)}px ${Math.round(56 * den.pad)}px ${Math.round(80 * den.pad)}px !important;}
+    html #app .b-read{ padding:${Math.round(48 * den.pad)}px ${Math.round(56 * den.pad)}px ${Math.round(100 * den.pad)}px !important;}
+    html #app .b-fc  { padding:${Math.round(48 * den.pad)}px ${Math.round(56 * den.pad)}px ${Math.round(80 * den.pad)}px !important;}
+    html #app .b-dash-hero{ padding:${Math.round(48 * den.pad)}px ${Math.round(48 * den.pad)}px ${Math.round(56 * den.pad)}px !important;}
+    html #app .b-dash-title{ font-size:${(44 * den.scale).toFixed(1)}px !important;}
+    html #app .b-read-title{ font-size:${(54 * den.scale).toFixed(1)}px !important;}
+    html #app .b-section-title{ font-size:${(24 * den.scale).toFixed(1)}px !important;}
+    html #app .b-card-name{ font-size:${(18.5 * den.scale).toFixed(2)}px !important;}
+    html #app .b-read-intro{ font-size:${(22 * den.scale).toFixed(1)}px !important; line-height:${den.lh} !important;}
+    html #app .b-section{ margin-top:${Math.round(48 * den.gap)}px !important;}
+    html #app .b-grid{ gap:${Math.round(18 * den.gap)}px !important;}
+  }
   `;
   let style = document.getElementById('ew-tw-style');
   if (!style) {
@@ -415,11 +422,19 @@ function TweaksApp() {
 
 /* ─── Boot ──────────────────────────────────────────────────── */
 
-// Apply defaults immediately so first paint reflects the persisted tweaks
+// Apply defaults immediately so first paint reflects the persisted tweaks.
+// Esta parte é vanilla e corre sempre — é a única necessária em produção.
 applyTweaks(TWEAK_DEFAULTS);
-(function mount() {
-  const host = document.createElement('div');
-  host.id = 'ew-tweaks-root';
-  document.body.appendChild(host);
-  ReactDOM.createRoot(host).render(/*#__PURE__*/React.createElement(TweaksApp, null));
-})();
+
+// O painel interativo de Tweaks é um instrumento do ambiente de desenvolvimento
+// (protocolo __activate_edit_mode). Só monta se React, ReactDOM e o
+// tweaks-panel.js estiverem carregados — em produção, o app.html já não os
+// carrega (~50KB gzip poupados em mobile) e este bloco é simplesmente saltado.
+if(typeof React !== 'undefined' && typeof ReactDOM !== 'undefined' && typeof TweaksPanel !== 'undefined'){
+  (function mount() {
+    const host = document.createElement('div');
+    host.id = 'ew-tweaks-root';
+    document.body.appendChild(host);
+    ReactDOM.createRoot(host).render(/*#__PURE__*/React.createElement(TweaksApp, null));
+  })();
+}

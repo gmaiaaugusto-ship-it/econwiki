@@ -189,6 +189,10 @@ function init(){
       _resetSubscription();
     }
     refreshSidebarWidget();
+    // Notificar a app para re-renderizar a vista atual (ex.: a página "A minha
+    // conta", se estiver aberta no momento do login). Sem isto, a vista
+    // principal ficava com o estado antigo até o utilizador navegar de novo.
+    window.dispatchEvent(new CustomEvent('ew:authchange'));
   });
 
   _sb.auth.getSession().then(async ({ data }) => {
@@ -198,6 +202,7 @@ function init(){
       try{ await loadSubscription(); }catch(e){ console.warn('[EconWiki Auth] loadSubscription falhou:', e); }
     }
     refreshSidebarWidget();
+    window.dispatchEvent(new CustomEvent('ew:authchange'));
   });
 
   // ── Subscrição (estado mantido no escopo do IIFE; ver _subscription no topo) ──
@@ -374,10 +379,16 @@ function init(){
     document.head.appendChild(st);
   }
 
+  // Portal de cliente (billing) da loja — URL não-assinado, estável, que funciona
+  // para qualquer subscritor via magic link. Usado como fallback quando não há
+  // URL assinado fresco (o update_payment_url guardado expira ao fim de 24h, e
+  // pode nem existir se a subscrição foi criada fora do fluxo do webhook).
+  const LEMON_BILLING_URL = 'https://econwiki.lemonsqueezy.com/billing';
+
   function openPortal(){
     if(!_user){ openModal('login'); return; }
-    const url = _subscription.update_payment_url;
-    if(!url){ alert('Portal de gestão não disponível. Recarrega a página.'); return; }
+    // 1.º: URL assinado fresco (login automático). 2.º: portal de cliente da loja.
+    const url = _subscription.update_payment_url || LEMON_BILLING_URL;
     if(window.LemonSqueezy && window.LemonSqueezy.Url){
       window.LemonSqueezy.Url.Open(url);
     } else { window.open(url, '_blank'); }

@@ -307,6 +307,9 @@
   }
   .b-card:hover{ border-color:var(--c-ac); transform:translateY(-2px); box-shadow:0 14px 28px -16px rgba(20,15,5,.18);}
   :root[data-theme="dark"] .b-card:hover{ box-shadow:0 14px 28px -10px rgba(0,0,0,.4);}
+  /* Foco visível nos elementos interativos custom tornados focáveis (teclado) */
+  .b-card:focus-visible, .b-rel-card:focus-visible{ outline:2px solid var(--ac); outline-offset:2px; }
+  .b-side-link:focus-visible, .b-side-sub li:focus-visible{ outline:2px solid var(--side-tx); outline-offset:-2px; border-radius:8px; }
   /* colored top stripe */
   .b-card-stripe{
     height:4px; background:var(--c-ac);
@@ -785,6 +788,25 @@
   .b-heat-topic .nm{ font-weight:500; }
   .b-heat-cell{ text-align:center; width:64px; }
   .b-heat-dot{ width:30px; height:30px; border-radius:8px; margin:0 auto; display:grid; place-items:center; font-size:11px; font-weight:700; font-variant-numeric:tabular-nums; }
+  button.b-heat-dot{ appearance:none; border:0; padding:0; font:inherit; font-size:11px; font-weight:700; cursor:pointer; }
+  button.b-heat-dot.on:focus-visible{ outline:2px solid var(--ac); outline-offset:2px; }
+  @media (pointer:coarse){ button.b-heat-dot.on{ width:40px; height:40px; } }
+  .b-heat-topic .nm[role="button"]{ cursor:pointer; }
+  .b-heat-topic .nm[role="button"]:hover{ text-decoration:underline; }
+  .b-heat-topic .nm[role="button"]:focus-visible{ outline:2px solid var(--ac); outline-offset:2px; border-radius:4px; }
+  .b-heat-detail{ margin-top:12px; border:1px solid var(--bor); border-radius:14px; background:var(--surf); padding:14px 18px; }
+  .b-heat-detail-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; }
+  .b-heat-detail-head .t{ font-size:13.5px; color:var(--tx); line-height:1.4; }
+  .b-heat-detail-head .acts{ display:flex; align-items:center; gap:6px; flex-shrink:0; }
+  .b-heat-detail-open{ appearance:none; border:1px solid var(--bor); background:var(--surf2); color:var(--tx); border-radius:8px; padding:8px 12px; font:inherit; font-size:12px; font-weight:600; cursor:pointer; min-height:36px; }
+  .b-heat-detail-open:hover{ border-color:var(--ac); }
+  .b-heat-detail-close{ appearance:none; border:0; background:none; color:var(--tx3); font-size:20px; line-height:1; cursor:pointer; padding:6px 10px; min-width:44px; min-height:44px; border-radius:8px; }
+  .b-heat-detail-close:hover{ color:var(--tx); background:var(--surf2); }
+  .b-heat-detail-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .b-heat-detail-list li{ display:flex; gap:10px; align-items:baseline; font-size:13px; line-height:1.45; color:var(--tx2); }
+  .b-heat-detail-list .ref{ font-weight:700; color:var(--tx); white-space:nowrap; }
+  .b-heat-detail-list .val{ font-size:11px; font-weight:700; color:var(--fav); white-space:nowrap; }
+  .b-prio-chip:focus-visible{ outline:2px solid var(--ac); outline-offset:2px; }
   .b-heat-dot.off{ width:6px;height:6px;border-radius:50%; background:var(--rule); }
   .b-heat-dot.on{ color:#fff; }
   html[data-theme="dark"] .b-heat-dot.on{ color:#1B120D; }
@@ -899,6 +921,11 @@
       </main>
     </div>
   `);
+
+  // Remover o esqueleto de arranque (app.html > #b-boot) — o shell está pronto.
+  // Se um erro abortar o script antes desta linha, o esqueleto permanece visível,
+  // o que é preferível a um ecrã em branco.
+  root.querySelector('#b-boot')?.remove();
 
   let view='dash', cur=-1, dashFilter='all', _markReadTO=null;
 
@@ -1044,20 +1071,41 @@
       </div>
     `;
 
+    // ── Acessibilidade por teclado ──
+    // Os .b-side-link e os tópicos por capítulo (li[data-go]) são divs/li com
+    // handlers de clique; aqui ganham semântica e foco programaticamente
+    // (mantém os templates intactos). O padrão Enter/Espaço replica o dos
+    // .b-card-act. O <a> da marca e os <button> nativos já são focáveis.
+    const _kb = (el, fn)=> el.addEventListener('keydown', e=>{
+      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); fn(e); }
+    });
+    side.querySelectorAll('.b-side-link, .b-side-sub li').forEach(el=>{
+      el.setAttribute('role','button');
+      el.setAttribute('tabindex','0');
+    });
+
     side.querySelector('#b-search').addEventListener('click', ()=> window.__ewOpenCmdK && window.__ewOpenCmdK());
-    side.querySelectorAll('[data-go]').forEach(el=> el.addEventListener('click', e=>{ e.stopPropagation(); openTopic(parseInt(el.dataset.go)); }));
-    side.querySelectorAll('[data-view]').forEach(el=> el.addEventListener('click', e=>{
-      e.stopPropagation();
-      const v = el.dataset.view;
-      if(v==='fc'){ goFlash(); return; }
-      if(v==='intro'){ goIntro(); return; }
-      if(v==='formulas'){ goFormulas(); return; }
-      if(v==='concepts'){ goConcepts(); return; }
-      if(v==='guide'){ goGuide(); return; }
-      if(v==='account'){ goAccount(); return; }
-      dashFilter = el.dataset.filter;
-      goDash();
-    }));
+    side.querySelectorAll('[data-go]').forEach(el=>{
+      const go = e=>{ e.stopPropagation(); openTopic(parseInt(el.dataset.go)); };
+      el.addEventListener('click', go);
+      _kb(el, go);
+    });
+    side.querySelectorAll('[data-view]').forEach(el=>{
+      const go = e=>{
+        e.stopPropagation();
+        const v = el.dataset.view;
+        if(v==='fc'){ goFlash(); return; }
+        if(v==='intro'){ goIntro(); return; }
+        if(v==='formulas'){ goFormulas(); return; }
+        if(v==='concepts'){ goConcepts(); return; }
+        if(v==='guide'){ goGuide(); return; }
+        if(v==='account'){ goAccount(); return; }
+        dashFilter = el.dataset.filter;
+        goDash();
+      };
+      el.addEventListener('click', go);
+      _kb(el, go);
+    });
     side.querySelector('[data-theme-btn]').addEventListener('click', ()=>{
       setTheme(getTheme()==='dark'?'light':'dark');
       renderSide();
@@ -1172,7 +1220,17 @@
     function wireGrid(){
       dash.querySelectorAll('.b-card').forEach(el=>{
         const i = parseInt(el.dataset.i);
+        // Acessibilidade: o card é um div clicável — dar-lhe semântica e foco
+        el.setAttribute('role','button');
+        el.setAttribute('tabindex','0');
+        el.setAttribute('aria-label', `Abrir tópico ${i+1}: ${T[i]?.name || ''}`);
         el.addEventListener('click', ()=> openTopic(i));
+        el.addEventListener('keydown', e=>{
+          // Apenas quando o foco está no próprio card — os .b-card-act internos
+          // têm os seus próprios handlers (com stopPropagation)
+          if(e.target!==el) return;
+          if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openTopic(i); }
+        });
         const readBtn = el.querySelector('.b-card-act.read');
         const favBtn  = el.querySelector('.b-card-act.fav');
         const flipReadVisual = ()=>{
@@ -1339,7 +1397,16 @@
       </div>
     `;
 
-    read.querySelectorAll('[data-i]').forEach(el=> el.addEventListener('click', ()=> openTopic(parseInt(el.dataset.i))));
+    read.querySelectorAll('[data-i]').forEach(el=>{
+      const j = parseInt(el.dataset.i);
+      el.setAttribute('role','button');
+      el.setAttribute('tabindex','0');
+      el.setAttribute('aria-label', `Abrir tópico ${j+1}: ${T[j]?.name || ''}`);
+      el.addEventListener('click', ()=> openTopic(j));
+      el.addEventListener('keydown', e=>{
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openTopic(j); }
+      });
+    });
     read.querySelectorAll('[data-back]').forEach(el=>{
       const handler = ()=>{
         if(el.dataset.back==='ch' && g){
@@ -1628,7 +1695,14 @@
     if(qIdx >= 0) hashPath = hashPath.slice(0, qIdx);
     const path = hashPath.replace(/^#\/?/, '').split('/');
     const [p0, p1] = path;
-    if(p0==='dash')        return {v:'dash', f: p1 ? decodeURIComponent(p1) : 'all'};
+    if(p0==='dash'){
+      // decodeURIComponent lança URIError com percent-encoding malformado
+      // (ex.: link truncado ao ser partilhado: #/dash/%E0%A4%A). Sem este
+      // try/catch, a exceção no top-level do IIFE abortava a app inteira.
+      let f = 'all';
+      try{ f = p1 ? decodeURIComponent(p1) : 'all'; }catch(e){ f = 'all'; }
+      return {v:'dash', f};
+    }
     if(p0==='topico'){
       const n = parseInt(p1,10);
       if(!isNaN(n) && n>=1 && n<=T.length) return {v:'read', i:n-1};
@@ -2072,16 +2146,19 @@
 
     // ── Heatmap (ordem do programa) ──
     const heatRows = analysis.map(a=>{
-      const cells = exams.map(ex=>{
+      const cells = exams.map((ex, exIdx)=>{
         const qs = a.examQs[ex.id] || [];
         if(!qs.length) return `<td class="b-heat-cell"><span class="b-heat-dot off" aria-label="não testado"></span></td>`;
         const tip = qs.map(q=>`${q.ref} (${q.val}v) — ${EW.plain(q.desc)}`).join(' • ');
         const op = dotOpacity(a.freq);
-        return `<td class="b-heat-cell"><span class="b-heat-dot on" style="background:rgba(var(--heat-rgb),${op})" title="${ex.label}\n${tip.replace(/"/g,'&quot;')}">${qs.length}</span></td>`;
+        // <button> nativo: o title só existe em hover de rato; em touch o detalhe
+        // abre num painel por baixo da tabela (ver showHeatDetail). Enter/Espaço
+        // funcionam de origem num <button>, sem keydown manual.
+        return `<td class="b-heat-cell"><button type="button" class="b-heat-dot on" data-hti="${a.ti}" data-hex="${exIdx}" style="background:rgba(var(--heat-rgb),${op})" title="${ex.label}\n${tip.replace(/"/g,'&quot;')}" aria-label="${qs.length} ${qs.length===1?'pergunta':'perguntas'} em ${ex.label} sobre ${a.name} — ver detalhe">${qs.length}</button></td>`;
       }).join('');
       const meter = Array.from({length:5},(_,k)=>`<span class="b-heat-seg ${k<a.freq?'fill':''}"></span>`).join('');
       return `<tr data-go="${a.ti}">
-        <td class="b-heat-topic"><span class="num">${String(a.ti+1).padStart(2,'0')}</span><span class="nm">${a.name}</span></td>
+        <td class="b-heat-topic"><span class="num">${String(a.ti+1).padStart(2,'0')}</span><span class="nm" role="button" tabindex="0" data-go="${a.ti}" aria-label="Abrir tópico: ${a.name}">${a.name}</span></td>
         ${cells}
         <td class="b-heat-freq"><span class="b-heat-meter" aria-hidden="true">${meter}</span><span class="n">${a.freq}/5</span></td>
       </tr>`;
@@ -2109,7 +2186,7 @@
           <span class="b-prio-band-label">${b.sub}</span>
         </div>
         <div class="b-prio-chips">
-          ${b.items.map(a=>`<span class="b-prio-chip" data-go="${a.ti}"><span class="cnum">${String(a.ti+1).padStart(2,'0')}</span>${a.name}${a.freq?` <span class="cf">${a.freq}×</span>`:''}</span>`).join('')}
+          ${b.items.map(a=>`<span class="b-prio-chip" role="button" tabindex="0" data-go="${a.ti}" aria-label="Abrir tópico: ${a.name}"><span class="cnum">${String(a.ti+1).padStart(2,'0')}</span>${a.name}${a.freq?` <span class="cf">${a.freq}×</span>`:''}</span>`).join('')}
         </div>
       </div>`).join('');
 
@@ -2160,7 +2237,7 @@
         <section class="b-guide-section">
           <div class="b-guide-section-head">
             <h2 class="b-guide-section-title">Mapa de exame</h2>
-            <p class="b-guide-section-sub">Cada tópico do programa e os exames em que foi testado. O número na célula indica quantas perguntas tocaram nesse tópico; passa o rato por cima para ver quais. Clica numa linha para abrir o tópico.</p>
+            <p class="b-guide-section-sub">Cada tópico do programa e os exames em que foi testado. O número na célula indica quantas perguntas tocaram nesse tópico — toca ou clica na célula para ver quais. Clica no nome do tópico para o abrir.</p>
           </div>
           <div class="b-heat-wrap">
             <table class="b-heat">
@@ -2169,6 +2246,7 @@
               <tbody>${heatRows}</tbody>
             </table>
           </div>
+          <div class="b-heat-detail" id="b-heat-detail" hidden aria-live="polite"></div>
           <div class="b-heat-legend">
             <span class="item"><span class="sw" style="background:rgba(var(--heat-rgb),.95)"></span>testado (mais escuro = mais frequente)</span>
             <span class="item"><span class="b-heat-dot off"></span>não saiu neste exame</span>
@@ -2207,14 +2285,60 @@
         </section>
       </div>`;
 
-    el.querySelectorAll('[data-go]').forEach(row=>{
-      row.addEventListener('click', ()=> openTopic(parseInt(row.dataset.go)));
+    // ── Painel de detalhe das células do heatmap ──
+    // O title só aparece em hover de rato; em touch (o cenário típico dos
+    // alunos) as perguntas ficavam inacessíveis. Este painel mostra o detalhe
+    // por baixo da tabela ao tocar/clicar numa célula.
+    const detail = el.querySelector('#b-heat-detail');
+    function showHeatDetail(ti, exIdx){
+      const a = analysis[ti]; const ex = exams[exIdx];
+      if(!a || !ex || !detail) return;
+      const qs = a.examQs[ex.id] || [];
+      detail.innerHTML = `
+        <div class="b-heat-detail-head">
+          <div class="t"><strong>${a.name}</strong> · ${ex.label}</div>
+          <div class="acts">
+            <button type="button" class="b-heat-detail-open">Abrir tópico →</button>
+            <button type="button" class="b-heat-detail-close" aria-label="Fechar detalhe">&times;</button>
+          </div>
+        </div>
+        <ul class="b-heat-detail-list">
+          ${qs.map(q=>`<li><span class="ref">${q.ref}</span><span class="val">${q.val}v</span><span class="d">${EW.plain(q.desc)}</span></li>`).join('')}
+        </ul>`;
+      detail.hidden = false;
+      detail.querySelector('.b-heat-detail-close').addEventListener('click', ()=>{ detail.hidden = true; });
+      detail.querySelector('.b-heat-detail-open').addEventListener('click', ()=> openTopic(ti));
+      detail.scrollIntoView({block:'nearest', behavior:'smooth'});
+    }
+
+    // Navegação: elementos com data-go abrem o tópico — clique e, nos que têm
+    // tabindex, também Enter/Espaço (mesmo padrão dos .b-card-act).
+    // stopPropagation evita disparo duplo no .nm aninhado dentro do <tr data-go>.
+    el.querySelectorAll('[data-go]').forEach(go=>{
+      const open = e=>{ e.stopPropagation(); openTopic(parseInt(go.dataset.go)); };
+      go.addEventListener('click', open);
+      if(go.hasAttribute('tabindex')){
+        go.addEventListener('keydown', e=>{
+          if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(e); }
+        });
+      }
+    });
+    // Células do heatmap: abrir o detalhe (não o tópico da linha).
+    // <button> nativo dispara click com Enter/Espaço — sem keydown manual.
+    el.querySelectorAll('.b-heat-dot.on[data-hti]').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        e.stopPropagation();
+        showHeatDetail(parseInt(btn.dataset.hti), parseInt(btn.dataset.hex));
+      });
     });
   }
 
 
   window.addEventListener('ew:readchange', ()=>{ renderSide(); if(view==='dash') renderDash(); });
   window.addEventListener('ew:favchange', ()=>{ renderSide(); if(view==='dash') renderDash(); });
+  // Login/logout: re-renderizar a vista de conta se estiver aberta (senão ficava
+  // a mostrar o estado anterior até o utilizador clicar de novo em "A minha conta").
+  window.addEventListener('ew:authchange', ()=>{ if(view==='account') renderAccount(); });
 
   // ── History API: popstate + carregamento inicial via hash ──
   function navigateFromState(s){

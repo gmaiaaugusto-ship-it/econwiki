@@ -1159,7 +1159,7 @@ html[data-theme="dark"] .badge{
 <p>Os dados de conta são conservados enquanto a conta estiver ativa. Após eliminação da conta, os dados são removidos no prazo de 30 dias. Os dados de pagamento são conservados pelo Lemon Squeezy de acordo com obrigações legais e fiscais aplicáveis.</p>
 
 <h3>7. Direitos do titular</h3>
-<p>Nos termos do RGPD, tens o direito de aceder, retificar, apagar, limitar ou portar os teus dados pessoais, bem como de retirar o consentimento a qualquer momento. Para exercer estes direitos, contacta-nos pelo email <a href="mailto:econwiki.site@gmail.com">econwiki.site@gmail.com</a>.</p>
+<p>Nos termos do RGPD, tens o direito de aceder, retificar, apagar, limitar ou portar os teus dados pessoais, bem como de retirar o consentimento a qualquer momento. Para exercer estes direitos, contacta-nos pelo email <a href="mailto:gmaia.augusto@gmail.com">gmaia.augusto@gmail.com</a>.</p>
 
 <h3>8. Idade mínima</h3>
 <p>O EconWiki destina-se a maiores de 16 anos. Não recolhemos conscientemente dados de menores dessa idade; se tomarmos conhecimento de que recolhemos dados de um menor de 16 anos sem consentimento parental, esses dados serão apagados.</p>
@@ -1231,8 +1231,9 @@ html[data-theme="dark"] .badge{
     <label for="contact-message">Mensagem</label>
     <textarea id="contact-message" name="message" required maxlength="2000" placeholder="Descreve a tua dúvida ou comentário…"></textarea>
   </div>
+  <input type="text" id="contact-company" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;">
   <button type="submit" class="contact-submit">Enviar mensagem</button>
-  <div class="contact-hint">Ao clicar em «Enviar mensagem», abre-se a tua aplicação de email com a mensagem pré-preenchida. Os dados que introduzes neste formulário não são guardados pelo EconWiki — são transmitidos diretamente para a aplicação de email.</div>
+  <div class="contact-hint">Ao enviar, a tua mensagem chega diretamente à equipa do EconWiki. Usamos os dados apenas para te responder; não são partilhados nem usados para outros fins.</div>
 </form>
       `
     }
@@ -1257,33 +1258,55 @@ html[data-theme="dark"] .badge{
       setTimeout(()=>{
         const form = document.getElementById('contact-form');
         if(!form) return;
-        form.addEventListener('submit', ev=>{
+        // Endpoint da Edge Function que recebe e envia o contacto por email.
+        const CONTACT_ENDPOINT = 'https://xiibexibzeaohzkjelbv.supabase.co/functions/v1/contact-form';
+        const submitBtn = form.querySelector('.contact-submit');
+        const hint = form.querySelector('.contact-hint');
+        const origHint = hint ? hint.textContent : '';
+
+        form.addEventListener('submit', async ev=>{
           ev.preventDefault();
-          const name    = (form.name.value||'').trim();
-          const email   = (form.email.value||'').trim();
-          const subject = (form.subject.value||'').trim();
-          const message = (form.message.value||'').trim();
+          // Ler por id (não por form.<name>): form.name colidiria com a
+          // propriedade nativa name do elemento <form>, devolvendo o atributo
+          // do form em vez do input. Por id é sempre inequívoco.
+          const name    = (document.getElementById('contact-name').value||'').trim();
+          const email   = (document.getElementById('contact-email').value||'').trim();
+          const subject = (document.getElementById('contact-subject').value||'').trim();
+          const message = (document.getElementById('contact-message').value||'').trim();
+          const companyEl = document.getElementById('contact-company');
+          const company = (companyEl && companyEl.value||'').trim(); // honeypot
           if(!name || !email || !message){
             alert('Por favor preenche o nome, email e mensagem.');
             return;
           }
-          // Validação básica de email
           if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
             alert('O email parece inválido. Verifica e tenta novamente.');
             return;
           }
-          // Email oficial do EconWiki — destino dos contactos do formulário
-          const TO = 'econwiki.site@gmail.com';
-          const body =
-            'Nome: ' + name + '\n' +
-            'Email: ' + email + '\n' +
-            'Assunto: ' + subject + '\n\n' +
-            'Mensagem:\n' + message + '\n\n' +
-            '— Enviado via formulário EconWiki';
-          const mailto = 'mailto:' + TO +
-            '?subject=' + encodeURIComponent('[EconWiki] ' + subject) +
-            '&body=' + encodeURIComponent(body);
-          window.location.href = mailto;
+
+          // Estado: a enviar
+          if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'A enviar…'; }
+
+          try{
+            const res = await fetch(CONTACT_ENDPOINT, {
+              method:'POST',
+              headers:{ 'Content-Type':'application/json' },
+              body: JSON.stringify({ name, email, subject, message, company }),
+            });
+            if(!res.ok) throw new Error('HTTP ' + res.status);
+
+            // Sucesso: limpar o formulário e dar feedback
+            form.reset();
+            if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = 'Mensagem enviada ✓'; }
+            if(hint){ hint.textContent = 'Obrigado! A tua mensagem foi enviada. Respondemos assim que possível.'; hint.style.color = 'var(--ac)'; }
+            setTimeout(()=>{
+              if(submitBtn) submitBtn.textContent = 'Enviar mensagem';
+              if(hint){ hint.textContent = origHint; hint.style.color = ''; }
+            }, 5000);
+          }catch(err){
+            if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = 'Enviar mensagem'; }
+            if(hint){ hint.textContent = 'Não foi possível enviar a mensagem. Tenta novamente, ou escreve diretamente para gmaia.augusto@gmail.com.'; hint.style.color = 'var(--ac-error, #A33A2A)'; }
+          }
         });
       }, 30);
     });
