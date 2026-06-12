@@ -210,7 +210,20 @@ function init(){
   async function loadSubscription(){
     if(!_user) return;
     try{
-      const { data } = await _sb.from('subscriptions').select('*').eq('user_id', _user.id).single();
+      // maybeSingle (não single): single lança exceção se a query devolver zero
+      // linhas — o que acontece se o RLS bloquear a leitura ou se a linha não
+      // existir. maybeSingle devolve null nesses casos, sem rebentar.
+      const { data, error } = await _sb
+        .from('subscriptions')
+        .select('*')
+        .eq('user_id', _user.id)
+        .maybeSingle();
+      if(error){
+        // Não engolir o erro: registá-lo ajuda a diagnosticar problemas de RLS,
+        // colunas em falta, ou migração não aplicada (visível no DevTools).
+        console.warn('[EconWiki Auth] loadSubscription:', error.message || error);
+        return;
+      }
       if(data) _subscription = {
         plan: data.plan || 'free',
         status: data.status || 'inactive',
@@ -224,7 +237,9 @@ function init(){
           : ((data.plan === 'premium') ? 100 : 30),
         update_payment_url: data.update_payment_url || null,
       };
-    }catch(e){ /* tabela ainda não existe */ }
+    }catch(e){
+      console.warn('[EconWiki Auth] loadSubscription exceção:', e);
+    }
   }
 
   async function getSession(){
@@ -522,7 +537,7 @@ async function syncFromCloud(){
     const { data, error } = await _sb.from('profiles')
       .select('read_set, fav_set, last_topic')
       .eq('id', _user.id)
-      .single();
+      .maybeSingle();
     if(error || !data) return;
 
     // Mesclar: juntar cloud + local (union, não sobrescrever)
