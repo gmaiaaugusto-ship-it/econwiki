@@ -504,10 +504,22 @@ async function signUp(email, password){
 }
 
 async function signOut(){
-  await _sb.auth.signOut();
+  // Tentar terminar a sessão no servidor. Mesmo que falhe (rede, sessão já
+  // expirada), garantimos a seguir que o estado local fica limpo — para o
+  // utilizador não ficar preso num estado "meio-logado".
+  try{
+    await _sb.auth.signOut();
+  }catch(e){
+    console.warn('[EconWiki Auth] signOut (servidor) falhou, a limpar localmente:', e);
+  }
+  // Limpeza local defensiva: remover a sessão guardada em localStorage, caso
+  // o signOut do Supabase não a tenha removido (ex.: se falhou acima).
+  try{ localStorage.removeItem('ew_supabase_session'); }catch(e){}
   _user = null;
   _resetSubscription();
   refreshSidebarWidget();
+  // Notificar a app para re-renderizar a vista atual (ex.: "A minha conta")
+  window.dispatchEvent(new CustomEvent('ew:authchange'));
 }
 
 /* ── Sincronização cloud ───────────────────────────────── */
